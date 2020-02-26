@@ -1,6 +1,10 @@
 package dataModel;
 
-import javax.persistence.*;
+import java.util.Optional;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class Book {
@@ -17,17 +21,17 @@ public class Book {
 	private double price;
 	private int quantity;
 	
-	public Book(String title, String author, double d) {
-		this(title, author, DEFAULT_YEAR, DEFAULT_DESCRIPTION, d, DEFAULT_QUANTITY);
+	public Book(String title, String author, double price) {
+		this(title, author, null, null, price, null);
 	}
 	
-	public Book(String title, String author, int year, String description, double price, int quantity) {
+	public Book(String title, String author, Integer year, String description, Double price, Integer quantity) {
 		this.title = title;
 		this.author = author;
-		this.year = year;
-		this.description = description;
+		this.year = Optional.ofNullable(year).orElse(DEFAULT_YEAR);
+		this.description = Optional.ofNullable(description).orElse(DEFAULT_DESCRIPTION);
 		this.price = price;
-		this.quantity = quantity;
+		this.quantity = Optional.ofNullable(quantity).orElse(DEFAULT_QUANTITY);
 	}
 
 	public String getTitle() {
