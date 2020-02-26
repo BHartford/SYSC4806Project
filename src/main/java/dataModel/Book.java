@@ -14,14 +14,14 @@ public class Book {
 	private String author;
 	private int year;
 	private String description;
-	private float price;
+	private double price;
 	private int quantity;
 	
-	public Book(String title, String author, float price) {
-		this(title, author, DEFAULT_YEAR, DEFAULT_DESCRIPTION, price, DEFAULT_QUANTITY);
+	public Book(String title, String author, double d) {
+		this(title, author, DEFAULT_YEAR, DEFAULT_DESCRIPTION, d, DEFAULT_QUANTITY);
 	}
 	
-	public Book(String title, String author, int year, String description, float price, int quantity) {
+	public Book(String title, String author, int year, String description, double price, int quantity) {
 		this.title = title;
 		this.author = author;
 		this.year = year;
@@ -62,11 +62,11 @@ public class Book {
 		this.description = description;
 	}
 
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
