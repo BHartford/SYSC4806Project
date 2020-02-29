@@ -1,4 +1,4 @@
-package webContent;
+package dataModel;
 
 import dataModel.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ public class BookStoreController {
     }
 
     @GetMapping("/viewbook")
-    public String display(Model model, @RequestParam(value = "bookName", defaultValue = "Book") String bookTitle) {
-        model.addAttribute("books", repository.findByTitle(bookTitle));
+    public String display(Model model, @RequestParam(value = "bookID") long bookID) {
+        model.addAttribute("books", repository.findById(bookID));
         return "viewbook";
     }
 
