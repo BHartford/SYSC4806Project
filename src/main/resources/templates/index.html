@@ -10,12 +10,16 @@
 <h1>AMAZin BOOK STORE</h1>
 <p>VIEW - Currently Carrying</p>
 
-
-<div th:id="buddyEntry" th:each="book: ${books}">
-    <p th:text="${book.toString()}"></p>
-</div>
-
-
+<table th:id="inventory">
+    <tr>
+        <th>Book</th>
+    </tr>
+    <tbody>
+    <tr th:each="book: ${books}">
+        <p th:text="${book.toString()}"></p>
+    </tr>
+    </tbody>
+</table>
 
 
 </body>
