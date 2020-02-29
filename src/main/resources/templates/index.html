@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 <head>
     <title>AMAZin BOOK STORE</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -12,12 +14,17 @@
 
 <table th:id="inventory">
     <tr>
-        <th>Book</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price ($)</th>
     </tr>
     <tbody>
     <tr th:each="book: ${books}">
-        <p th:text="${book.toString()}"></p>
+        <td><a th:text="${book.title}" th:href="@{/viewbook(bookID=${book.id})}"></a></td>
+        <td th:text="${book.author}"/>
+        <td th:text="${book.price}"/>
     </tr>
+
     </tbody>
 </table>
 
