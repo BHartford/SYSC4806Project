@@ -20,7 +20,9 @@ public class Book {
 	private String description;
 	private double price;
 	private int quantity;
-	
+
+	public Book() {}
+
 	public Book(String title, String author, double price) {
 		this(title, author, null, null, price, null);
 	}
@@ -81,4 +83,10 @@ public class Book {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
+	@Override
+	public String toString(){
+		return "\nTitle: " + this.title + "\nAuthor: " + this.author + "\nPrice: " + this.price;
+	}
+
 }
