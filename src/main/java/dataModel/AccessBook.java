@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.lang.reflect.Array;
+
 @SpringBootApplication
 public class AccessBook {
 
@@ -27,8 +29,8 @@ public class AccessBook {
             repository.save(book1);
             repository.save(book2);
 
-            for (Book book : repository.findAll()) {
-                log.info(book.toString());
+            for (Book b : repository.findAll()) {
+                log.info(b.toString());
             }
         };
 
