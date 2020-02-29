@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>AMAZin BOOK STORE</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<body>
+<h1>AMAZin BOOK STORE</h1>
+<p>VIEW - Currently Carrying</p>
+
+
+<div th:id="buddyEntry" th:each="book: ${books}">
+    <p th:text="${book.toString()}"></p>
+</div>
+
+
+
+
+</body>
+</html>
