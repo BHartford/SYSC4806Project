@@ -6,31 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class AccessBook implements CommandLineRunner {
+public class AccessBook {
 
     private static final Logger log = LoggerFactory.getLogger(AccessBook.class);
 
-    @Autowired
-    private BookRepository repository;
-
     public static void main(String[] args) {
-        SpringApplication.run(AccessBook.class, args);
+        SpringApplication.run(AccessBook.class);
     }
 
-    @Override
-    public void run(String... args) {
+    @Bean
+    public CommandLineRunner demo(BookRepository repository) {
+        return (args) -> {
 
-        Book book1 = new Book("Book 1", "Chris", 22);
-        Book book2 = new Book("Book 2", "Callum", 10);
+            Book book1 = new Book("Book 1", "Chris", 22);
+            Book book2 = new Book("Book 2", "Callum", 10);
 
-        repository.save(book1);
-        repository.save(book2);
+            repository.save(book1);
+            repository.save(book2);
 
-        for (Book book : repository.findAll()) {
-            log.info(book.toString());
-        }
+            for (Book book : repository.findAll()) {
+                log.info(book.toString());
+            }
+        };
 
     }
 }
