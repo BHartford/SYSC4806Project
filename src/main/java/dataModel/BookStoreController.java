@@ -29,9 +29,9 @@ public class BookStoreController {
         return "viewbook";
     }
 
-    @PostMapping("/addbook")
-    public String display(Model model) {
-        model.addAttribute("books", repository.findAll());
+   @PostMapping("/addbook")
+    public String display(Model model, @RequestBody Book newBook) {
+        repository.save(newBook); //Validation?
         return "addbook";
     }
 }
