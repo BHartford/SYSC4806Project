@@ -4,11 +4,21 @@
 <head>
     <title>AMAZin BOOK STORE</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 
 <body>
-<h1>AMAZin BOOK STORE</h1>
-<p>ADD - Currently Carrying</p>
-
+<h1><a href="/">AMAZin BOOK STORE</a></h1>
+<p>Add A New Book</p>
+	<form id="addBookForm" action="#" th:action="@{/addbook}" th:object="${newBook}" method="post">
+    <p> Title: <input type="text" th:field="*{title}" /></p>
+    <p> Author: <input type="text" th:field="*{author}" /></p>
+    <p> Year: <input type="text" th:field="*{year}" /></p>
+    <p> Description: <input type="text" th:field="*{description}" /></p>
+    <p> Price: <input type="text" th:field="*{price}" /></p>
+    <p> Quantity: <input type="text" th:field="*{quantity}" /></p>
+    <p><input type="submit" value="Submit" class="button" /></p>
+</form>
 </body>
 </html>

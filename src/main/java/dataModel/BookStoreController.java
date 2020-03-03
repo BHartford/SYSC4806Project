@@ -30,8 +30,16 @@ public class BookStoreController {
     }
 
     @PostMapping("/addbook")
-    public String display(Model model) {
+    public String display(Model model, @ModelAttribute Book newBook) {
+    	repository.save(newBook);
         model.addAttribute("books", repository.findAll());
+        model.addAttribute("newBook", null);
+        return "index";
+    }
+    
+    @GetMapping("/addbook")
+    public String directToAddBook(Model model) {
+    	model.addAttribute("newBook", new Book());
         return "addbook";
     }
     

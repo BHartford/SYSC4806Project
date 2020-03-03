@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>AMAZin BOOK STORE</h1>
+    <h1><a href="/">AMAZin BOOK STORE</a></h1>
     <div id="searchBar">
         <form action="#" th:action="@{/searchByTitle}" method="post">
             <input type="text" id="title" name="title">
@@ -20,6 +20,8 @@
             <input type="text" id="author" name="author">
             <input type="submit" value="Search By Author">
         </form>
+        <button onclick="location.href='/addbook'" type="button">
+         Add a new book</button>
     </div>
     <p>Currently Carrying</p>
 

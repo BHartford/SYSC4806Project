@@ -78,7 +78,20 @@ public class AccessBook {
                 		new Book("Norse Mythology", "Neil Gaiman", 2017,
                 				"The book is Gaiman's retelling of several stories from Norse mythology. These stories include the theft of Thor's hammer, the "
                 				+ "binding of Fenrir and other tales about the Aesir.",
-                				14.99, 8)));
+                				14.99, 8),
+                		new Book("Meditations", "Marus Aurelius", 180,
+                				"Meditations is a series of personal writings by Marcus Aurelius, Roman Emperor from 161 to 180 AD, recording his private notes "
+                				+ "to himself and ideas on Stoic philosophy.",
+                				9.99, 3),
+                		new Book("The Man In The High Castle", "Phillip K. Dick", 1962,
+                				" Published and set in 1962, the novel takes place fifteen years after a different end to World War II, and depicts intrigues "
+                				+ "between the victorious Axis Powers — primarily, Japan and Nazi Germany — as they rule over the former United States",
+                				13.99, 21),
+                		new Book("Nineteen Eighy-Four", "George Orwell", 1949,
+                				"The story takes place in an imagined future, the year 1984, when much of the world has fallen victim to perpetual war,"
+                				+ "omnipresent government surveillance, historical negationism, and propaganda.",
+                				9.99, 25)
+                		));
 
                 for (Book b : inventory) {
                     repository.save(b);
