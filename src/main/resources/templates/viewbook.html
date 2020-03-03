@@ -4,11 +4,51 @@
 <head>
     <title>AMAZin BOOK STORE</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 
 <body>
-<h1>AMAZin BOOK STORE</h1>
-<p>View Book Details</p>
+	<h1><a href="/">AMAZin BOOK STORE</a></h1>
+	<div id="searchBar">
+        <form action="#" th:action="@{/searchByTitle}" method="post">
+            <input type="text" id="title" name="title">
+            <input type="submit" value="Search By Title">
+        </form>
+            <form action="#" th:action="@{/searchByAuthor}" method="post">
+            <input type="text" id="author" name="author">
+            <input type="submit" value="Search By Author">
+        </form>
+       	<button 
+    </div>
+	<p>View Book Details</p>
+	<div th:if="books == null">
+	    <p>DATABASE Refused To Connect</p>
+	</div>
+
+	<table th:id="viewBook">
+		<thead>
+		    <tr>
+		        <th>Title</th>
+		        <th>Author</th>
+		        <th>Year</th>
+		        <th>Price ($)</th>
+		        <th>In Stock</th>
+		    </tr>
+		</thead>
+	    <tbody th:each="book: ${books}">
+		    <tr>
+		        <td th:text="${book.title}">/>
+		        <td th:text="${book.author}"/>
+		        <td th:text="${book.year}"/>
+		        <td th:text="${book.price}"/>
+		        <td th:text="${book.quantity}"/>
+		    </tr>
+		    <tr>
+		    	<td colspan="5" th:text="${book.description}"/>
+		    </tr>
+	    </tbody>
+	</table>
 
 </body>
 </html>

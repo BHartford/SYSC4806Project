@@ -30,8 +30,28 @@ public class BookStoreController {
     }
 
     @PostMapping("/addbook")
-    public String display(Model model) {
+    public String display(Model model, @ModelAttribute Book newBook) {
+    	repository.save(newBook);
         model.addAttribute("books", repository.findAll());
+        model.addAttribute("newBook", null);
+        return "index";
+    }
+    
+    @GetMapping("/addbook")
+    public String directToAddBook(Model model) {
+    	model.addAttribute("newBook", new Book());
         return "addbook";
+    }
+    
+    @PostMapping("/searchByTitle")
+    public String titleSearch(Model model, @RequestParam(value = "title") String title) {
+        model.addAttribute("books", repository.findByTitle(title));
+        return "viewBook";
+    }
+    
+    @PostMapping("/searchByAuthor")
+    public String authorSearch(Model model, @RequestParam(value = "author") String author) {
+        model.addAttribute("books", repository.findByAuthor(author));
+        return "viewBook";
     }
 }

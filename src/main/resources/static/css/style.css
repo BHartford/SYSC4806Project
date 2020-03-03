@@ -1,0 +1,78 @@
+h1, p, th, td{
+  font-family: 'Open Sans';
+}
+
+td{
+    text-align: left;
+}
+
+a:link {
+  color: #570303;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #976c6c;
+}
+
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+
+
+/* Table Look & Feel */
+table {
+  border: 2px solid #A40808;
+  background-color: #EEE7DB;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+table td, table th {
+  border: 1px solid #AAAAAA;
+  padding: 8px 2px;
+}
+table tbody td {
+  font-size: 13px;
+}
+table tr:nth-child(even) {
+  background: #F5C8BF;
+}
+table thead {
+  background: #A40808;
+}
+table thead th {
+  font-size: 19px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  border-left: 2px solid #A40808;
+}
+table thead th:first-child {
+  border-left: none;
+}
+
+table tfoot {
+  font-size: 13px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background: #A40808;
+}
+table tfoot td {
+  font-size: 13px;
+}
+table tfoot .links {
+  text-align: right;
+}
+table tfoot .links a{
+  display: inline-block;
+  background: #FFFFFF;
+  color: #A40808;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
