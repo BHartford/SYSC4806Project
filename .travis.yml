@@ -2,5 +2,5 @@ language: java
 deploy:
   provider: heroku
   api-key: 
-    secure: $HEROKU_API_KEY
+    secure: e2789a47-602f-457a-9a44-1b215da2db66
   app: sysc4806project2020
