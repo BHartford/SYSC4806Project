@@ -4,5 +4,3 @@ deploy:
   api-key: 
     secure: $HEROKU_API_KEY
   app: sysc4806project2020
-  on:
-    all_branches: true
