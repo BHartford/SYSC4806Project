@@ -20,7 +20,7 @@ https://sysc4806project2020.herokuapp.com/
 
 #### HTML Pages
 - addbook: Allows users to add books to the database
-- index: Shows all the books in the database (only shows the books madatory fields)
+- index: Shows all the books in the database (only shows the books mandatory fields)
 - viewbook: Shows all the information for a particular book (shows all fields for a particular book)
 
 #### Tests
@@ -36,3 +36,5 @@ https://sysc4806project2020.herokuapp.com/
 - Add a Users class (Buyer and Seller)
 - Ability to Purchase books
 - Update the readme and schema
+- Add Javascript 
+- Refine controllers
