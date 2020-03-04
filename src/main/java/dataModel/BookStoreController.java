@@ -42,13 +42,20 @@ public class BookStoreController {
     	model.addAttribute("newBook", new Book());
         return "addbook";
     }
-    
+
+    @GetMapping("/deletebook")
+    public String deleteBook(Model model, @RequestParam(value = "bookID") long bookID) {
+        Book removeBook = repository.findById(bookID);
+        repository.delete(removeBook);
+        return landingPage(model);
+    }
+
     @PostMapping("/searchByTitle")
     public String titleSearch(Model model, @RequestParam(value = "title") String title) {
         model.addAttribute("books", repository.findByTitle(title));
         return "viewbook";
     }
-    
+
     @PostMapping("/searchByAuthor")
     public String authorSearch(Model model, @RequestParam(value = "author") String author) {
         model.addAttribute("books", repository.findByAuthor(author));

@@ -41,7 +41,8 @@
             <tr th:each="book: ${books}">
                 <td><b><a th:text="${book.title}" th:href="@{/viewbook(bookID=${book.id})}"></a></b></td>
                 <td th:text="${book.author}"/>
-                <td th:text="${book.price}"/>
+                <td th:title="${book.title}" th:text="${book.price}"/>
+                <td><a th:href="@{/deletebook(bookID=${book.id})}">[X]</a></td>
             </tr>
         </tbody>
     </table>
