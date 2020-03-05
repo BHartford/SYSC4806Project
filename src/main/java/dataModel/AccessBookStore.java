@@ -2,30 +2,36 @@ package dataModel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @SpringBootApplication
-public class AccessBook {
+public class AccessBookStore {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessBook.class);
+    private static final Logger log = LoggerFactory.getLogger(AccessBookStore.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(AccessBook.class);
+        SpringApplication.run(AccessBookStore.class);
     }
 
     @Bean
-    public CommandLineRunner demo(BookRepository repository) {
+    public CommandLineRunner demo(BookRepository bookRepository, UserRepository userRepository) {
         return (args) -> {
 
-            if(!repository.findAll().iterator().hasNext()) { //Repo Empty - Init
+			if(!userRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
+				User user1 = new User("seller", "seller123", User.SELLER);
+				User user2 = new User("buyer", "buyer123", User.BUYER);
+
+				userRepository.save(user1);
+				userRepository.save(user2);
+			}
+
+            if(!bookRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
                 ArrayList<Book> inventory = new ArrayList<Book>(Arrays.asList(
                 		new Book("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 1997, 
                         		"The first novel in the Harry Potter series and Rowling's debut novel, it follows Harry Potter, a young wizard who"
@@ -94,13 +100,18 @@ public class AccessBook {
                 		));
 
                 for (Book b : inventory) {
-                    repository.save(b);
+                    bookRepository.save(b);
                 }
             }
 
-            for (Book b : repository.findAll()) {
+            for (Book b : bookRepository.findAll()) {
                 log.info(b.toString());
             }
+
+
+			for (User u : userRepository.findAll()) {
+				log.info(u.toString());
+			}
         };
 
     }
