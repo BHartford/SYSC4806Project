@@ -28,8 +28,7 @@ https://sysc4806project2020.herokuapp.com/
 - Book repository: tests saving and retrieving books from the database
 
 ## Schema
-#### Book
-![book_schema](uml/book_schema.PNG)
+![users_purchase_history_schema](uml/users_purchase_history_schema.PNG)
 
 ## To Do Next Sprint
 - Basic integration with one of Kafka, datadog or Splunk into the project (most likely Kafka)
