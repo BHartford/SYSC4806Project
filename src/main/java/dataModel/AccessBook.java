@@ -22,10 +22,18 @@ public class AccessBook {
     }
 
     @Bean
-    public CommandLineRunner demo(BookRepository repository) {
+    public CommandLineRunner demo(BookRepository bookRepository, UserRepository userRepository) {
         return (args) -> {
 
-            if(!repository.findAll().iterator().hasNext()) { //Repo Empty - Init
+			if(!userRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
+				User user1 = new User("admin", "admin123", 0);
+				User user2 = new User("guest", "guest123");
+
+				userRepository.save(user1);
+				userRepository.save(user2);
+			}
+
+            if(!bookRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
                 ArrayList<Book> inventory = new ArrayList<Book>(Arrays.asList(
                 		new Book("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 1997, 
                         		"The first novel in the Harry Potter series and Rowling's debut novel, it follows Harry Potter, a young wizard who"
@@ -94,13 +102,18 @@ public class AccessBook {
                 		));
 
                 for (Book b : inventory) {
-                    repository.save(b);
+                    bookRepository.save(b);
                 }
             }
 
-            for (Book b : repository.findAll()) {
+            for (Book b : bookRepository.findAll()) {
                 log.info(b.toString());
             }
+
+
+			for (User u : userRepository.findAll()) {
+				log.info(u.toString());
+			}
         };
 
     }
