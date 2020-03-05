@@ -1,5 +1,7 @@
 package dataModel;
 
+import static dataModel.User.BUYER;
+import static dataModel.User.SELLER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,8 +15,6 @@ public class UserTest {
     private static final String SELLER_USERNAME = "guest";
     private static final String PASSWORD_ONE = "password1";
     private static final String PASSWORD_TWO = "password2";
-    private static final int SELLER = 0;
-    private static final int BUYER = 1;
     private static final String BOOK_TITLE = "Refactoring";
     private static final String BOOK_AUTHOR = "Martin Fowler";
     private static final double BOOK_PRICE = 99.99;

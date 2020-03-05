@@ -8,8 +8,8 @@ import java.util.List;
 @Table(name="users")
 public class User {
 
-    private static final int SELLER = 0;
-    private static final int BUYER = 1;
+    public static final int SELLER = 0;
+    public static final int BUYER = 1;
 
     @Id
     @GeneratedValue
@@ -17,7 +17,7 @@ public class User {
     private String username;
     private String password;
     private int typeOfUser;
-    @OneToMany
+    @ManyToMany
     private List<Book> purchaseHistory;
 
     public User() {}

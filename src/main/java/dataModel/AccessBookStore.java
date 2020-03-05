@@ -24,8 +24,8 @@ public class AccessBookStore {
         return (args) -> {
 
 			if(!userRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
-				User user1 = new User("admin", "admin123", 0);
-				User user2 = new User("guest", "guest123");
+				User user1 = new User("seller", "seller123", User.SELLER);
+				User user2 = new User("buyer", "buyer123", User.BUYER);
 
 				userRepository.save(user1);
 				userRepository.save(user2);
