@@ -16,8 +16,8 @@ import static org.junit.Assert.assertEquals;
 @DataJpaTest
 public class UserRepositoryTest {
 
-    private static final String BUYER_USERNAME = "admin";
-    private static final String SELLER_USERNAME = "guest";
+    private static final String BUYER_USERNAME = "test_buyer";
+    private static final String SELLER_USERNAME = "test_seller";
     private static final String PASSWORD_ONE = "password1";
     private static final String PASSWORD_TWO = "password2";
     private static final int SELLER = 0;
@@ -50,8 +50,6 @@ public class UserRepositoryTest {
         entityManager.persist(new User(SELLER_USERNAME, PASSWORD_TWO, SELLER));
 
         List<User> users = userRepository.findByTypeOfUser(BUYER);
-
-        assertEquals(EXPECTED_NUMBER_OF_USERS, users.size());
 
         assertThat(users).extracting(User::getTypeOfUser).containsOnly(BUYER);
     }
