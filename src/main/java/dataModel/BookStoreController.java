@@ -1,7 +1,9 @@
 package dataModel;
 
+import Logging.LoggingLibrary;
 import dataModel.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,10 @@ public class BookStoreController {
 
     @Autowired
     private BookRepository repository;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+    private static final String TOPIC = "add_book";
 
     @GetMapping("/")
     public String landingPage(Model model){
@@ -31,6 +37,7 @@ public class BookStoreController {
 
     @PostMapping("/addbook")
     public String display(Model model, @ModelAttribute Book newBook) {
+        kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
     	repository.save(newBook);
         model.addAttribute("books", repository.findAll());
         model.addAttribute("newBook", null);
