@@ -24,6 +24,19 @@ a.button {
     color: initial;
 }
 
+#searchBar {
+	width: 70%;
+	float: left;
+}
+
+#utility {
+	width: 30%;
+	float: left;
+}
+
+#clear {
+    clear: both;
+}
 
 /* Table Look & Feel */
 table {
@@ -42,6 +55,10 @@ table tbody td {
 }
 table tr:nth-child(even) {
   background: #F5C8BF;
+}
+tr.break td {
+  height: 2px;
+  background: #FFFFFF;
 }
 table thead {
   background: #A40808;

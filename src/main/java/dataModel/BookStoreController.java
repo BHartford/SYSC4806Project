@@ -2,6 +2,10 @@ package dataModel;
 
 import Logging.LoggingLibrary;
 import dataModel.BookRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
@@ -33,6 +37,13 @@ public class BookStoreController {
     public String display(Model model, @RequestParam(value = "bookID") long bookID) {
         model.addAttribute("books", repository.findById(bookID));
         return "viewbook";
+    }
+
+    @GetMapping("/cart")
+    public String showCart(Model model, @RequestParam(value = "books") List<String> books) {
+    	List<Long> bookIds = books.stream().map(Long::parseLong).collect(Collectors.toList());
+        model.addAttribute("books", repository.findByIdIn(bookIds.toArray(new Long[bookIds.size()])));
+        return "viewCart";
     }
 
     @PostMapping("/addbook")

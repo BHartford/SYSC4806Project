@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/js/bookStoreJS.js"></script>
+
 <head>
     <title>AMAZin BOOK STORE</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -19,7 +22,6 @@
             <input type="text" id="author" name="author">
             <input type="submit" value="Search By Author">
         </form>
-       	<button 
     </div>
 	<p>View Book Details</p>
 	<div th:if="books == null">
@@ -34,18 +36,23 @@
 		        <th>Year</th>
 		        <th>Price ($)</th>
 		        <th>In Stock</th>
+		        <th></th>
 		    </tr>
 		</thead>
 	    <tbody th:each="book: ${books}">
 		    <tr>
-		        <td th:text="${book.title}">/>
+		        <td th:text="${book.title}"/>
 		        <td th:text="${book.author}"/>
 		        <td th:text="${book.year}"/>
 		        <td th:text="${book.price}"/>
 		        <td th:text="${book.quantity}"/>
+                <td><button class="addToCart" th:id="${book.id}">Add To Cart</button></td>
 		    </tr>
 		    <tr>
-		    	<td colspan="5" th:text="${book.description}"/>
+		    	<td colspan="6" th:text="${book.description}"/>
+		    </tr>
+		    <tr class="break">
+		    	<td colspan="6"/>
 		    </tr>
 	    </tbody>
 	</table>
