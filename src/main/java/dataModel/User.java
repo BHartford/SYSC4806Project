@@ -78,6 +78,10 @@ public class User {
             purchaseHistory.add(b);
         }
     }
+    
+    public boolean validPassword(String attemptedPassword) {
+    	return attemptedPassword.equals(password);
+    }
 
     @Override
     public String toString() {

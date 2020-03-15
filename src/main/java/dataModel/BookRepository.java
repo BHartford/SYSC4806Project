@@ -10,6 +10,8 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     List<Book> findByTitle(@Param("title") String title);
 
     List<Book> findByAuthor(@Param("author") String author);
+    
+    List<Book> findByIdIn(@Param("ids") Long[] ids);
 
     Book findById(long id);
 }

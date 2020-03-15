@@ -2,6 +2,11 @@ package dataModel;
 
 import Logging.LoggingLibrary;
 import dataModel.BookRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
@@ -12,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 public class BookStoreController {
 
     @Autowired
-    private BookRepository repository;
+    private BookRepository bookRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -25,21 +33,28 @@ public class BookStoreController {
 
     @GetMapping("/view")
     public String index(Model model) {
-        model.addAttribute("books", repository.findAll());
+        model.addAttribute("books", bookRepository.findAll());
         return "index";
     }
 
     @GetMapping("/viewbook")
     public String display(Model model, @RequestParam(value = "bookID") long bookID) {
-        model.addAttribute("books", repository.findById(bookID));
+        model.addAttribute("books", bookRepository.findById(bookID));
         return "viewbook";
+    }
+
+    @GetMapping("/cart")
+    public String showCart(Model model, @RequestParam(value = "books") List<String> books) {
+    	List<Long> bookIds = books.stream().map(Long::parseLong).collect(Collectors.toList());
+        model.addAttribute("books", bookRepository.findByIdIn(bookIds.toArray(new Long[bookIds.size()])));
+        return "viewCart";
     }
 
     @PostMapping("/addbook")
     public String display(Model model, @ModelAttribute Book newBook) {
         kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
-    	repository.save(newBook);
-        model.addAttribute("books", repository.findAll());
+    	bookRepository.save(newBook);
+        model.addAttribute("books", bookRepository.findAll());
         model.addAttribute("newBook", null);
         return "index";
     }
@@ -52,13 +67,34 @@ public class BookStoreController {
     
     @PostMapping("/searchByTitle")
     public String titleSearch(Model model, @RequestParam(value = "title") String title) {
-        model.addAttribute("books", repository.findByTitle(title));
+        model.addAttribute("books", bookRepository.findByTitle(title));
         return "viewbook";
     }
     
     @PostMapping("/searchByAuthor")
     public String authorSearch(Model model, @RequestParam(value = "author") String author) {
-        model.addAttribute("books", repository.findByAuthor(author));
+        model.addAttribute("books", bookRepository.findByAuthor(author));
         return "viewbook";
+    }
+    
+    @PostMapping(value="/checkLogin", consumes="application/json", produces="application/json")
+    @ResponseBody
+    public String loginCheck(@RequestBody String json) {
+    	System.out.println(json);
+        JSONObject jo = new JSONObject(json);
+        List<User> users = userRepository.findByUsername(jo.getString("username"));
+        JSONObject resp = new JSONObject();
+        try {
+        	Boolean correctPass = users.get(0).validPassword(jo.getString("password"));
+        	System.out.println("." + users.get(0).getPassword() + ".");
+        	System.out.println("." + jo.getString("password") + ".");
+        	System.out.println(users.get(0).validPassword(jo.getString("password")));
+            resp.put("result", correctPass);
+            resp.put("type", users.get(0).getTypeOfUserString());
+        } catch (IndexOutOfBoundsException e) {
+            resp.put("result", false);
+        }
+        System.out.println(resp.toString());
+        return resp.toString();
     }
 }
