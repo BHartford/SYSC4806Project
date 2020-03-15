@@ -43,7 +43,9 @@ $(document).ready(function(){
 	
 	    	} else {
 	    		$('#logInButton')[0].innerHTML = "Log In";
-	    		$('#addBookButton')[0].style.display = "none";
+	    		if ($('#addBookButton').length > 0) {
+	    			$('#addBookButton')[0].style.display = "none";
+	    		}
 	    		if (localStorage.getItem("user")) {
 	    			localStorage.removeItem("user");
 	    			localStorage.removeItem("userType");
@@ -77,7 +79,6 @@ $(document).ready(function(){
 		    			password: $("#psw")[0].value
 		    			}),
 		    		success: function(data, status, xhr) {
-		    		    console.log(data);
 		    			if (data.result) {
 		    				localStorage.user = $("#username")[0].value;
 		    				localStorage.type = data.type;
@@ -85,7 +86,7 @@ $(document).ready(function(){
 		    			    $('#logInButton')[0].innerHTML = "Log Out";
 		    			    if (data.type === "Seller") {
 		    			    	$('#addBookButton')[0].style.display = "block";
-		    			    } else {
+		    			    } else if ($('#addBookButton').length > 0) {
 		    			    	$('#addBookButton')[0].style.display = "none";
 		    			    }
 		    			} else {

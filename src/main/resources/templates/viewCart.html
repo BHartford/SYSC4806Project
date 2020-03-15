@@ -23,7 +23,7 @@
         </form>
     </div>
     <div id="utility">
-    	<button class="logInButton">Log In</button>
+    	<button class="login" id=logInButton>Log In</button>
     </div>
     <div id="clear"></div>
 	<p>Cart</p>
@@ -59,8 +59,9 @@
     </table>
 	<div id="loginPopup">
       	<div class="form-popup" id="popupForm">
-        	<form action="/action_page.php" class="form-container">
+        	<form class="form-container">
           		<h2>Please Log in</h2>
+          		<label id="placeholder"></label>
         		<label for="username">
         			<strong>Username</strong>
         		</label>
@@ -69,7 +70,7 @@
         			<strong>Password</strong>
         		</label>
         		<input type="password" id="psw" placeholder="Your Password" name="psw" required>
-        		<button type="submit" class="loginSubmit">Log in</button>
+        		<button type="button" class="loginSubmit">Log In</button>
         		<button type="button" class="loginCancel">Close</button>
         	</form>
       	</div>
