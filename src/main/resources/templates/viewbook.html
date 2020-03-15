@@ -23,6 +23,12 @@
             <input type="submit" value="Search By Author">
         </form>
     </div>
+    <div id="utility">
+    	<button class="login" id=logInButton>Log In</button>
+    	<button onclick="location.href='/viewcart'" class="viewCart">View Cart</button>
+    </div>
+    
+    <div id="clear"></div>
 	<p>View Book Details</p>
 	<div th:if="books == null">
 	    <p>DATABASE Refused To Connect</p>
@@ -56,6 +62,23 @@
 		    </tr>
 	    </tbody>
 	</table>
-
+	<div id="loginPopup">
+      	<div class="form-popup" id="popupForm">
+        	<form class="form-container">
+          		<h2>Please Log in</h2>
+          		<label id="placeholder"></label>
+        		<label for="username">
+        			<strong>Username</strong>
+        		</label>
+        		<input type="text" id="username" placeholder="Your Username" name="username" required>
+        		<label for="psw">
+        			<strong>Password</strong>
+        		</label>
+        		<input type="password" id="psw" placeholder="Your Password" name="psw" required>
+        		<button type="button" class="loginSubmit">Log In</button>
+        		<button type="button" class="loginCancel">Close</button>
+        	</form>
+      	</div>
+	</div>
 </body>
 </html>

@@ -80,7 +80,7 @@ public class User {
     }
     
     public boolean validPassword(String attemptedPassword) {
-    	return attemptedPassword == password;
+    	return attemptedPassword.equals(password);
     }
 
     @Override

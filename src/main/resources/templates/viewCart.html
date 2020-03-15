@@ -21,10 +21,9 @@
             <input type="text" id="author" name="author">
             <input type="submit" value="Search By Author">
         </form>
-        <button onclick="location.href='/addbook'" type="button"> Add a new book</button>
     </div>
     <div id="utility">
-    	<button class="login">Log In</button>
+    	<button class="logInButton">Log In</button>
     </div>
     <div id="clear"></div>
 	<p>Cart</p>
@@ -58,5 +57,22 @@
             </tr>
         </tbody>
     </table>
+	<div id="loginPopup">
+      	<div class="form-popup" id="popupForm">
+        	<form action="/action_page.php" class="form-container">
+          		<h2>Please Log in</h2>
+        		<label for="username">
+        			<strong>Username</strong>
+        		</label>
+        		<input type="text" id="username" placeholder="Your Username" name="username" required>
+        		<label for="psw">
+        			<strong>Password</strong>
+        		</label>
+        		<input type="password" id="psw" placeholder="Your Password" name="psw" required>
+        		<button type="submit" class="loginSubmit">Log in</button>
+        		<button type="button" class="loginCancel">Close</button>
+        	</form>
+      	</div>
+	</div>
     </body>
 </html>
