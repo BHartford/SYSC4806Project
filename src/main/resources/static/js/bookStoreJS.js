@@ -17,9 +17,19 @@ $(document).ready(function(){
 			cart = localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";});
 			cart.push(this.id);
 			cart = [...new Set(cart)]
-			alert(cart);
 			localStorage.setItem("cart", cart);
 			$('.viewCart')[0].innerHTML = "View Cart (" + cart.length + ")";
+		});
+    }
+    
+    if ($('.removeBook').length > 0) {
+		$('.removeBook').click(function(){
+			var id = this.id;
+			cart = localStorage.getItem("cart").split(',').filter(function(value, index, arr){
+				return (value !== "" && value !== id.toString());
+			});
+			localStorage.setItem("cart", cart);
+			window.location.href = '/cart?books=' + localStorage.getItem("cart");
 		});
     }
 

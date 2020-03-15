@@ -50,7 +50,7 @@
                 <td th:text="${book.author}"/>
                 <td th:text="${book.price}"/>
 				<td><select>
-				    <option th:each="i: ${#numbers.sequence(0, book.quantity)}" th:value="${i}" th:text="${i}" th:selected="${i==1}"></option>
+				    <option th:each="i: ${#numbers.sequence(1, book.quantity)}" th:value="${i}" th:text="${i}" th:selected="${i==1}"></option>
 					</select>
 				</td>
                 <td><button class="removeBook" th:id="${book.id}">Remove</button></td>
