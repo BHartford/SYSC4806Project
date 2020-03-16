@@ -103,8 +103,6 @@ $(document).ready(function(){
 	        if (localStorage.getItem("user") === null) {
 	        	alert("Please Login!");
 	        } else {
-	        
-				// Gabby
 				$.ajax({
 		    		type: "POST",
 		    		url: "purchaseCart",
@@ -115,9 +113,11 @@ $(document).ready(function(){
 		    			}),
 		    		success: function(data, status, xhr) {
 	    				alert("Successfully purchased " + data.result + " book(s)");
+	    				window.location.href = '/viewPurchaseHistory?user=' + localStorage.getItem("user");
+	    				localStorage.cart = [];
 		    		}
 		    	})
-				localStorage.cart = [];
+				
 				
 	        }
 	    });

@@ -47,8 +47,20 @@ public class BookStoreController {
     @GetMapping("/cart")
     public String showCart(Model model, @RequestParam(value = "books") List<String> books) {
     	List<Long> bookIds = books.stream().map(Long::parseLong).collect(Collectors.toList());
+    	List<Book> bookList = bookRepository.findByIdIn(bookIds.toArray(new Long[bookIds.size()]));
+    	double totalCost = 0;
+    	for(Book b: bookList) {
+    		totalCost = totalCost + b.getPrice();
+    	}
         model.addAttribute("books", bookRepository.findByIdIn(bookIds.toArray(new Long[bookIds.size()])));
+        model.addAttribute("totalCost", totalCost);
         return "viewCart";
+    }
+    
+    @GetMapping("/viewPurchaseHistory")
+    public String showPurchaseHistory(Model model, @RequestParam(value = "user") String user) {
+    	model.addAttribute("history", userRepository.findByUsername(user).get(0).getPurchaseHistory());
+    	return "viewPurchaseHistory";
     }
 
     @PostMapping("/addbook")

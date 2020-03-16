@@ -28,7 +28,7 @@
     <div id="clear"></div>
 	<p>Cart</p>
     <div>
-    	<button class="purchase">Purchase</button>
+    	
     </div>
     <div th:if="books == null">
         <p>DATABASE Refused To Connect</p>
@@ -54,8 +54,15 @@
 					</select>
 				</td>
                 <td><button class="removeBook" th:id="${book.id}">Remove</button></td>
-            </tr>
+            </tr>            	
         </tbody>
+        <tfoot>
+        	<tr>
+            	<td colpsan='2'>Total Price </td>
+            	<td colspan='3' th:text="${totalCost}"/>
+            	<td> <button class="purchase">Purchase</button> </td>
+            <tr>
+        </tfoot>
     </table>
 	<div id="loginPopup">
       	<div class="form-popup" id="popupForm">
