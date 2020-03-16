@@ -3,7 +3,9 @@ package dataModel;
 import Logging.LoggingLibrary;
 import dataModel.BookRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -44,16 +46,24 @@ public class BookStoreController {
         return "viewbook";
     }
 
-    @GetMapping("/cart")
-    public String showCart(Model model, @RequestParam(value = "books") List<String> books) {
-    	List<Long> bookIds = books.stream().map(Long::parseLong).collect(Collectors.toList());
-    	List<Book> bookList = bookRepository.findByIdIn(bookIds.toArray(new Long[bookIds.size()]));
+    @PostMapping("/cart")
+    public String showCart(Model model,  @RequestParam(value="cart") String cart) {
+    	
+    	System.out.println(cart);
     	double totalCost = 0;
-    	for(Book b: bookList) {
+    	double totalBooks = 0;
+    	ArrayList<Book> bookList = new ArrayList<Book>();
+    	/*
+    	for(int id: books.keySet()) {
+    		Book b = bookRepository.findById(id);
     		totalCost = totalCost + b.getPrice();
+    		totalBooks = totalBooks + books.get(id);
     	}
-        model.addAttribute("books", bookRepository.findByIdIn(bookIds.toArray(new Long[bookIds.size()])));
+        model.addAttribute("books", bookList);
+        model.addAttribute("quantities", books);
         model.addAttribute("totalCost", totalCost);
+        model.addAttribute("totalBooks", totalBooks);
+        */
         return "viewCart";
     }
     

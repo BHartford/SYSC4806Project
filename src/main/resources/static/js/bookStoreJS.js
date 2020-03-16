@@ -1,24 +1,45 @@
 
 $(document).ready(function(){
     if (!localStorage.getItem("cart")) {
-    	localStorage.cart = [];
+    	localStorage.cart = "{}";
     }
     
-    if ($('.viewCart').length > 0) {
-		$('.viewCart')[0].innerHTML = "View Cart (" + localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";}).length + ")";
+    //For testing purposes - clearning local storage on refresh
+    window.localStorage.clear();
+    localStorage.cart = "{}";
+    
+    if ($('#viewCart').length > 0) {
+		$('#viewCart').innerHTML = "View Cart (" + JSON.parse(localStorage.getItem("cart")).length + ")";
 
-		$('.viewCart').click(function(){
-			window.location.href = '/cart?books=' + localStorage.getItem("cart");
+		$('#viewCart').click(function(){
+		  var str = JSON.stringify({ 
+		    			cart: localStorage.getItem("cart")
+		    			});
+		    console.log(str);
+			$.ajax({
+		    		type: "POST",
+		    		url: "cart",
+		    		contentType: 'application/json',
+		    		data: str,
+		    		success: function(data, status, xhr) {
+						console.log("Got here");
+		    		}
+		    	})
 		});
     }
     
     if ($('.addToCart').length > 0) {
 		$('.addToCart').click(function(){
-			cart = localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";});
-			cart.push(this.id);
-			cart = [...new Set(cart)]
-			localStorage.setItem("cart", cart);
-			$('.viewCart')[0].innerHTML = "View Cart (" + cart.length + ")";
+			cart = JSON.parse(localStorage.getItem("cart"));
+			if(cart.hasOwnProperty(this.id)){
+				cart[this.id] = cart[this.id] + 1;
+			}
+			else{
+				cart[this.id] = 1;
+			}
+			localStorage.setItem("cart", JSON.stringify(cart));
+			$('#viewCart').innerHTML= "View Cart (" + cart.length + ")";
+			console.log(localStorage.getItem("cart"));
 		});
     }
     
@@ -109,7 +130,7 @@ $(document).ready(function(){
 		    		contentType: 'application/json',
 		    		data: JSON.stringify({ 
 		    			username: $("#username")[0].value,
-		    			cart: localStorage.cart
+		    			cart: localStorage.getItem("cart")
 		    			}),
 		    		success: function(data, status, xhr) {
 	    				alert("Successfully purchased " + data.result + " book(s)");
