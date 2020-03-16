@@ -1,12 +1,12 @@
 package dataModel;
 
-import dataModel.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@SessionAttributes("newBook")
 public class BookStoreController {
 
     @Autowired
@@ -25,13 +25,26 @@ public class BookStoreController {
 
     @GetMapping("/viewbook")
     public String display(Model model, @RequestParam(value = "bookID") long bookID) {
-        model.addAttribute("books", repository.findById(bookID));
-        return "viewbook";
+        Book b = null;
+
+        try {
+            b = repository.findById(bookID);
+        } catch (Exception e) { //Requires a number
+
+        }
+
+        if (b != null) {
+            model.addAttribute("books", repository.findById(bookID));
+            return "viewbook";
+        } else {
+            model.addAttribute("errorMsg", bookID + " is an invalid requestNumber");
+            return index(model);
+        }
     }
 
     @PostMapping("/addbook")
-    public String display(Model model, @ModelAttribute Book newBook) {
-    	repository.save(newBook);
+    public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook) {
+        repository.save(newBook);
         model.addAttribute("books", repository.findAll());
         model.addAttribute("newBook", null);
         return "index";
@@ -48,10 +61,12 @@ public class BookStoreController {
         model.addAttribute("books", repository.findByTitle(title));
         return "viewbook";
     }
-    
+
     @PostMapping("/searchByAuthor")
     public String authorSearch(Model model, @RequestParam(value = "author") String author) {
         model.addAttribute("books", repository.findByAuthor(author));
         return "viewbook";
     }
+
+    //TODO Add advanced error handling / validation
 }

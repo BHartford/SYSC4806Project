@@ -24,6 +24,9 @@ a.button {
     color: initial;
 }
 
+.errorMsg {
+  color: red;
+}
 
 /* Table Look & Feel */
 table {
