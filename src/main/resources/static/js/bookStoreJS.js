@@ -105,9 +105,20 @@ $(document).ready(function(){
 	        } else {
 	        
 				// Gabby
-	
-				// if successful purchase do the below
+				$.ajax({
+		    		type: "POST",
+		    		url: "purchaseCart",
+		    		contentType: 'application/json',
+		    		data: JSON.stringify({ 
+		    			username: $("#username")[0].value,
+		    			cart: localStorage.cart
+		    			}),
+		    		success: function(data, status, xhr) {
+	    				alert("Successfully purchased " + data.result + " book(s)");
+		    		}
+		    	})
 				localStorage.cart = [];
+				
 	        }
 	    });
     }

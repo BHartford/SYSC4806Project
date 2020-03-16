@@ -4,6 +4,7 @@ import Logging.LoggingLibrary;
 import dataModel.BookRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
@@ -96,5 +97,26 @@ public class BookStoreController {
         }
         System.out.println(resp.toString());
         return resp.toString();
+    }
+    
+    @PostMapping(value="/purchaseCart", consumes="application/json", produces="application/json")
+    @ResponseBody
+    public String purchaseCart(@RequestBody String json) {
+    	JSONObject jo = new JSONObject(json);
+        List<User> users = userRepository.findByUsername(jo.getString("username"));
+        String[] cart = jo.getString("cart").split(",");
+        Long[] result = new Long[cart.length];
+        
+        for (int i = 0; i < cart.length; i++) {
+           result[i] = Long.parseLong(cart[i]);
+        }
+        
+        List<Book> books = bookRepository.findByIdIn(result);
+        users.get(0).addPurchase(books);
+        System.out.println(users.get(0).getPurchaseHistory().toString());
+        
+        JSONObject resp = new JSONObject();
+        resp.put("result", result.length);
+    	return resp.toString();
     }
 }
