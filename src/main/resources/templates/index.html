@@ -2,6 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/js/autocomplete.js"></script>
 
 <head>
     <title>AMAZin BOOK STORE</title>
@@ -12,16 +13,17 @@
 <body>
 
 <div th:class="errorMsg">
-    <p th:text="${errorMsg}">ERROR: </p>
+    <p th:text="${errorMsg}">ERROR</p>
 </div>
+
 <h1><a href="/">AMAZin BOOK STORE</a></h1>
 <div id="searchBar">
-    <form action="#" th:action="@{/searchByTitle}" method="post">
+    <form action="#" autocomplete="off" method="post" th:action="@{/searchByTitle}">
         <input type="text" id="title" name="title">
         <input type="submit" value="Search By Title">
     </form>
-    <form action="#" th:action="@{/searchByAuthor}" method="post">
-        <input type="text" id="author" name="author">
+    <form action="#" autocomplete="off" method="post" th:action="@{/searchByAuthor}">
+        <input autocomplete="off" id="author" name="author" type="text">
         <input type="submit" value="Search By Author">
     </form>
     <button onclick="location.href='/addbook'" type="button">
