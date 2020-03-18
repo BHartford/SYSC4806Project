@@ -37,7 +37,9 @@ public class BookStoreController {
 
     @GetMapping("/view")
     public String index(Model model) {
-        model.addAttribute("books", bookRepository.findAll());
+        List<Book> listedBooks = (List<Book>) bookRepository.findAll();
+        listedBooks.removeIf(book -> book.getQuantity() == 0);
+        model.addAttribute("books", listedBooks);
         return "index";
     }
 
@@ -52,13 +54,15 @@ public class BookStoreController {
     	
     	double totalCost = 0;
     	double totalBooks = 0;
+    	int quantity;
     	ArrayList<Book> bookList = new ArrayList<Book>();
     	DecimalFormat df = new DecimalFormat("0.00");
     	
     	for(int i=0; i< books.size(); i++) {
+    	    quantity = Integer.parseInt(quantities.get(i));
     		Book b = bookRepository.findById(Long.parseLong(books.get(i)));
-    		totalCost = totalCost + b.getPrice();
-    		totalBooks = totalBooks + Integer.parseInt(quantities.get(i));
+    		totalCost += b.getPrice() * quantity;
+    		totalBooks += quantity;
     		bookList.add(b);
     	}
         model.addAttribute("books", bookList);

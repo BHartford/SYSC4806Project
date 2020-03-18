@@ -49,7 +49,7 @@
                 <td><b><a th:text="${books[index].title}" th:href="@{/viewbook(bookID=${books[index].id})}"></a></b></td>
                 <td th:text="${books[index].author}"/>
                 <td th:text="${books[index].price}"/>
-				<td><select>
+				<td><select class="quantitySelector" th:id="'quantity ' + ${index}">
 				    <option th:each="i: ${#numbers.sequence(1, books[index].quantity)}" th:value="${i}" th:text="${i}"></option>
 					</select>
 				</td>
