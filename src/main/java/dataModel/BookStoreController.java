@@ -29,17 +29,25 @@ public class BookStoreController {
 
         try {
             b = repository.findById(bookID);
-        } catch (Exception e) { //Requires a number
-
+        } catch (Exception e) {
+            //TODO Log this
+            //Requires a valid IDNumber
         }
 
         if (b != null) {
             model.addAttribute("books", repository.findById(bookID));
             return "viewbook";
         } else {
-            model.addAttribute("errorMsg", bookID + " is an invalid requestNumber");
-            return index(model);
+            String errorMessage = String.format(ApplicationMsg.BAD_BOOK_ID.getMsg(), bookID);
+            return isError(model, errorMessage);
         }
+    }
+
+    public String isError(Model model, String errorMsg) {
+        //TODO Log This
+
+        model.addAttribute("errorMsg", errorMsg);
+        return index(model);
     }
 
     @PostMapping("/addbook")

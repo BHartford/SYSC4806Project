@@ -25,7 +25,9 @@ a.button {
 }
 
 .errorMsg {
-  color: red;
+    color: red;
+    text-align: center;
+    background: yellow;
 }
 
 /* Table Look & Feel */

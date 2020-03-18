@@ -11,16 +11,16 @@
 <body>
 	<h1><a href="/">AMAZin BOOK STORE</a></h1>
 	<div id="searchBar">
-        <form action="#" th:action="@{/searchByTitle}" method="post">
-            <input type="text" id="title" name="title">
-            <input type="submit" value="Search By Title">
-        </form>
-            <form action="#" th:action="@{/searchByAuthor}" method="post">
-            <input type="text" id="author" name="author">
-            <input type="submit" value="Search By Author">
-        </form>
-       	<button 
-    </div>
+		<form action="#" th:action="@{/searchByTitle}" method="post">
+			<input type="text" id="title" name="title">
+			<input type="submit" value="Search By Title">
+		</form>
+		<form action="#" th:action="@{/searchByAuthor}" method="post">
+			<input type="text" id="author" name="author">
+			<input type="submit" value="Search By Author">
+		</form>
+
+	</div>
 	<p>View Book Details</p>
 	<div th:if="books == null">
 	    <p>DATABASE Refused To Connect</p>
