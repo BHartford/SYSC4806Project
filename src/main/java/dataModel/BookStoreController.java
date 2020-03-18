@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @SessionAttributes("newBook")
 public class BookStoreController {
@@ -13,7 +15,7 @@ public class BookStoreController {
     private BookRepository repository;
 
     @GetMapping("/")
-    public String landingPage(Model model){
+    public String landingPage(Model model) {
         return index(model);
     }
 
@@ -39,13 +41,12 @@ public class BookStoreController {
             return "viewbook";
         } else {
             String errorMessage = String.format(ApplicationMsg.BAD_BOOK_ID.getMsg(), bookID);
-            return isError(model, errorMessage);
+            return isNotFound(model, errorMessage);
         }
     }
 
-    public String isError(Model model, String errorMsg) {
-        //TODO Log This
-
+    public String isNotFound(Model model, String errorMsg) {
+        //TODO Log This -- a non existing search was preformed
         model.addAttribute("errorMsg", errorMsg);
         return index(model);
     }
@@ -57,23 +58,37 @@ public class BookStoreController {
         model.addAttribute("newBook", null);
         return "index";
     }
-    
+
     @GetMapping("/addbook")
     public String directToAddBook(Model model) {
-    	model.addAttribute("newBook", new Book());
+        model.addAttribute("newBook", new Book());
         return "addbook";
     }
-    
+
     @PostMapping("/searchByTitle")
     public String titleSearch(Model model, @RequestParam(value = "title") String title) {
-        model.addAttribute("books", repository.findByTitle(title));
-        return "viewbook";
+        List<Book> books = repository.findByTitle(title);
+
+        if (books.size() != 0) {
+            model.addAttribute("books", books);
+            return "viewbook";
+        } else {
+            String errorMessage = String.format(ApplicationMsg.QUERY_NOT_FOUND.getMsg(), title);
+            return isNotFound(model, errorMessage);
+        }
     }
 
     @PostMapping("/searchByAuthor")
     public String authorSearch(Model model, @RequestParam(value = "author") String author) {
-        model.addAttribute("books", repository.findByAuthor(author));
-        return "viewbook";
+        List<Book> books = repository.findByAuthor(author);
+
+        if (books.size() != 0) {
+            model.addAttribute("books", books);
+            return "viewbook";
+        } else {
+            String errorMessage = String.format(ApplicationMsg.QUERY_NOT_FOUND.getMsg(), author);
+            return isNotFound(model, errorMessage);
+        }
     }
 
     //TODO Add advanced error handling / validation

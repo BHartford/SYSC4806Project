@@ -55,7 +55,7 @@ public class TestWebController {
     }
 
     @Test
-    public void requestInvalidBookIdRedirectsToMainPage() throws Exception {
+    public void requestBookIdNotInDatabaseRedirectsToMainPage() throws Exception {
         long requestId = 0;
 
         mvc.perform(MockMvcRequestBuilders
@@ -112,16 +112,30 @@ public class TestWebController {
     }
 
     @Test
-    public void searchByTitleNotFoundModelIsNull() throws Exception {
-        String invalidBookTitle = "";
+    public void searchByTitleIsNullReturnsIndex() throws Exception {
+        String nonexistentBookTitle = "";
 
         mvc.perform(MockMvcRequestBuilders
                 .post("/searchByTitle")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .param("title", invalidBookTitle))
+                .param("title", nonexistentBookTitle))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(view().name("viewbook"))
-                .andExpect(model().attribute("books", repository.findByTitle(invalidBookTitle)))
+                .andExpect(view().name("index"))
+                .andExpect(content().string(containsString(String.format(ApplicationMsg.QUERY_NOT_FOUND.getMsg(), nonexistentBookTitle))))
+                .andReturn();
+    }
+
+    @Test
+    public void searchByTitleDoesNotExistReturnsIndex() throws Exception {
+        String nonexistentBookTitle = "Pan De Mic";
+
+        mvc.perform(MockMvcRequestBuilders
+                .post("/searchByTitle")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("title", nonexistentBookTitle))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(content().string(containsString(String.format(ApplicationMsg.QUERY_NOT_FOUND.getMsg(), nonexistentBookTitle))))
                 .andReturn();
     }
 
@@ -142,16 +156,30 @@ public class TestWebController {
     }
 
     @Test
-    public void searchByAuthorNotFoundModelIsNull() throws Exception {
-        String invalidAuthorName = "";
+    public void searchByAuthorIsEmptyReturnsIndex() throws Exception {
+        String nonexistentAuthorName = "";
 
         mvc.perform(MockMvcRequestBuilders
                 .post("/searchByAuthor")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .param("author", invalidAuthorName))
+                .param("author", nonexistentAuthorName))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(view().name("viewbook"))
-                .andExpect(model().attribute("books", repository.findByAuthor(invalidAuthorName)))
+                .andExpect(view().name("index"))
+                .andExpect(content().string(containsString(String.format(ApplicationMsg.QUERY_NOT_FOUND.getMsg(), nonexistentAuthorName))))
+                .andReturn();
+    }
+
+    @Test
+    public void searchByAuthorDoesNotExistReturnsIndex() throws Exception {
+        String nonexistentAuthorName = "C.O. Rona";
+
+        mvc.perform(MockMvcRequestBuilders
+                .post("/searchByAuthor")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("author", nonexistentAuthorName))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(content().string(containsString(String.format(ApplicationMsg.QUERY_NOT_FOUND.getMsg(), nonexistentAuthorName))))
                 .andReturn();
     }
 
