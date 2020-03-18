@@ -3,6 +3,7 @@ package dataModel;
 import Logging.LoggingLibrary;
 import dataModel.BookRepository;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,24 +47,24 @@ public class BookStoreController {
         return "viewbook";
     }
 
-    @PostMapping("/cart")
-    public String showCart(Model model,  @RequestParam(value="cart") String cart) {
+    @GetMapping("/cart")
+    public String showCart(Model model,  @RequestParam(value="books") List<String> books, @RequestParam(value="quantities") List<String>quantities) {
     	
-    	System.out.println(cart);
     	double totalCost = 0;
     	double totalBooks = 0;
     	ArrayList<Book> bookList = new ArrayList<Book>();
-    	/*
-    	for(int id: books.keySet()) {
-    		Book b = bookRepository.findById(id);
+    	DecimalFormat df = new DecimalFormat("0.00");
+    	
+    	for(int i=0; i< books.size(); i++) {
+    		Book b = bookRepository.findById(Long.parseLong(books.get(i)));
     		totalCost = totalCost + b.getPrice();
-    		totalBooks = totalBooks + books.get(id);
+    		totalBooks = totalBooks + Integer.parseInt(quantities.get(i));
+    		bookList.add(b);
     	}
         model.addAttribute("books", bookList);
-        model.addAttribute("quantities", books);
-        model.addAttribute("totalCost", totalCost);
-        model.addAttribute("totalBooks", totalBooks);
-        */
+        model.addAttribute("quantities", quantities);
+        model.addAttribute("totalCost", "$" + df.format(totalCost));
+        model.addAttribute("totalBooks", (int) totalBooks);
         return "viewCart";
     }
     
@@ -125,20 +126,33 @@ public class BookStoreController {
     @ResponseBody
     public String purchaseCart(@RequestBody String json) {
     	JSONObject jo = new JSONObject(json);
+    	System.out.println(json);
         List<User> users = userRepository.findByUsername(jo.getString("username"));
         String[] cart = jo.getString("cart").split(",");
-        Long[] result = new Long[cart.length];
+        String[] quantities = jo.getString("quantities").split(",");
         
+        ArrayList<Long> bookIDList = new ArrayList<Long>();
+        
+        // Get list of books so we can grab them in bulk from the repository
         for (int i = 0; i < cart.length; i++) {
-           result[i] = Long.parseLong(cart[i]);
+           Long rawID = Long.parseLong(cart[i]);
+           for(int j=0; j < Integer.parseInt(quantities[i]); j++) { //Add one instance of the ID to the array for each copy purchased.
+        	   bookIDList.add(rawID);
+           }
+        }
+        //Create a Array of Longs. toArray() doesn't work here bc of primitive types. I wish there was a better way. Please find a way make this better. 
+        Long[] bookLongArray = new Long[bookIDList.size()];
+        for(int i = 0; i < bookLongArray.length; i++)
+        {
+        	bookLongArray[i]=bookIDList.get(i);
         }
         
-        List<Book> books = bookRepository.findByIdIn(result);
-        users.get(0).addPurchase(books);
+        List<Book> books = bookRepository.findByIdIn(bookLongArray);
+        users.get(0).addPurchase(books); //This only adds one of each book - doesn't look at quantities. Sorry I'm tired.
         System.out.println(users.get(0).getPurchaseHistory().toString());
         
         JSONObject resp = new JSONObject();
-        resp.put("result", result.length);
+        resp.put("result", bookIDList.size());
     	return resp.toString();
     }
 }

@@ -45,21 +45,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="book: ${books}">
-                <td><b><a th:text="${book.title}" th:href="@{/viewbook(bookID=${book.id})}"></a></b></td>
-                <td th:text="${book.author}"/>
-                <td th:text="${book.price}"/>
+            <tr th:each="index : ${#numbers.sequence( 0, #arrays.length(books)-1)}">
+                <td><b><a th:text="${books[index].title}" th:href="@{/viewbook(bookID=${books[index].id})}"></a></b></td>
+                <td th:text="${books[index].author}"/>
+                <td th:text="${books[index].price}"/>
 				<td><select>
-				    <option th:each="i: ${#numbers.sequence(1, book.quantity)}" th:value="${i}" th:text="${i}" th:selected="${i==1}"></option>
+				    <option th:each="i: ${#numbers.sequence(1, books[index].quantity)}" th:value="${i}" th:text="${i}"></option>
 					</select>
 				</td>
-                <td><button class="removeBook" th:id="${book.id}">Remove</button></td>
+                <td><button class="removeBook" th:id="${books[index].id}">Remove</button></td>
             </tr>            	
         </tbody>
         <tfoot>
         	<tr>
             	<td colpsan='2'>Total Price </td>
-            	<td colspan='3' th:text="${totalCost}"/>
+            	<td colspan='2' th:text="${totalCost}"/>
+            	<td th:text="${totalBooks}">
             	<td> <button class="purchase">Purchase</button> </td>
             <tr>
         </tfoot>

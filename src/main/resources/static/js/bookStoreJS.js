@@ -1,45 +1,44 @@
 
 $(document).ready(function(){
     if (!localStorage.getItem("cart")) {
-    	localStorage.cart = "{}";
+    	localStorage.cart = [];
+    	localStorage.quantities = [];
     }
-    
-    //For testing purposes - clearning local storage on refresh
-    window.localStorage.clear();
-    localStorage.cart = "{}";
+
     
     if ($('#viewCart').length > 0) {
-		$('#viewCart').innerHTML = "View Cart (" + JSON.parse(localStorage.getItem("cart")).length + ")";
+		$('#viewCart').innerHTML = "View Cart (" + localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";}).length + ")";
 
 		$('#viewCart').click(function(){
-		  var str = JSON.stringify({ 
-		    			cart: localStorage.getItem("cart")
-		    			});
-		    console.log(str);
-			$.ajax({
-		    		type: "POST",
-		    		url: "cart",
-		    		contentType: 'application/json',
-		    		data: str,
-		    		success: function(data, status, xhr) {
-						console.log("Got here");
-		    		}
-		    	})
+		    	window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
 		});
+		
+		
     }
     
     if ($('.addToCart').length > 0) {
 		$('.addToCart').click(function(){
-			cart = JSON.parse(localStorage.getItem("cart"));
-			if(cart.hasOwnProperty(this.id)){
-				cart[this.id] = cart[this.id] + 1;
+			cart = localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";});
+			quantities = localStorage.getItem("quantities").split(',').filter(function(value, index, arr){ return value !== "";});
+			var index = -1;
+			
+			for(i=0; i < cart.length; i++){
+				if(parseInt(cart[i]) == parseInt(this.id)){
+					index = i;
+				}
 			}
-			else{
-				cart[this.id] = 1;
+			if(index == -1){
+				cart.push(this.id);
+				quantities.push(1);				
+			} else {
+				quantities[index] = parseInt(quantities[index]) + 1;
 			}
-			localStorage.setItem("cart", JSON.stringify(cart));
-			$('#viewCart').innerHTML= "View Cart (" + cart.length + ")";
-			console.log(localStorage.getItem("cart"));
+			localStorage.setItem("cart", cart);
+			localStorage.setItem("quantities", quantities);
+			$('#viewCart').innerHTML = "View Cart (" + cart.length + ")";
+			
+			console.log(cart);
+			console.log(quantities);
 		});
     }
     
@@ -130,7 +129,8 @@ $(document).ready(function(){
 		    		contentType: 'application/json',
 		    		data: JSON.stringify({ 
 		    			username: $("#username")[0].value,
-		    			cart: localStorage.getItem("cart")
+		    			cart: localStorage.getItem("cart"),
+		    			quantities: localStorage.getItem("quantities")
 		    			}),
 		    		success: function(data, status, xhr) {
 	    				alert("Successfully purchased " + data.result + " book(s)");
