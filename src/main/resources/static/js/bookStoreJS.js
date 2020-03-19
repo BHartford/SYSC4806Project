@@ -54,11 +54,7 @@ $(document).ready(function(){
 				return isGood;
 			});
             var quantities = localStorage.getItem("quantities").split(',').filter(function(value, index, arr){
-                if (index != quantityIndex) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return index != quantityIndex;
             });
             localStorage.setItem("quantities", quantities);
 			localStorage.setItem("cart", cart);
