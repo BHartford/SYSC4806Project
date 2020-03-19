@@ -8,7 +8,7 @@ $(document).ready(function(){
     
     if ($('#viewCart').length > 0) {
 		$('#viewCart').innerHTML = "View Cart (" + localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";}).length + ")";
-
+		console.log("got here " + localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";}).length);
 		$('#viewCart').click(function(){
 		    if (localStorage.getItem("cart")){
 		        window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
@@ -40,6 +40,7 @@ $(document).ready(function(){
 			localStorage.setItem("cart", cart);
 			localStorage.setItem("quantities", quantities);
 			$('#viewCart').innerHTML = "View Cart (" + cart.length + ")";
+			console.log("got there " + localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";}).length);
 			
 			console.log(cart);
 			console.log(quantities);
@@ -138,6 +139,7 @@ $(document).ready(function(){
 		    			if (data.result) {
 		    				localStorage.user = $("#username")[0].value;
 		    				localStorage.type = data.type;
+		    				localStorage.userID = data.userID;
 		    			    document.getElementById("loginPopup").style.display= "none";
 		    			    $('#logInButton')[0].innerHTML = "Log Out";
 		    			    if (data.type === "Seller") {
@@ -179,6 +181,17 @@ $(document).ready(function(){
 				
 				
 	        }
+	    });
+	    
+	 }
+	if ($('#viewPurchaseHistory').length > 0) {
+		
+	    $('#viewPurchaseHistory').click(function(){
+	    	if (localStorage.getItem("user") === null) {
+	        	alert("Please Login!");
+	        } else {
+	    		window.location.href = '/viewPurchaseHistory?user=' + localStorage.getItem("userID");
+	    	}
 	    });
     }
 });

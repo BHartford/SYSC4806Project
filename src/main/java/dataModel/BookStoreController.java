@@ -113,6 +113,7 @@ public class BookStoreController {
         	System.out.println("." + users.get(0).getPassword() + ".");
         	System.out.println("." + jo.getString("password") + ".");
         	System.out.println(users.get(0).validPassword(jo.getString("password")));
+        	resp.put("userID", users.get(0).getId());
             resp.put("result", correctPass);
             resp.put("type", users.get(0).getTypeOfUserString());
         } catch (IndexOutOfBoundsException e) {
