@@ -8,7 +8,6 @@ $(document).ready(function(){
     
     if ($('#viewCart').length > 0) {
 		$('#viewCart').innerHTML = "View Cart (" + localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";}).length + ")";
-		console.log("got here " + localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";}).length);
 		$('#viewCart').click(function(){
 		    if (localStorage.getItem("cart")){
 		        window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
@@ -40,10 +39,6 @@ $(document).ready(function(){
 			localStorage.setItem("cart", cart);
 			localStorage.setItem("quantities", quantities);
 			$('#viewCart').innerHTML = "View Cart (" + cart.length + ")";
-			console.log("got there " + localStorage.getItem("cart").split(',').filter(function(value, index, arr){ return value !== "";}).length);
-			
-			console.log(cart);
-			console.log(quantities);
 		});
     }
     
