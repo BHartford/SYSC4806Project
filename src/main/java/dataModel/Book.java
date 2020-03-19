@@ -85,9 +85,9 @@ public class Book {
 		this.quantity = quantity;
 	}
 
-//	@Override
-//	public String toString(){
-//		return "\nTitle: " + this.title + "\nAuthor: " + this.author + "\nPrice: " + this.price;
-//	}
+	@Override
+	public String toString() {
+		return "\nTitle: " + this.title + "\nAuthor: " + this.author + "\nPrice: " + this.price;
+	}
 
 }

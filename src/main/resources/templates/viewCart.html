@@ -1,16 +1,15 @@
 <!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="/js/bookStoreJS.js"></script>
 
 <head>
     <title>AMAZin BOOK STORE</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
-
 <body>
 <h1><a href="/">AMAZin BOOK STORE</a></h1>
 <div id="searchBar">
@@ -25,42 +24,39 @@
 </div>
 <div id="utility">
     <button class="login" id=logInButton>Log In</button>
-    <button class="viewCart" onclick="location.href='/viewcart'">View Cart</button>
 </div>
-
 <div id="clear"></div>
-<p>View Book Details</p>
+<p>Cart</p>
+<div>
+    <button class="purchase">Purchase</button>
+</div>
 <div th:if="books == null">
     <p>DATABASE Refused To Connect</p>
 </div>
 
-<table th:id="viewBook">
+<table th:id="inventory">
     <thead>
     <tr>
         <th>Title</th>
         <th>Author</th>
-        <th>Year</th>
         <th>Price ($)</th>
-        <th>In Stock</th>
+        <th>Quantity</th>
         <th></th>
     </tr>
-		</thead>
-    <tbody th:each="book: ${books}">
-    <tr>
-        <td th:text="${book.title}"/>
+    </thead>
+    <tbody>
+    <tr th:each="book: ${books}">
+        <td><b><a th:href="@{/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
         <td th:text="${book.author}"/>
-        <td th:text="${book.year}"/>
         <td th:text="${book.price}"/>
-        <td th:text="${book.quantity}"/>
-        <td>
-            <button class="addToCart" th:id="${book.id}">Add To Cart</button>
+        <td><select>
+            <option th:each="i: ${#numbers.sequence(1, book.quantity)}" th:selected="${i==1}" th:text="${i}"
+                    th:value="${i}"></option>
+        </select>
         </td>
-    </tr>
-    <tr>
-        <td colspan="6" th:text="${book.description}"/>
-    </tr>
-    <tr class="break">
-        <td colspan="6"/>
+        <td>
+            <button class="removeBook" th:id="${book.id}">Remove</button>
+        </td>
     </tr>
     </tbody>
 </table>

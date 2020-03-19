@@ -24,9 +24,7 @@ public class TestWebController {
     private BookRepository repository;
 
     @Test
-    public void viewIndexTestReturnsProperCount() throws Exception {
-        long currCount = repository.count();
-
+    public void viewIndexTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                 .get("/view")
                 .contentType(MediaType.TEXT_HTML))
@@ -34,18 +32,15 @@ public class TestWebController {
                 .andExpect(view().name("index"))
 //                .andExpect(model().attribute("books", repository.findAll())) //Results should be identical
                 .andReturn();
-
-        assertEquals(currCount, repository.count());
     }
 
     @Test
     public void requestValidBookId() throws Exception {
-        long requestId = 1; //rework this logic
-
-        Book b = repository.findById(requestId);
+        Iterable<Book> books = repository.findAll();
+        Book b = books.iterator().next();
 
         mvc.perform(MockMvcRequestBuilders
-                .get("/viewbook?bookID=" + requestId)
+                .get("/viewbook?bookID=" + b.getId())
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(view().name("viewbook"))
@@ -97,8 +92,8 @@ public class TestWebController {
 
     @Test
     public void searchByTitleExists() throws Exception {
-        long requestId = 1; //rework this logic
-        Book b = repository.findById(requestId);
+        Iterable<Book> books = repository.findAll();
+        Book b = books.iterator().next();
 
         mvc.perform(MockMvcRequestBuilders
                 .post("/searchByTitle")
@@ -141,8 +136,8 @@ public class TestWebController {
 
     @Test
     public void searchByAuthorExists() throws Exception {
-        long requestId = 1; //rework this logic
-        Book b = repository.findById(requestId);
+        Iterable<Book> books = repository.findAll();
+        Book b = books.iterator().next();
 
         mvc.perform(MockMvcRequestBuilders
                 .post("/searchByAuthor")

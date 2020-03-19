@@ -10,30 +10,38 @@ import org.springframework.context.annotation.Bean;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@SpringBootApplication //Disable standard whitelabel page
-public class AccessBook {
+@SpringBootApplication
+public class AccessBookStore {
 
-    private static final Logger log = LoggerFactory.getLogger(AccessBook.class);
+	private static final Logger log = LoggerFactory.getLogger(AccessBookStore.class);
 
-    public static void main(String[] args) {
-        SpringApplication.run(AccessBook.class);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(AccessBookStore.class);
+	}
 
-    @Bean
-    public CommandLineRunner demo(BookRepository repository) {
-        return (args) -> {
+	@Bean
+	public CommandLineRunner demo(BookRepository bookRepository, UserRepository userRepository) {
+		return (args) -> {
 
-            if(!repository.findAll().iterator().hasNext()) { //Repo Empty - Init
-                ArrayList<Book> inventory = new ArrayList<Book>(Arrays.asList(
-                		new Book("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 1997, 
-                        		"The first novel in the Harry Potter series and Rowling's debut novel, it follows Harry Potter, a young wizard who"
-                        		+ " discovers his magical heritage on his eleventh birthday, when he receives a letter of acceptance to Hogwarts.",
-                        		7.99, 34),
-                        new Book("Harry Potter and the Chamber of Secrets", "J.K. Rowling", 1998,
-                        		"The plot follows Harry's second year at Hogwarts School of Witchcraft and Wizardry, during which a series of "
-                        		+ "messages on the walls of the school's corridors warn that the Chamber of Secrets has been opened.",
-                        		9.99, 22),
-                        new Book("Harry Potter and the Prisoner of Azkaban", "J.K. Rowling", 1999,
+			if (!userRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
+				User user1 = new User("seller", "seller123", User.SELLER);
+				User user2 = new User("buyer", "buyer123", User.BUYER);
+
+				userRepository.save(user1);
+				userRepository.save(user2);
+			}
+
+			if (!bookRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
+				ArrayList<Book> inventory = new ArrayList<Book>(Arrays.asList(
+						new Book("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 1997,
+								"The first novel in the Harry Potter series and Rowling's debut novel, it follows Harry Potter, a young wizard who"
+										+ " discovers his magical heritage on his eleventh birthday, when he receives a letter of acceptance to Hogwarts.",
+								7.99, 34),
+						new Book("Harry Potter and the Chamber of Secrets", "J.K. Rowling", 1998,
+								"The plot follows Harry's second year at Hogwarts School of Witchcraft and Wizardry, during which a series of "
+										+ "messages on the walls of the school's corridors warn that the Chamber of Secrets has been opened.",
+								9.99, 22),
+						new Book("Harry Potter and the Prisoner of Azkaban", "J.K. Rowling", 1999,
                         		"The book follows Harry Potter, a young wizard, in his third year at Hogwarts School of Witchcraft and Wizardry. Harry"
                         		+ " investigates Sirius Black, an escaped prisoner from Azkaban, believed to be one of Lord Voldemort's old allies",
                         		11.99, 31),
@@ -89,17 +97,22 @@ public class AccessBook {
                 				"The story takes place in an imagined future, the year 1984, when much of the world has fallen victim to perpetual war,"
                 				+ "omnipresent government surveillance, historical negationism, and propaganda.",
                 				9.99, 25)
-                		));
+				));
 
-                for (Book b : inventory) {
-                    repository.save(b);
-                }
-            }
+				for (Book b : inventory) {
+					bookRepository.save(b);
+				}
+			}
 
-            for (Book b : repository.findAll()) {
-                log.info(b.toString());
-            }
-        };
+			for (Book b : bookRepository.findAll()) {
+				log.info(b.toString());
+			}
+
+
+			for (User u : userRepository.findAll()) {
+				log.info(u.toString());
+			}
+		};
 
     }
 }
