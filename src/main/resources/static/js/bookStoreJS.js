@@ -169,10 +169,12 @@ $(document).ready(function(){
 		    			quantities: localStorage.getItem("quantities")
 		    			}),
 		    		success: function(data, status, xhr) {
-	    				alert("Successfully purchased " + data.result + " book(s)");
-	    				window.location.href = '/viewPurchaseHistory?user=' + localStorage.getItem("user");
-	    				localStorage.cart = [];
+		    			localStorage.setItem("cart", []);
+						localStorage.setItem("quantities", []);
+		    			alert("Successfully purchased " + data.result + " book(s)");
+		    			window.location = '/viewPurchaseHistory?user=' + data.user;
 		    		}
+		    		
 		    	})
 				
 				

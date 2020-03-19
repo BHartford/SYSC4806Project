@@ -61,21 +61,17 @@ public class BookStoreController {
     	for(int i=0; i< books.size(); i++) {
     	    quantity = Integer.parseInt(quantities.get(i));
     		Book b = bookRepository.findById(Long.parseLong(books.get(i)));
-    		totalCost += b.getPrice() * quantity;
-    		totalBooks += quantity;
-    		bookList.add(b);
+    		if(b != null) {
+	    		totalCost += b.getPrice() * quantity;
+	    		totalBooks += quantity;
+	    		bookList.add(b);
+    		}
     	}
         model.addAttribute("books", bookList);
         model.addAttribute("quantities", quantities);
         model.addAttribute("totalCost", "$" + df.format(totalCost));
         model.addAttribute("totalBooks", (int) totalBooks);
         return "viewCart";
-    }
-    
-    @GetMapping("/viewPurchaseHistory")
-    public String showPurchaseHistory(Model model, @RequestParam(value = "user") String user) {
-    	model.addAttribute("history", userRepository.findByUsername(user).get(0).getPurchaseHistory());
-    	return "viewPurchaseHistory";
     }
 
     @PostMapping("/addbook")
@@ -122,41 +118,47 @@ public class BookStoreController {
         } catch (IndexOutOfBoundsException e) {
             resp.put("result", false);
         }
-        System.out.println(resp.toString());
+        System.out.println("Response for login: " + resp.toString());
         return resp.toString();
     }
     
     @PostMapping(value="/purchaseCart", consumes="application/json", produces="application/json")
     @ResponseBody
-    public String purchaseCart(@RequestBody String json) {
+    public String purchaseCart(Model model, @RequestBody String json) {
     	JSONObject jo = new JSONObject(json);
     	System.out.println(json);
-        List<User> users = userRepository.findByUsername(jo.getString("username"));
+        User user = userRepository.findByUsername(jo.getString("username")).get(0);
         String[] cart = jo.getString("cart").split(",");
         String[] quantities = jo.getString("quantities").split(",");
-        
         ArrayList<Long> bookIDList = new ArrayList<Long>();
         
-        // Get list of books so we can grab them in bulk from the repository
+        //Add one instance of the ID to bookListID for each copy purchased.
         for (int i = 0; i < cart.length; i++) {
            Long rawID = Long.parseLong(cart[i]);
-           for(int j=0; j < Integer.parseInt(quantities[i]); j++) { //Add one instance of the ID to the array for each copy purchased.
+           for(int j=0; j < Integer.parseInt(quantities[i]); j++) { 
         	   bookIDList.add(rawID);
            }
-        }
-        //Create a Array of Longs. toArray() doesn't work here bc of primitive types. I wish there was a better way. Please find a way make this better. 
-        Long[] bookLongArray = new Long[bookIDList.size()];
-        for(int i = 0; i < bookLongArray.length; i++)
+        } 
+        //Add to purchase history and reduce inventory
+        for(long id: bookIDList)
         {
-        	bookLongArray[i]=bookIDList.get(i);
+        	Book b = bookRepository.findById(id);
+        	b.setQuantity(b.getQuantity() - 1);
+        	bookRepository.save(b);
+        	user.addPurchase(b);
         }
         
-        List<Book> books = bookRepository.findByIdIn(bookLongArray);
-        users.get(0).addPurchase(books); //This only adds one of each book - doesn't look at quantities. Sorry I'm tired.
-        System.out.println(users.get(0).getPurchaseHistory().toString());
-        
+        userRepository.save(user);
         JSONObject resp = new JSONObject();
         resp.put("result", bookIDList.size());
+        resp.put("user", user.getId());
     	return resp.toString();
+    }
+    
+    @GetMapping("/viewPurchaseHistory")
+    public String viewPurchaseHistory1(Model model, @RequestParam(value = "user") String userID) {
+	    User user = userRepository.findById(Long.parseLong(userID));
+	    model.addAttribute("purchaseHistory", user.getPurchaseHistory());
+        return "viewPurchaseHistory";
     }
 }
