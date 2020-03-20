@@ -1,22 +1,16 @@
 <!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="/js/bookStoreJS.js"></script>
 
 <head>
     <title>AMAZin BOOK STORE</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<div th:class="errorMsg">
-    <p th:text="${errorMsg}">ERROR</p>
-</div>
-
-
 <h1><a href="/">AMAZin BOOK STORE</a></h1>
 <div id="searchBar">
     <form action="#" method="post" th:action="@{/searchByTitle}">
@@ -27,57 +21,33 @@
         <input id="author" name="author" type="text">
         <input type="submit" value="Search By Author">
     </form>
-    <button id="addBookButton" onclick="location.href='/addbook'" type="button"> Add a new book</button>
 </div>
 <div id="utility">
     <button class="login" id=logInButton>Log In</button>
     <button id="viewCart">View Cart</button>
     <button id="viewPurchaseHistory">View Purchase History</button>
 </div>
-
 <div id="clear"></div>
-<p>Currently Carrying</p>
+<div id="clear"></div>
+<p>Purchase History</p>
 <div th:if="books == null">
     <p>DATABASE Refused To Connect</p>
 </div>
-
 <table th:id="inventory">
     <thead>
     <tr>
         <th>Title</th>
         <th>Author</th>
-        <th>Price ($)</th>
-        <th></th>
+        <th>Price Paid($)</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book: ${books}">
+    <tr th:each="book: ${purchaseHistory}">
         <td><b><a th:href="@{/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
         <td th:text="${book.author}"/>
         <td th:text="${book.price}"/>
-        <td>
-            <button class="addToCart" th:id="${book.id}">Add To Cart</button>
-        </td>
     </tr>
     </tbody>
 </table>
-<div id="loginPopup">
-    <div class="form-popup" id="popupForm">
-        <form class="form-container">
-            <h2>Please Log in</h2>
-            <label id="placeholder"></label>
-            <label for="username">
-                <strong>Username</strong>
-            </label>
-            <input id="username" name="username" placeholder="Your Username" required type="text">
-            <label for="psw">
-                <strong>Password</strong>
-            </label>
-            <input id="psw" name="psw" placeholder="Your Password" required type="password">
-            <button class="loginSubmit" type="button">Log In</button>
-            <button class="loginCancel" type="button">Close</button>
-        </form>
-    </div>
-</div>
 </body>
-</html>
+<html>

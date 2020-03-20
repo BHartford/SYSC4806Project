@@ -1,16 +1,23 @@
 $(document).ready(function () {
     if (!localStorage.getItem("cart")) {
         localStorage.cart = [];
+        localStorage.quantities = [];
     }
 
-    if ($('.viewCart').length > 0) {
-        $('.viewCart')[0].innerHTML = "View Cart (" + localStorage.getItem("cart").split(',').filter(function (value, index, arr) {
+
+    if ($('#viewCart').length > 0) {
+        $('#viewCart').innerHTML = "View Cart (" + localStorage.getItem("cart").split(',').filter(function (value, index, arr) {
             return value !== "";
         }).length + ")";
-
-        $('.viewCart').click(function () {
-            window.location.href = '/cart?books=' + localStorage.getItem("cart");
+        $('#viewCart').click(function () {
+            if (localStorage.getItem("cart")) {
+                window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
+            } else {
+                alert("Your cart is empty");
+            }
         });
+
+
     }
 
     if ($('.addToCart').length > 0) {
@@ -18,21 +25,64 @@ $(document).ready(function () {
             cart = localStorage.getItem("cart").split(',').filter(function (value, index, arr) {
                 return value !== "";
             });
-            cart.push(this.id);
-            cart = [...new Set(cart)]
+            quantities = localStorage.getItem("quantities").split(',').filter(function (value, index, arr) {
+                return value !== "";
+            });
+            var index = -1;
+
+            for (i = 0; i < cart.length; i++) {
+                if (parseInt(cart[i]) == parseInt(this.id)) {
+                    index = i;
+                }
+            }
+            if (index == -1) {
+                cart.push(this.id);
+                quantities.push(1);
+            } else {
+                quantities[index] = parseInt(quantities[index]) + 1;
+            }
             localStorage.setItem("cart", cart);
-            $('.viewCart')[0].innerHTML = "View Cart (" + cart.length + ")";
+            localStorage.setItem("quantities", quantities);
+            $('#viewCart').innerHTML = "View Cart (" + cart.length + ")";
         });
     }
 
     if ($('.removeBook').length > 0) {
         $('.removeBook').click(function () {
             var id = this.id;
+            var quantityIndex;
             cart = localStorage.getItem("cart").split(',').filter(function (value, index, arr) {
-                return (value !== "" && value !== id.toString());
+                var isGood = (value !== "" && value !== id.toString());
+                if (isGood == false) {
+                    quantityIndex = index;
+                }
+                return isGood;
             });
+            var quantities = localStorage.getItem("quantities").split(',').filter(function (value, index, arr) {
+                return index != quantityIndex;
+            });
+            localStorage.setItem("quantities", quantities);
             localStorage.setItem("cart", cart);
-            window.location.href = '/cart?books=' + localStorage.getItem("cart");
+            if (localStorage.getItem("cart")) {
+                window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
+            } else {
+                window.location.href = '/';
+            }
+        });
+    }
+
+    if ($('.quantitySelector').length > 0) {
+        var loadedQuantities = localStorage.getItem("quantities").split(',');
+        var list = document.getElementsByClassName("quantitySelector");
+        var id;
+        for (var i = 0; i < list.length; i++) {
+            list[i].value = loadedQuantities[i];
+        }
+        $('.quantitySelector').change(function () {
+            var quantities = localStorage.getItem("quantities").split(',');
+            quantities[this.id.split(' ')[1]] = this.value;
+            localStorage.setItem("quantities", quantities);
+            window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
         });
     }
 
@@ -85,6 +135,7 @@ $(document).ready(function () {
                     if (data.result) {
                         localStorage.user = $("#username")[0].value;
                         localStorage.type = data.type;
+                        localStorage.userID = data.userID;
                         document.getElementById("loginPopup").style.display = "none";
                         $('#logInButton')[0].innerHTML = "Log Out";
                         if (data.type === "Seller") {
@@ -106,11 +157,36 @@ $(document).ready(function () {
             if (localStorage.getItem("user") === null) {
                 alert("Please Login!");
             } else {
+                $.ajax({
+                    type: "POST",
+                    url: "purchaseCart",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        username: localStorage.getItem("user"),
+                        cart: localStorage.getItem("cart"),
+                        quantities: localStorage.getItem("quantities")
+                    }),
+                    success: function (data, status, xhr) {
+                        localStorage.setItem("cart", []);
+                        localStorage.setItem("quantities", []);
+                        alert("Successfully purchased " + data.result + " book(s)");
+                        window.location = '/viewPurchaseHistory?user=' + data.user;
+                    }
 
-                // Gabby
+                })
 
-                // if successful purchase do the below
-                localStorage.cart = [];
+
+            }
+        });
+
+    }
+    if ($('#viewPurchaseHistory').length > 0) {
+
+        $('#viewPurchaseHistory').click(function () {
+            if (localStorage.getItem("user") === null) {
+                alert("Please Login!");
+            } else {
+                window.location.href = '/viewPurchaseHistory?user=' + localStorage.getItem("userID");
             }
         });
     }

@@ -24,11 +24,13 @@
 </div>
 <div id="utility">
     <button class="login" id=logInButton>Log In</button>
+    <button id="viewCart">View Cart</button>
+    <button id="viewPurchaseHistory">View Purchase History</button>
 </div>
 <div id="clear"></div>
 <p>Cart</p>
 <div>
-    <button class="purchase">Purchase</button>
+
 </div>
 <div th:if="books == null">
     <p>DATABASE Refused To Connect</p>
@@ -45,20 +47,29 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book: ${books}">
-        <td><b><a th:href="@{/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
-        <td th:text="${book.author}"/>
-        <td th:text="${book.price}"/>
-        <td><select>
-            <option th:each="i: ${#numbers.sequence(1, book.quantity)}" th:selected="${i==1}" th:text="${i}"
-                    th:value="${i}"></option>
+    <tr th:each="index : ${#numbers.sequence( 0, #arrays.length(books)-1)}">
+        <td><b><a th:href="@{/viewbook(bookID=${books[index].id})}" th:text="${books[index].title}"></a></b></td>
+        <td th:text="${books[index].author}"/>
+        <td th:text="${books[index].price}"/>
+        <td><select class="quantitySelector" th:id="'quantity ' + ${index}">
+            <option th:each="i: ${#numbers.sequence(1, books[index].quantity)}" th:text="${i}" th:value="${i}"></option>
         </select>
         </td>
         <td>
-            <button class="removeBook" th:id="${book.id}">Remove</button>
+            <button class="removeBook" th:id="${books[index].id}">Remove</button>
         </td>
     </tr>
     </tbody>
+    <tfoot>
+    <tr>
+        <td colpsan='2'>Total Price</td>
+        <td colspan='2' th:text="${totalCost}"/>
+        <td th:text="${totalBooks}">
+        <td>
+            <button class="purchase">Purchase</button>
+        </td>
+    <tr>
+    </tfoot>
 </table>
 <div id="loginPopup">
     <div class="form-popup" id="popupForm">

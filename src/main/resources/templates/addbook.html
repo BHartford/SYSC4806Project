@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/js/bookStoreJS.js"></script>
+
 <head>
     <title>AMAZin BOOK STORE</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -10,15 +13,32 @@
 
 <body>
 <h1><a href="/">AMAZin BOOK STORE</a></h1>
+<div id="searchBar">
+    <form action="#" method="post" th:action="@{/searchByTitle}">
+        <input id="title" name="title" type="text">
+        <input type="submit" value="Search By Title">
+    </form>
+    <form action="#" method="post" th:action="@{/searchByAuthor}">
+        <input id="author" name="author" type="text">
+        <input type="submit" value="Search By Author">
+    </form>
+</div>
+<div id="utility">
+    <button class="login" id=logInButton>Log In</button>
+    <button id="viewCart">View Cart</button>
+    <button id="viewPurchaseHistory">View Purchase History</button>
+</div>
+<div id="clear"></div>
+<div id="clear"></div>
 <p>Add A New Book</p>
-	<form id="addBookForm" action="#" th:action="@{/addbook}" th:object="${newBook}" method="post">
-    <p> Title: <input type="text" th:field="*{title}" /></p>
-    <p> Author: <input type="text" th:field="*{author}" /></p>
-    <p> Year: <input type="text" th:field="*{year}" /></p>
-    <p> Description: <input type="text" th:field="*{description}" /></p>
-    <p> Price: <input type="text" th:field="*{price}" /></p>
-    <p> Quantity: <input type="text" th:field="*{quantity}" /></p>
-    <p><input type="submit" value="Submit" class="button" /></p>
+<form action="#" id="addBookForm" method="post" th:action="@{/addbook}" th:object="${newBook}">
+    <p> Title: <input th:field="*{title}" type="text"/></p>
+    <p> Author: <input th:field="*{author}" type="text"/></p>
+    <p> Year: <input th:field="*{year}" type="text"/></p>
+    <p> Description: <input th:field="*{description}" type="text"/></p>
+    <p> Price: <input th:field="*{price}" type="text"/></p>
+    <p> Quantity: <input th:field="*{quantity}" type="text"/></p>
+    <p><input class="button" type="submit" value="Submit"/></p>
 </form>
 </body>
 </html>
