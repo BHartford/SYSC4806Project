@@ -47,4 +47,12 @@ https://sysc4806project2020.herokuapp.com/
 ![users_purchase_history_schema](uml/users_purchase_history_schema.PNG)
 
 ## To Do Next Sprint
+- Create a cart object to represent books in the cart
+- Allow the tables in the UI to be sorted
+- Work on the presentation
+- Display number of items in the cart
+- Add a review system for books
+- Restrict webpages to logged in users
+- Add more kafka logging
+- Add a receipt class for purchased books
 
