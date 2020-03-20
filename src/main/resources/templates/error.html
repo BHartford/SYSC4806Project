@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+
+<head>
+    <title>AMAZin BOOK STORE</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<h1><a href="/">AMAZin BOOK STORE</a></h1>
+
+<h1>😢 Something went wrong! </h1>
+<h2>Your AMAZin Engineers are on it</h2>
+
+<p> ERROR <span th:text="${errorStatus}"></span></p>
+<p th:text="${errorMsg}"></p>
+
+</body>
+</html>

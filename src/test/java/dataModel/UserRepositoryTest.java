@@ -29,13 +29,13 @@ public class UserRepositoryTest {
     private static final int EXPECTED_NUMBER_OF_USERS = 1;
 
     @Autowired
-    private  TestEntityManager entityManager;
+    private TestEntityManager entityManager;
 
     @Autowired
     private UserRepository userRepository;
 
     @Test
-    public void testFindByUsername(){
+    public void testFindByUsername() {
         entityManager.persist(new User(BUYER_USERNAME_1, PASSWORD_ONE, User.BUYER));
 
         List<User> users = userRepository.findByUsername(BUYER_USERNAME_1);
@@ -46,7 +46,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testFindByTypeOfUser(){
+    public void testFindByTypeOfUser() {
         entityManager.persist(new User(BUYER_USERNAME_1, PASSWORD_ONE, User.BUYER));
         entityManager.persist(new User(SELLER_USERNAME, PASSWORD_TWO, User.SELLER));
 
@@ -56,7 +56,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testPurchaseHistoryOfUser(){
+    public void testPurchaseHistoryOfUser() {
         User user1 = new User(BUYER_USERNAME_1, PASSWORD_ONE, User.BUYER);
         Book book1 = new Book(BOOK_TITLE_1, BOOK_AUTHOR, BOOK_PRICE);
         user1.addPurchase(book1);
@@ -66,8 +66,8 @@ public class UserRepositoryTest {
 
         List<User> users = userRepository.findByUsername(BUYER_USERNAME_1);
 
-        for (User u : users){
-            assert(u.getPurchaseHistory().size() == user1.getPurchaseHistory().size());
+        for (User u : users) {
+            assert (u.getPurchaseHistory().size() == user1.getPurchaseHistory().size());
             assertThat(u.getPurchaseHistory()).extracting(Book::getTitle).contains(BOOK_TITLE_1);
             assertThat(u.getPurchaseHistory()).extracting(Book::getAuthor).contains(BOOK_AUTHOR);
             assertThat(u.getPurchaseHistory()).extracting(Book::getPrice).contains(BOOK_PRICE);
@@ -75,7 +75,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testPurchaseHistoryOfMultipleUser(){
+    public void testPurchaseHistoryOfMultipleUser() {
         User user1 = new User(BUYER_USERNAME_1, PASSWORD_ONE, User.BUYER);
         User user2 = new User(BUYER_USERNAME_2, PASSWORD_TWO, User.BUYER);
         Book book1 = new Book(BOOK_TITLE_1, BOOK_AUTHOR, BOOK_PRICE);
@@ -96,8 +96,8 @@ public class UserRepositoryTest {
 
         List<User> returnedUser1 = userRepository.findByUsername(BUYER_USERNAME_1);
 
-        for (User u : returnedUser1){
-            assert(u.getPurchaseHistory().size() == user1.getPurchaseHistory().size());
+        for (User u : returnedUser1) {
+            assert (u.getPurchaseHistory().size() == user1.getPurchaseHistory().size());
             assertThat(u.getPurchaseHistory()).extracting(Book::getTitle).contains(BOOK_TITLE_1, BOOK_TITLE_2);
             assertThat(u.getPurchaseHistory()).extracting(Book::getAuthor).contains(BOOK_AUTHOR);
             assertThat(u.getPurchaseHistory()).extracting(Book::getPrice).contains(BOOK_PRICE);
@@ -105,8 +105,8 @@ public class UserRepositoryTest {
 
         List<User> returnedUser2 = userRepository.findByUsername(BUYER_USERNAME_2);
 
-        for (User u : returnedUser2){
-            assert(u.getPurchaseHistory().size() == user2.getPurchaseHistory().size());
+        for (User u : returnedUser2) {
+            assert (u.getPurchaseHistory().size() == user2.getPurchaseHistory().size());
             assertThat(u.getPurchaseHistory()).extracting(Book::getTitle).contains(BOOK_TITLE_2, BOOK_TITLE_3);
             assertThat(u.getPurchaseHistory()).extracting(Book::getAuthor).contains(BOOK_AUTHOR);
             assertThat(u.getPurchaseHistory()).extracting(Book::getPrice).contains(BOOK_PRICE);

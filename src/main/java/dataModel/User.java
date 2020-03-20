@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     public static final int SELLER = 0;
@@ -20,9 +20,10 @@ public class User {
     @ManyToMany
     private List<Book> purchaseHistory;
 
-    public User() {}
+    public User() {
+    }
 
-    public User(String username, String password, int typeOfUser){
+    public User(String username, String password, int typeOfUser) {
         this.username = username;
         this.password = password;
         this.typeOfUser = typeOfUser;
@@ -74,17 +75,17 @@ public class User {
     }
 
     public void addPurchase(List<Book> purchase) {
-        for (Book b : purchase){
+        for (Book b : purchase) {
             purchaseHistory.add(b);
         }
     }
-    
+
     public boolean validPassword(String attemptedPassword) {
-    	return attemptedPassword.equals(password);
+        return attemptedPassword.equals(password);
     }
 
     @Override
     public String toString() {
-        return "\nusername: " + username + "\ntype of user: "  + this.getTypeOfUserString();
+        return "\nusername: " + username + "\ntype of user: " + this.getTypeOfUserString();
     }
 }

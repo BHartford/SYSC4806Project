@@ -1,15 +1,6 @@
 package dataModel;
 
 import Logging.LoggingLibrary;
-import dataModel.BookRepository;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,7 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
+@SessionAttributes("newBook")
 public class BookStoreController {
 
     @Autowired
@@ -31,7 +27,7 @@ public class BookStoreController {
     private static final String TOPIC = "add_book";
 
     @GetMapping("/")
-    public String landingPage(Model model){
+    public String landingPage(Model model) {
         return index(model);
     }
 
@@ -45,28 +41,48 @@ public class BookStoreController {
 
     @GetMapping("/viewbook")
     public String display(Model model, @RequestParam(value = "bookID") long bookID) {
-        model.addAttribute("books", bookRepository.findById(bookID));
-        return "viewbook";
+        Book b = null;
+
+        try {
+            b = bookRepository.findById(bookID);
+        } catch (Exception e) {
+            //TODO Log this
+            //Requires a valid IDNumber
+        }
+
+        if (b != null) {
+            model.addAttribute("books", bookRepository.findById(bookID));
+            return "viewbook";
+        } else {
+            String errorMessage = String.format(ApplicationMsg.BAD_BOOK_ID.getMsg(), bookID);
+            return isNotFound(model, errorMessage);
+        }
+    }
+
+    public String isNotFound(Model model, String errorMsg) {
+        //TODO Log This -- a non existing search was preformed
+        model.addAttribute("errorMsg", errorMsg);
+        return index(model);
     }
 
     @GetMapping("/cart")
-    public String showCart(Model model,  @RequestParam(value="books") List<String> books, @RequestParam(value="quantities") List<String>quantities) {
-    	
-    	double totalCost = 0;
-    	double totalBooks = 0;
-    	int quantity;
-    	ArrayList<Book> bookList = new ArrayList<Book>();
-    	DecimalFormat df = new DecimalFormat("0.00");
-    	
-    	for(int i=0; i< books.size(); i++) {
-    	    quantity = Integer.parseInt(quantities.get(i));
-    		Book b = bookRepository.findById(Long.parseLong(books.get(i)));
-    		if(b != null) {
-	    		totalCost += b.getPrice() * quantity;
-	    		totalBooks += quantity;
-	    		bookList.add(b);
-    		}
-    	}
+    public String showCart(Model model, @RequestParam(value = "books") List<String> books, @RequestParam(value = "quantities") List<String> quantities) {
+
+        double totalCost = 0;
+        double totalBooks = 0;
+        int quantity;
+        ArrayList<Book> bookList = new ArrayList<Book>();
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        for (int i = 0; i < books.size(); i++) {
+            quantity = Integer.parseInt(quantities.get(i));
+            Book b = bookRepository.findById(Long.parseLong(books.get(i)));
+            if (b != null) {
+                totalCost += b.getPrice() * quantity;
+                totalBooks += quantity;
+                bookList.add(b);
+            }
+        }
         model.addAttribute("books", bookList);
         model.addAttribute("quantities", quantities);
         model.addAttribute("totalCost", "$" + df.format(totalCost));
@@ -75,45 +91,59 @@ public class BookStoreController {
     }
 
     @PostMapping("/addbook")
-    public String display(Model model, @ModelAttribute Book newBook) {
+    public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook) {
         kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
-    	bookRepository.save(newBook);
+        bookRepository.save(newBook);
         model.addAttribute("books", bookRepository.findAll());
         model.addAttribute("newBook", null);
         return "index";
     }
-    
+
     @GetMapping("/addbook")
     public String directToAddBook(Model model) {
-    	model.addAttribute("newBook", new Book());
+        model.addAttribute("newBook", new Book());
         return "addbook";
     }
-    
+
     @PostMapping("/searchByTitle")
     public String titleSearch(Model model, @RequestParam(value = "title") String title) {
-        model.addAttribute("books", bookRepository.findByTitle(title));
-        return "viewbook";
+        List<Book> books = bookRepository.findByTitle(title);
+
+        if (books.size() != 0) {
+            model.addAttribute("books", books);
+            return "viewbook";
+        } else {
+            String errorMessage = String.format(ApplicationMsg.QUERY_NOT_FOUND.getMsg(), title);
+            return isNotFound(model, errorMessage);
+        }
     }
-    
+
     @PostMapping("/searchByAuthor")
     public String authorSearch(Model model, @RequestParam(value = "author") String author) {
-        model.addAttribute("books", bookRepository.findByAuthor(author));
-        return "viewbook";
+        List<Book> books = bookRepository.findByAuthor(author);
+
+        if (books.size() != 0) {
+            model.addAttribute("books", books);
+            return "viewbook";
+        } else {
+            String errorMessage = String.format(ApplicationMsg.QUERY_NOT_FOUND.getMsg(), author);
+            return isNotFound(model, errorMessage);
+        }
     }
-    
-    @PostMapping(value="/checkLogin", consumes="application/json", produces="application/json")
+
+    @PostMapping(value = "/checkLogin", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String loginCheck(@RequestBody String json) {
-    	System.out.println(json);
+        System.out.println(json);
         JSONObject jo = new JSONObject(json);
         List<User> users = userRepository.findByUsername(jo.getString("username"));
         JSONObject resp = new JSONObject();
         try {
-        	Boolean correctPass = users.get(0).validPassword(jo.getString("password"));
-        	System.out.println("." + users.get(0).getPassword() + ".");
-        	System.out.println("." + jo.getString("password") + ".");
-        	System.out.println(users.get(0).validPassword(jo.getString("password")));
-        	resp.put("userID", users.get(0).getId());
+            Boolean correctPass = users.get(0).validPassword(jo.getString("password"));
+            System.out.println("." + users.get(0).getPassword() + ".");
+            System.out.println("." + jo.getString("password") + ".");
+            System.out.println(users.get(0).validPassword(jo.getString("password")));
+            resp.put("userID", users.get(0).getId());
             resp.put("result", correctPass);
             resp.put("type", users.get(0).getTypeOfUserString());
         } catch (IndexOutOfBoundsException e) {
@@ -122,44 +152,43 @@ public class BookStoreController {
         System.out.println("Response for login: " + resp.toString());
         return resp.toString();
     }
-    
-    @PostMapping(value="/purchaseCart", consumes="application/json", produces="application/json")
+
+    @PostMapping(value = "/purchaseCart", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String purchaseCart(Model model, @RequestBody String json) {
-    	JSONObject jo = new JSONObject(json);
-    	System.out.println(json);
+        JSONObject jo = new JSONObject(json);
+        System.out.println(json);
         User user = userRepository.findByUsername(jo.getString("username")).get(0);
         String[] cart = jo.getString("cart").split(",");
         String[] quantities = jo.getString("quantities").split(",");
         ArrayList<Long> bookIDList = new ArrayList<Long>();
-        
+
         //Add one instance of the ID to bookListID for each copy purchased.
         for (int i = 0; i < cart.length; i++) {
-           Long rawID = Long.parseLong(cart[i]);
-           for(int j=0; j < Integer.parseInt(quantities[i]); j++) { 
-        	   bookIDList.add(rawID);
-           }
-        } 
-        //Add to purchase history and reduce inventory
-        for(long id: bookIDList)
-        {
-        	Book b = bookRepository.findById(id);
-        	b.setQuantity(b.getQuantity() - 1);
-        	bookRepository.save(b);
-        	user.addPurchase(b);
+            Long rawID = Long.parseLong(cart[i]);
+            for (int j = 0; j < Integer.parseInt(quantities[i]); j++) {
+                bookIDList.add(rawID);
+            }
         }
-        
+        //Add to purchase history and reduce inventory
+        for (long id : bookIDList) {
+            Book b = bookRepository.findById(id);
+            b.setQuantity(b.getQuantity() - 1);
+            bookRepository.save(b);
+            user.addPurchase(b);
+        }
+
         userRepository.save(user);
         JSONObject resp = new JSONObject();
         resp.put("result", bookIDList.size());
         resp.put("user", user.getId());
-    	return resp.toString();
+        return resp.toString();
     }
-    
+
     @GetMapping("/viewPurchaseHistory")
     public String viewPurchaseHistory1(Model model, @RequestParam(value = "user") String userID) {
-	    User user = userRepository.findById(Long.parseLong(userID));
-	    model.addAttribute("purchaseHistory", user.getPurchaseHistory());
+        User user = userRepository.findById(Long.parseLong(userID));
+        model.addAttribute("purchaseHistory", user.getPurchaseHistory());
         return "viewPurchaseHistory";
     }
 }

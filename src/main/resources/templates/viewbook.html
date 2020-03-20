@@ -12,73 +12,75 @@
 </head>
 
 <body>
-	<h1><a href="/">AMAZin BOOK STORE</a></h1>
-	<div id="searchBar">
-        <form action="#" th:action="@{/searchByTitle}" method="post">
-            <input type="text" id="title" name="title">
-            <input type="submit" value="Search By Title">
-        </form>
-            <form action="#" th:action="@{/searchByAuthor}" method="post">
-            <input type="text" id="author" name="author">
-            <input type="submit" value="Search By Author">
-        </form>
-    </div>
-    <div id="utility">
-    	<button class="login" id=logInButton>Log In</button>
-    	<button id="viewCart">View Cart </button>
-    	<button id="viewPurchaseHistory">View Purchase History </button>
-    </div>
-    <div id="clear"></div>
-	<p>View Book Details</p>
-	<div th:if="books == null">
-	    <p>DATABASE Refused To Connect</p>
-	</div>
+<h1><a href="/">AMAZin BOOK STORE</a></h1>
+<div id="searchBar">
+    <form action="#" method="post" th:action="@{/searchByTitle}">
+        <input id="title" name="title" type="text">
+        <input type="submit" value="Search By Title">
+    </form>
+    <form action="#" method="post" th:action="@{/searchByAuthor}">
+        <input id="author" name="author" type="text">
+        <input type="submit" value="Search By Author">
+    </form>
+</div>
+<div id="utility">
+    <button class="login" id=logInButton>Log In</button>
+    <button id="viewCart">View Cart</button>
+    <button id="viewPurchaseHistory">View Purchase History</button>
+</div>
+<div id="clear"></div>
+<p>View Book Details</p>
+<div th:if="books == null">
+    <p>DATABASE Refused To Connect</p>
+</div>
 
-	<table th:id="viewBook">
-		<thead>
-		    <tr>
-		        <th>Title</th>
-		        <th>Author</th>
-		        <th>Year</th>
-		        <th>Price ($)</th>
-		        <th>In Stock</th>
-		        <th></th>
-		    </tr>
-		</thead>
-	    <tbody th:each="book: ${books}">
-		    <tr>
-		        <td th:text="${book.title}"/>
-		        <td th:text="${book.author}"/>
-		        <td th:text="${book.year}"/>
-		        <td th:text="${book.price}"/>
-		        <td th:text="${book.quantity}"/>
-                <td><button class="addToCart" th:id="${book.id}">Add To Cart</button></td>
-		    </tr>
-		    <tr>
-		    	<td colspan="6" th:text="${book.description}"/>
-		    </tr>
-		    <tr class="break">
-		    	<td colspan="6"/>
-		    </tr>
-	    </tbody>
-	</table>
-	<div id="loginPopup">
-      	<div class="form-popup" id="popupForm">
-        	<form class="form-container">
-          		<h2>Please Log in</h2>
-          		<label id="placeholder"></label>
-        		<label for="username">
-        			<strong>Username</strong>
-        		</label>
-        		<input type="text" id="username" placeholder="Your Username" name="username" required>
-        		<label for="psw">
-        			<strong>Password</strong>
-        		</label>
-        		<input type="password" id="psw" placeholder="Your Password" name="psw" required>
-        		<button type="button" class="loginSubmit">Log In</button>
-        		<button type="button" class="loginCancel">Close</button>
-        	</form>
-      	</div>
-	</div>
+<table th:id="viewBook">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Year</th>
+        <th>Price ($)</th>
+        <th>In Stock</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody th:each="book: ${books}">
+    <tr>
+        <td th:text="${book.title}"/>
+        <td th:text="${book.author}"/>
+        <td th:text="${book.year}"/>
+        <td th:text="${book.price}"/>
+        <td th:text="${book.quantity}"/>
+        <td>
+            <button class="addToCart" th:id="${book.id}">Add To Cart</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6" th:text="${book.description}"/>
+    </tr>
+    <tr class="break">
+        <td colspan="6"/>
+    </tr>
+    </tbody>
+</table>
+<div id="loginPopup">
+    <div class="form-popup" id="popupForm">
+        <form class="form-container">
+            <h2>Please Log in</h2>
+            <label id="placeholder"></label>
+            <label for="username">
+                <strong>Username</strong>
+            </label>
+            <input id="username" name="username" placeholder="Your Username" required type="text">
+            <label for="psw">
+                <strong>Password</strong>
+            </label>
+            <input id="psw" name="psw" placeholder="Your Password" required type="password">
+            <button class="loginSubmit" type="button">Log In</button>
+            <button class="loginCancel" type="button">Close</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

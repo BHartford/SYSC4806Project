@@ -1,10 +1,9 @@
 package dataModel;
 
-import java.util.Optional;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Optional;
 
 @Entity
 public class Book {
@@ -87,7 +86,7 @@ public class Book {
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return "\nTitle: " + this.title + "\nAuthor: " + this.author + "\nPrice: " + this.price;
 	}
 

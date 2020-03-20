@@ -11,65 +11,73 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1><a href="/">AMAZin BOOK STORE</a></h1>
-    <div id="searchBar">
-        <form action="#" th:action="@{/searchByTitle}" method="post">
-            <input type="text" id="title" name="title">
-            <input type="submit" value="Search By Title">
-        </form>
-            <form action="#" th:action="@{/searchByAuthor}" method="post">
-            <input type="text" id="author" name="author">
-            <input type="submit" value="Search By Author">
-        </form>
-        <button onclick="location.href='/addbook'" type="button" id="addBookButton"> Add a new book</button>
-    </div>
-    <div id="utility">
-    	<button class="login" id=logInButton>Log In</button>
-    	<button id="viewCart">View Cart </button>
-    	<button id="viewPurchaseHistory">View Purchase History </button>
-    </div>
-    
-    <div id="clear"></div>
-	<p>Currently Carrying</p>
-    <div th:if="books == null">
-        <p>DATABASE Refused To Connect</p>
-    </div>
 
-    <table th:id="inventory">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Price ($)</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="book: ${books}">
-                <td><b><a th:text="${book.title}" th:href="@{/viewbook(bookID=${book.id})}"></a></b></td>
-                <td th:text="${book.author}"/>
-                <td th:text="${book.price}"/>
-                <td><button class="addToCart" th:id="${book.id}">Add To Cart</button></td>
-            </tr>
-        </tbody>
-    </table>
-	<div id="loginPopup">
-      	<div class="form-popup" id="popupForm">
-        	<form class="form-container">
-          		<h2>Please Log in</h2>
-          		<label id="placeholder"></label>
-        		<label for="username">
-        			<strong>Username</strong>
-        		</label>
-        		<input type="text" id="username" placeholder="Your Username" name="username" required>
-        		<label for="psw">
-        			<strong>Password</strong>
-        		</label>
-        		<input type="password" id="psw" placeholder="Your Password" name="psw" required>
-        		<button type="button" class="loginSubmit">Log In</button>
-        		<button type="button" class="loginCancel">Close</button>
-        	</form>
-      	</div>
-	</div>
-    </body>
+<div th:class="errorMsg">
+    <p th:text="${errorMsg}">ERROR</p>
+</div>
+
+
+<h1><a href="/">AMAZin BOOK STORE</a></h1>
+<div id="searchBar">
+    <form action="#" method="post" th:action="@{/searchByTitle}">
+        <input id="title" name="title" type="text">
+        <input type="submit" value="Search By Title">
+    </form>
+    <form action="#" method="post" th:action="@{/searchByAuthor}">
+        <input id="author" name="author" type="text">
+        <input type="submit" value="Search By Author">
+    </form>
+    <button id="addBookButton" onclick="location.href='/addbook'" type="button"> Add a new book</button>
+</div>
+<div id="utility">
+    <button class="login" id=logInButton>Log In</button>
+    <button id="viewCart">View Cart</button>
+    <button id="viewPurchaseHistory">View Purchase History</button>
+</div>
+
+<div id="clear"></div>
+<p>Currently Carrying</p>
+<div th:if="books == null">
+    <p>DATABASE Refused To Connect</p>
+</div>
+
+<table th:id="inventory">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price ($)</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book: ${books}">
+        <td><b><a th:href="@{/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
+        <td th:text="${book.author}"/>
+        <td th:text="${book.price}"/>
+        <td>
+            <button class="addToCart" th:id="${book.id}">Add To Cart</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div id="loginPopup">
+    <div class="form-popup" id="popupForm">
+        <form class="form-container">
+            <h2>Please Log in</h2>
+            <label id="placeholder"></label>
+            <label for="username">
+                <strong>Username</strong>
+            </label>
+            <input id="username" name="username" placeholder="Your Username" required type="text">
+            <label for="psw">
+                <strong>Password</strong>
+            </label>
+            <input id="psw" name="psw" placeholder="Your Password" required type="password">
+            <button class="loginSubmit" type="button">Log In</button>
+            <button class="loginCancel" type="button">Close</button>
+        </form>
+    </div>
+</div>
+</body>
 </html>

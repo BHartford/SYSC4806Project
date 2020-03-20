@@ -1,142 +1,148 @@
-h1, p, th, td {
-	font-family: 'Open Sans';
+h1, h2, h3, p, th, td {
+    font-family: 'Open Sans';
 }
 
 td {
-	text-align: left;
+    text-align: left;
 }
 
 a:link {
-	color: #570303;
-	text-decoration: none;
+    color: #570303;
+    text-decoration: none;
 }
 
 a:visited {
-	color: #976c6c;
+    color: #976c6c;
 }
 
 a.button {
-	-webkit-appearance: button;
-	-moz-appearance: button;
-	appearance: button;
-	text-decoration: none;
-	color: initial;
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    text-decoration: none;
+    color: initial;
+}
+
+.errorMsg {
+    color: red;
+    text-align: center;
+    background: yellow;
 }
 
 #searchBar {
-	width: 70%;
-	float: left;
+    width: 70%;
+    float: left;
 }
 
 #utility {
-	width: 30%;
-	float: left;
+    width: 30%;
+    float: left;
 }
 
 #clear {
-	clear: both;
+    clear: both;
 }
 
 #loginPopup {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	padding-top: 100px; /* Location of the box */
-	left: 0;
-	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
 }
 
 .form-popup {
-	border: 2px solid #666;
-	z-index: 9;
-	max-width: 300px;
-	margin: 0 auto;
+    border: 2px solid #666;
+    z-index: 9;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .form-container {
-	max-width: 300px;
-	padding: 20px;
-	background-color: #fff;
+    max-width: 300px;
+    padding: 20px;
+    background-color: #fff;
 }
 
 .form-container input[type=text], .form-container input[type=password] {
-	width: 100%;
-	padding: 10px;
-	margin: 5px 0 22px 0;
-	border: none;
-	background: #eee;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #eee;
 }
 
 .form-container input[type=text]:focus, .form-container input[type=password]:focus {
-	background-color: #ddd;
-	outline: none;
+    background-color: #ddd;
+    outline: none;
 }
 
 /* Table Look & Feel */
 table {
-	border: 2px solid #A40808;
-	background-color: #EEE7DB;
-	width: 100%;
-	text-align: center;
-	border-collapse: collapse;
+    border: 2px solid #A40808;
+    background-color: #EEE7DB;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
 }
 
 table td, table th {
-	border: 1px solid #AAAAAA;
-	padding: 8px 2px;
+    border: 1px solid #AAAAAA;
+    padding: 8px 2px;
 }
 
 table tbody td {
-	font-size: 13px;
+    font-size: 13px;
 }
 
 table tr:nth-child(even) {
-	background: #F5C8BF;
+    background: #F5C8BF;
 }
 
 tr.break td {
-	height: 2px;
-	background: #FFFFFF;
+    height: 2px;
+    background: #FFFFFF;
 }
 
 table thead {
-	background: #A40808;
+    background: #A40808;
 }
 
 table thead th {
-	font-size: 19px;
-	font-weight: bold;
-	color: #FFFFFF;
-	text-align: center;
-	border-left: 2px solid #A40808;
+    font-size: 19px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    border-left: 2px solid #A40808;
 }
 
 table thead th:first-child {
-	border-left: none;
+    border-left: none;
 }
 
 table tfoot {
-	font-size: 13px;
-	font-weight: bold;
-	color: #FFFFFF;
-	background: #A40808;
+    font-size: 13px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background: #A40808;
 }
 
 table tfoot td {
-	font-size: 13px;
+    font-size: 13px;
 }
 
 table tfoot .links {
-	text-align: right;
+    text-align: right;
 }
 
 table tfoot .links a {
-	display: inline-block;
-	background: #FFFFFF;
-	color: #A40808;
-	padding: 2px 8px;
-	border-radius: 5px;
+    display: inline-block;
+    background: #FFFFFF;
+    color: #A40808;
+    padding: 2px 8px;
+    border-radius: 5px;
 }
