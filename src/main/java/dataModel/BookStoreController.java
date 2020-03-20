@@ -3,7 +3,11 @@ package dataModel;
 import Logging.LoggingLibrary;
 import dataModel.BookRepository;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
@@ -33,7 +37,9 @@ public class BookStoreController {
 
     @GetMapping("/view")
     public String index(Model model) {
-        model.addAttribute("books", bookRepository.findAll());
+        List<Book> listedBooks = (List<Book>) bookRepository.findAll();
+        listedBooks.removeIf(book -> book.getQuantity() == 0);
+        model.addAttribute("books", listedBooks);
         return "index";
     }
 
@@ -44,9 +50,27 @@ public class BookStoreController {
     }
 
     @GetMapping("/cart")
-    public String showCart(Model model, @RequestParam(value = "books") List<String> books) {
-    	List<Long> bookIds = books.stream().map(Long::parseLong).collect(Collectors.toList());
-        model.addAttribute("books", bookRepository.findByIdIn(bookIds.toArray(new Long[bookIds.size()])));
+    public String showCart(Model model,  @RequestParam(value="books") List<String> books, @RequestParam(value="quantities") List<String>quantities) {
+    	
+    	double totalCost = 0;
+    	double totalBooks = 0;
+    	int quantity;
+    	ArrayList<Book> bookList = new ArrayList<Book>();
+    	DecimalFormat df = new DecimalFormat("0.00");
+    	
+    	for(int i=0; i< books.size(); i++) {
+    	    quantity = Integer.parseInt(quantities.get(i));
+    		Book b = bookRepository.findById(Long.parseLong(books.get(i)));
+    		if(b != null) {
+	    		totalCost += b.getPrice() * quantity;
+	    		totalBooks += quantity;
+	    		bookList.add(b);
+    		}
+    	}
+        model.addAttribute("books", bookList);
+        model.addAttribute("quantities", quantities);
+        model.addAttribute("totalCost", "$" + df.format(totalCost));
+        model.addAttribute("totalBooks", (int) totalBooks);
         return "viewCart";
     }
 
@@ -89,12 +113,53 @@ public class BookStoreController {
         	System.out.println("." + users.get(0).getPassword() + ".");
         	System.out.println("." + jo.getString("password") + ".");
         	System.out.println(users.get(0).validPassword(jo.getString("password")));
+        	resp.put("userID", users.get(0).getId());
             resp.put("result", correctPass);
             resp.put("type", users.get(0).getTypeOfUserString());
         } catch (IndexOutOfBoundsException e) {
             resp.put("result", false);
         }
-        System.out.println(resp.toString());
+        System.out.println("Response for login: " + resp.toString());
         return resp.toString();
+    }
+    
+    @PostMapping(value="/purchaseCart", consumes="application/json", produces="application/json")
+    @ResponseBody
+    public String purchaseCart(Model model, @RequestBody String json) {
+    	JSONObject jo = new JSONObject(json);
+    	System.out.println(json);
+        User user = userRepository.findByUsername(jo.getString("username")).get(0);
+        String[] cart = jo.getString("cart").split(",");
+        String[] quantities = jo.getString("quantities").split(",");
+        ArrayList<Long> bookIDList = new ArrayList<Long>();
+        
+        //Add one instance of the ID to bookListID for each copy purchased.
+        for (int i = 0; i < cart.length; i++) {
+           Long rawID = Long.parseLong(cart[i]);
+           for(int j=0; j < Integer.parseInt(quantities[i]); j++) { 
+        	   bookIDList.add(rawID);
+           }
+        } 
+        //Add to purchase history and reduce inventory
+        for(long id: bookIDList)
+        {
+        	Book b = bookRepository.findById(id);
+        	b.setQuantity(b.getQuantity() - 1);
+        	bookRepository.save(b);
+        	user.addPurchase(b);
+        }
+        
+        userRepository.save(user);
+        JSONObject resp = new JSONObject();
+        resp.put("result", bookIDList.size());
+        resp.put("user", user.getId());
+    	return resp.toString();
+    }
+    
+    @GetMapping("/viewPurchaseHistory")
+    public String viewPurchaseHistory1(Model model, @RequestParam(value = "user") String userID) {
+	    User user = userRepository.findById(Long.parseLong(userID));
+	    model.addAttribute("purchaseHistory", user.getPurchaseHistory());
+        return "viewPurchaseHistory";
     }
 }
