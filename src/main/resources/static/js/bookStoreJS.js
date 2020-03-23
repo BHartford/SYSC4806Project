@@ -1,17 +1,15 @@
 $(document).ready(function () {
-    if (!localStorage.getItem("cart")) {
-        localStorage.cart = [];
-        localStorage.quantities = [];
+    if (!localStorage.getItem("newCart")) {
+        localStorage.newCart = JSON.stringify({});
     }
 
 
     if ($('#viewCart').length > 0) {
-        $('#viewCart').innerHTML = "View Cart (" + localStorage.getItem("cart").split(',').filter(function (value, index, arr) {
-            return value !== "";
-        }).length + ")";
+        $('#viewCart').text("View Cart (" + Object.keys(JSON.parse(localStorage.getItem("newCart"))).length + ")");
         $('#viewCart').click(function () {
-            if (localStorage.getItem("cart")) {
-                window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
+            if (Object.keys(JSON.parse(localStorage.getItem("newCart"))).length > 0) {
+                window.location.href = '/cart?books=' + Object.keys(JSON.parse(localStorage.getItem("newCart"))) +
+                    '&quantities=' + Object.values(JSON.parse(localStorage.getItem("newCart")));
             } else {
                 alert("Your cart is empty");
             }
@@ -22,49 +20,28 @@ $(document).ready(function () {
 
     if ($('.addToCart').length > 0) {
         $('.addToCart').click(function () {
-            cart = localStorage.getItem("cart").split(',').filter(function (value, index, arr) {
-                return value !== "";
-            });
-            quantities = localStorage.getItem("quantities").split(',').filter(function (value, index, arr) {
-                return value !== "";
-            });
-            var index = -1;
-
-            for (i = 0; i < cart.length; i++) {
-                if (parseInt(cart[i]) == parseInt(this.id)) {
-                    index = i;
-                }
+            cart = JSON.parse(localStorage.getItem("newCart"));
+            let id = this.id;
+            if(cart[id]){
+                cart[id] = cart[id] + 1;
             }
-            if (index == -1) {
-                cart.push(this.id);
-                quantities.push(1);
-            } else {
-                quantities[index] = parseInt(quantities[index]) + 1;
+            else{
+                cart[id] = 1;
             }
-            localStorage.setItem("cart", cart);
-            localStorage.setItem("quantities", quantities);
-            $('#viewCart').innerHTML = "View Cart (" + cart.length + ")";
+            localStorage.setItem("newCart", JSON.stringify(cart));
+            $('#viewCart').text("View Cart (" + Object.keys(JSON.parse(localStorage.getItem("newCart"))).length + ")");
         });
     }
 
     if ($('.removeBook').length > 0) {
         $('.removeBook').click(function () {
             var id = this.id;
-            var quantityIndex;
-            cart = localStorage.getItem("cart").split(',').filter(function (value, index, arr) {
-                var isGood = (value !== "" && value !== id.toString());
-                if (isGood == false) {
-                    quantityIndex = index;
-                }
-                return isGood;
-            });
-            var quantities = localStorage.getItem("quantities").split(',').filter(function (value, index, arr) {
-                return index != quantityIndex;
-            });
-            localStorage.setItem("quantities", quantities);
-            localStorage.setItem("cart", cart);
-            if (localStorage.getItem("cart")) {
-                window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
+            var cart = JSON.parse(localStorage.getItem("newCart"));
+            delete cart[id];
+            localStorage.setItem("newCart", JSON.stringify(cart));
+            if (Object.keys(JSON.parse(localStorage.getItem("newCart"))).length > 0) {
+                window.location.href = '/cart?books=' + Object.keys(JSON.parse(localStorage.getItem("newCart"))) + '&quantities='
+                    + Object.values(JSON.parse(localStorage.getItem("newCart")));
             } else {
                 window.location.href = '/';
             }
@@ -72,17 +49,18 @@ $(document).ready(function () {
     }
 
     if ($('.quantitySelector').length > 0) {
-        var loadedQuantities = localStorage.getItem("quantities").split(',');
+        var cart = JSON.parse(localStorage.getItem("newCart"));
+        var loadedQuantities = Object.values(cart);
         var list = document.getElementsByClassName("quantitySelector");
-        var id;
         for (var i = 0; i < list.length; i++) {
             list[i].value = loadedQuantities[i];
         }
         $('.quantitySelector').change(function () {
-            var quantities = localStorage.getItem("quantities").split(',');
-            quantities[this.id.split(' ')[1]] = this.value;
-            localStorage.setItem("quantities", quantities);
-            window.location.href = '/cart?books=' + localStorage.getItem("cart") + '&quantities=' + localStorage.getItem("quantities");
+            var key = Object.keys(cart)[this.id.split(' ')[1]];
+            cart[key] =  this.value;
+            localStorage.setItem("newCart", JSON.stringify(cart));
+            window.location.href = '/cart?books=' + Object.keys(JSON.parse(localStorage.getItem("newCart"))) + '&quantities='
+                + Object.values(JSON.parse(localStorage.getItem("newCart")));
         });
     }
 
@@ -163,25 +141,19 @@ $(document).ready(function () {
                     contentType: 'application/json',
                     data: JSON.stringify({
                         username: localStorage.getItem("user"),
-                        cart: localStorage.getItem("cart"),
-                        quantities: localStorage.getItem("quantities")
+                        cart: Object.keys(JSON.parse(localStorage.getItem("newCart"))).toString(),
+                        quantities: Object.values(JSON.parse(localStorage.getItem("newCart"))).toString()
                     }),
                     success: function (data, status, xhr) {
-                        localStorage.setItem("cart", []);
-                        localStorage.setItem("quantities", []);
+                        localStorage.setItem("newCart", JSON.stringify({}));
                         alert("Successfully purchased " + data.result + " book(s)");
                         window.location = '/viewPurchaseHistory?user=' + data.user;
                     }
-
                 })
-
-
             }
         });
-
     }
     if ($('#viewPurchaseHistory').length > 0) {
-
         $('#viewPurchaseHistory').click(function () {
             if (localStorage.getItem("user") === null) {
                 alert("Please Login!");
