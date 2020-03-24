@@ -1,25 +1,20 @@
 package dataModel;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "receipt")
 public class Receipt {
 
-    private static DecimalFormat df = new DecimalFormat("0.00");
-
     @Id
     @GeneratedValue
     long id;
 
-    @CreationTimestamp
-    private Timestamp date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
     @OneToOne
     private User user;
@@ -43,7 +38,7 @@ public class Receipt {
         return id;
     }
 
-    public Timestamp getDate() {
+    public Date getDate() {
         return date;
     }
 

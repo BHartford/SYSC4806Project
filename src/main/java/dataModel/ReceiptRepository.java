@@ -1,17 +1,18 @@
 package dataModel;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
 
 public interface ReceiptRepository extends CrudRepository<Receipt, Long> {
 
-    List<Receipt> findByUserId(long userId);
+    List<Receipt> findByUser(@Param("user") User user);
 
-    List<Receipt> findAllByDate(Date Date);
+    List<Receipt> findByDate(@Param("date") Date date);
 
-    Receipt findByReceiptId(long id);
+    Receipt findById(long id);
 
 
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -49,6 +50,7 @@ class ReceiptTest {
         assertEquals(0, receipt.getItemCount());
         receipt.addItems(book1);
         assertEquals(1, receipt.getItemCount());
+        assertThat(receipt.getItems().contains(book1));
 
     }
 
@@ -64,6 +66,7 @@ class ReceiptTest {
         assertEquals(0, receipt.getItems().size());
         receipt.addItems(book1, book2, book3);
         assertEquals(3, receipt.getItems().size());
+        assertThat(receipt.getItems().containsAll(Arrays.asList(book1, book2, book3)));
 
     }
 
