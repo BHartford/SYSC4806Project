@@ -1,7 +1,7 @@
 package dataModel;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @DataJpaTest
 public class ReceiptRepositoryTest {
 
-    private static final String USERNAME = "buyer";
+    private static final String USERNAME = "receiptBuyer";
     private static final String PASSWORD = "buyer123";
     private static final String BOOK_NAME = "The Book";
     private static final String AUTHOR_NAME = "The Author";
@@ -39,11 +40,11 @@ public class ReceiptRepositoryTest {
     @Autowired
     private ReceiptRepository receiptRepository;
 
-    @BeforeEach
-    public void setup() {
-        User user = new User(USERNAME, PASSWORD);
-        Book book = new Book(BOOK_NAME, AUTHOR_NAME, PRICE);
+    User user = new User(USERNAME, PASSWORD);
+    Book book = new Book(BOOK_NAME, AUTHOR_NAME, PRICE);
 
+    @Before
+    public void setUp() {
         entityManager.persist(user);
         entityManager.persist(book);
         entityManager.persist(new Receipt(user, Arrays.asList(book)));
@@ -51,21 +52,28 @@ public class ReceiptRepositoryTest {
 
     @Test
     public void testFindByUser() {
-        User user = userRepository.findAll().iterator().next();
+        List<User> users = userRepository.findByUsername(USERNAME);
+        User user = users.iterator().next();
 
-        List<Receipt> receipt = receiptRepository.findByUser(user);
+        List<Receipt> receipts = receiptRepository.findByUser(user);
 
-        assertNotNull(receipt);
-        assertEquals(1, receipt.size());
+        assertNotNull(receipts);
+        assertEquals(1, receipts.size());
+        for (Receipt r : receipts) {
+            assertThat(r.getItems().contains(book));
+        }
     }
 
     @Test
     public void testFindByDate() throws ParseException {
         Date currDate = new SimpleDateFormat("yyyy-MM-dd").parse(java.time.LocalDate.now().toString());
 
-        List<Receipt> receipt = receiptRepository.findByDate(currDate);
+        List<Receipt> receipts = receiptRepository.findByDate(currDate);
 
-        assertNotNull(receipt);
-        assertEquals(1, receipt.size());
+        assertNotNull(receipts);
+        assertEquals(1, receipts.size());
+        for (Receipt r : receipts) {
+            assertThat(r.getItems().contains(book));
+        }
     }
 }

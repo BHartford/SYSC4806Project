@@ -1,5 +1,7 @@
 package dataModel;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +15,8 @@ public class Receipt {
     @GeneratedValue
     long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @CreationTimestamp
     private Date date;
 
     @OneToOne
@@ -72,5 +75,15 @@ public class Receipt {
         }
 
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "Receipt{" +
+                "id=" + id +
+                ", date=" + date +
+                ", user=" + user +
+                ", items=" + items +
+                '}';
     }
 }
