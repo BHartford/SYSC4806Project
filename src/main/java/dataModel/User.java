@@ -1,8 +1,8 @@
 package dataModel;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -14,6 +14,7 @@ public class User {
     @Id
     @GeneratedValue
     long id;
+    @Column(unique = true)
     private String username;
     private String password;
     private int typeOfUser;
@@ -27,7 +28,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.typeOfUser = typeOfUser;
-        this.purchaseHistory = new ArrayList<Book>();
     }
 
     public User(String username, String password) {
@@ -86,6 +86,26 @@ public class User {
 
     @Override
     public String toString() {
-        return "\nusername: " + username + "\ntype of user: " + this.getTypeOfUserString();
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", typeOfUser=" + this.getTypeOfUserString() +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return typeOfUser == user.typeOfUser &&
+                username.equals(user.username) &&
+                password.equals(user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, typeOfUser);
     }
 }
