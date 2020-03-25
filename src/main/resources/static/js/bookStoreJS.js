@@ -170,7 +170,7 @@ $(document).ready(function () {
                         localStorage.setItem("cart", []);
                         localStorage.setItem("quantities", []);
                         alert("Successfully purchased " + data.result + " book(s)");
-                        window.location = '/viewPurchaseHistory?user=' + data.user;
+                        window.location = '/viewReceiptHistory?user=' + data.user;
                     }
 
                 })
@@ -186,7 +186,7 @@ $(document).ready(function () {
             if (localStorage.getItem("user") === null) {
                 alert("Please Login!");
             } else {
-                window.location.href = '/viewPurchaseHistory?user=' + localStorage.getItem("userID");
+                window.location.href = '/viewReceiptHistory?user=' + localStorage.getItem("userID");
             }
         });
     }

@@ -23,6 +23,9 @@ public class BookStoreController {
     private UserRepository userRepository;
 
     @Autowired
+    private ReceiptRepository receiptRepository;
+
+    @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
     private static final String TOPIC = "add_book";
 
@@ -170,25 +173,36 @@ public class BookStoreController {
                 bookIDList.add(rawID);
             }
         }
+
+        //Init new Receipt for user
+        Receipt receipt = new Receipt(user);
         //Add to purchase history and reduce inventory
         for (long id : bookIDList) {
             Book b = bookRepository.findById(id);
             b.setQuantity(b.getQuantity() - 1);
             bookRepository.save(b);
-            user.addPurchase(b);
+            receipt.addItems(b);
         }
 
-        userRepository.save(user);
+        receiptRepository.save(receipt);
         JSONObject resp = new JSONObject();
         resp.put("result", bookIDList.size());
         resp.put("user", user.getId());
         return resp.toString();
     }
 
-    @GetMapping("/viewPurchaseHistory")
-    public String viewPurchaseHistory1(Model model, @RequestParam(value = "user") String userID) {
+    @GetMapping("/viewTransaction")
+    public String viewTransaction(Model model, @RequestParam(value = "receipt") String receiptId) {
+        Receipt receipt = receiptRepository.findById(Long.parseLong(receiptId));
+        model.addAttribute("receipt", receipt);
+        return "viewPurchase";
+    }
+
+    @GetMapping("/viewReceiptHistory")
+    public String viewReceiptHistory(Model model, @RequestParam(value = "user") String userID) {
         User user = userRepository.findById(Long.parseLong(userID));
-        model.addAttribute("purchaseHistory", user.getPurchaseHistory());
-        return "viewPurchaseHistory";
+        List<Receipt> receipts = receiptRepository.findByUser(user);
+        model.addAttribute("receiptHistory", receipts);
+        return "viewReceiptHistory";
     }
 }

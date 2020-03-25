@@ -1,7 +1,6 @@
 package dataModel;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,8 +17,6 @@ public class User {
     private String username;
     private String password;
     private int typeOfUser;
-    @ManyToMany
-    private List<Book> purchaseHistory;
 
     public User() {
     }
@@ -64,20 +61,6 @@ public class User {
 
     public String getTypeOfUserString() {
         return ((this.typeOfUser == BUYER) ? "Buyer" : "Seller");
-    }
-
-    public List<Book> getPurchaseHistory() {
-        return purchaseHistory;
-    }
-
-    public void addPurchase(Book purchase) {
-        purchaseHistory.add(purchase);
-    }
-
-    public void addPurchase(List<Book> purchase) {
-        for (Book b : purchase) {
-            purchaseHistory.add(b);
-        }
     }
 
     public boolean validPassword(String attemptedPassword) {

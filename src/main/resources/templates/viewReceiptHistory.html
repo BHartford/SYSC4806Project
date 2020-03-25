@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/js/bookStoreJS.js"></script>
+
+<head>
+    <title>AMAZin BOOK STORE</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+<h1><a href="/">AMAZin BOOK STORE</a></h1>
+<div id="searchBar">
+    <form action="#" method="post" th:action="@{/searchByTitle}">
+        <input id="title" name="title" type="text">
+        <input type="submit" value="Search By Title">
+    </form>
+    <form action="#" method="post" th:action="@{/searchByAuthor}">
+        <input id="author" name="author" type="text">
+        <input type="submit" value="Search By Author">
+    </form>
+</div>
+<div id="utility">
+    <button class="login" id=logInButton>Log In</button>
+    <button id="viewCart">View Cart</button>
+    <button id="viewPurchaseHistory">View Purchase History</button>
+</div>
+<div id="clear"></div>
+<div id="clear"></div>
+<p>Purchase History</p>
+<div th:if="books == null">
+    <p>DATABASE Refused To Connect</p>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Item Count</th>
+        <th>Total Price ($)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="receipt: ${receiptHistory}">
+        <td><b><a th:href="@{/viewTransaction(receipt=${receipt.id})}" th:text="${#ids.seq('')}"></a></b></td>
+        <td th:text="${receipt.date}"/>
+        <td th:text="${receipt.itemCount}"/>
+        <td th:text="${receipt.total}"/>
+    </tr>
+    </tbody>
+</table>
+</body>
+<html>
