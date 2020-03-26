@@ -20,7 +20,7 @@ public class AccessBookStore {
 	}
 
 	@Bean
-	public CommandLineRunner demo(BookRepository bookRepository, UserRepository userRepository) {
+	public CommandLineRunner demo(BookRepository bookRepository, UserRepository userRepository, ReceiptRepository receiptRepository) {
 		return (args) -> {
 
 			if (!userRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
@@ -99,9 +99,7 @@ public class AccessBookStore {
 								9.99, 25)
 				));
 
-				for (Book b : inventory) {
-					bookRepository.save(b);
-				}
+				bookRepository.saveAll(inventory);
 			}
 
 			for (Book b : bookRepository.findAll()) {

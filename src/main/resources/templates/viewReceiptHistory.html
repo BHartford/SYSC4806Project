@@ -29,23 +29,25 @@
 </div>
 <div id="clear"></div>
 <div id="clear"></div>
-<p>Purchase History</p>
+<p>Transaction History</p>
 <div th:if="books == null">
     <p>DATABASE Refused To Connect</p>
 </div>
-<table th:id="inventory">
+<table>
     <thead>
     <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Price Paid($)</th>
+        <th>Transaction Number #</th>
+        <th>Date</th>
+        <th>Item Count</th>
+        <th>Total Price ($)</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book: ${purchaseHistory}">
-        <td><b><a th:href="@{/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
-        <td th:text="${book.author}"/>
-        <td th:text="${book.price}"/>
+    <tr th:each="receipt: ${receiptHistory}">
+        <td><b><a th:href="@{/viewTransaction(receipt=${receipt.id})}" th:text="${#ids.seq('')}"></a></b></td>
+        <td th:text="${receipt.date}"/>
+        <td th:text="${receipt.itemCount}"/>
+        <td th:text="${receipt.total}"/>
     </tr>
     </tbody>
 </table>
