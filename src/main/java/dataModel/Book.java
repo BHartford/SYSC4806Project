@@ -101,13 +101,17 @@ public class Book {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Book book = (Book) o;
-		return Double.compare(book.price, price) == 0 &&
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Book book = (Book) o;
+		return year == book.year &&
+				Double.compare(book.price, price) == 0 &&
 				title.equals(book.title) &&
 				author.equals(book.author);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(title, author, price);
+		return Objects.hash(title, author, year, price);
 	}
 }
