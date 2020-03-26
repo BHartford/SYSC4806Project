@@ -100,10 +100,7 @@ public class Book {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Book book = (Book) o;
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Book book = (Book) o;
+		Book  book = (Book) o;
 		return year == book.year &&
 				Double.compare(book.price, price) == 0 &&
 				title.equals(book.title) &&
