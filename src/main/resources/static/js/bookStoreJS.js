@@ -17,6 +17,21 @@ $(document).ready(function () {
 
 
     }
+    
+    //Converts numerical ratings to star images
+    if ($('.ratingImg').length > 0) {
+    	$( ".ratingImg" ).each(function( index ) {
+    		var rating = Math.floor(parseFloat(this.innerHTML));
+    		var starRating = '';
+    		for(var i = 0; i < rating; i++){
+    			starRating += '<span class="fa fa-star checked"></span>';
+    		}
+    		for(var i = rating; i < 5; i ++){
+    			starRating += '<span class="fa fa-star"></span>';
+    		}
+  			this.innerHTML = starRating;
+		});    	
+    }
 
     if ($('.addToCart').length > 0) {
         $('.addToCart').click(function () {

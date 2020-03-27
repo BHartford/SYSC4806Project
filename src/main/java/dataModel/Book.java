@@ -11,6 +11,7 @@ public class Book {
 	public static final int DEFAULT_YEAR = 0;
 	public static final int DEFAULT_QUANTITY = 1;
 	public static final String DEFAULT_DESCRIPTION = "No Description Provided";
+	public static final double DEFAULT_RATING = 0;
 
 	@Id @GeneratedValue
 	long id;
@@ -20,20 +21,22 @@ public class Book {
 	private String description;
 	private double price;
 	private int quantity;
+	private double rating;
 
 	public Book() {}
 
 	public Book(String title, String author, double price) {
-		this(title, author, null, null, price, null);
+		this(title, author, null, null, price, null, null);
 	}
 	
-	public Book(String title, String author, Integer year, String description, Double price, Integer quantity) {
+	public Book(String title, String author, Integer year, String description, Double price, Integer quantity, Double rating) {
 		this.title = title;
 		this.author = author;
 		this.year = Optional.ofNullable(year).orElse(DEFAULT_YEAR);
 		this.description = Optional.ofNullable(description).orElse(DEFAULT_DESCRIPTION);
 		this.price = price;
 		this.quantity = Optional.ofNullable(quantity).orElse(DEFAULT_QUANTITY);
+		this.rating = Optional.ofNullable(rating).orElse(DEFAULT_RATING);
 	}
 
 	public long getId() { return id; }
@@ -84,6 +87,14 @@ public class Book {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	
+	public double getRating() {
+		return rating;
+	}
+	
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 
 	@Override
