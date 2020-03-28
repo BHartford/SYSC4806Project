@@ -19,15 +19,15 @@
 
 <h1><a href="/">AMAZin BOOK STORE</a></h1>
 <div id="searchBar">
-    <form action="#" method="post" th:action="@{/searchByTitle}">
+    <form action="#" method="post" th:action="@{/public/searchByTitle}">
         <input id="title" name="title" type="text">
         <input type="submit" value="Search By Title">
     </form>
-    <form action="#" method="post" th:action="@{/searchByAuthor}">
+    <form action="#" method="post" th:action="@{/public/searchByAuthor}">
         <input id="author" name="author" type="text">
         <input type="submit" value="Search By Author">
     </form>
-    <button id="addBookButton" onclick="location.href='/addbook'" type="button"> Add a new book</button>
+    <button id="addBookButton" onclick="location.href='/private/addbook'" type="button"> Add a new book</button>
 </div>
 <div id="utility">
     <button class="login" id=logInButton>Log In</button>
@@ -52,7 +52,7 @@
     </thead>
     <tbody>
     <tr th:each="book: ${books}">
-        <td><b><a th:href="@{/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
+        <td><b><a th:href="@{/public/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
         <td th:text="${book.author}"/>
         <td th:text="${book.price}"/>
         <td>

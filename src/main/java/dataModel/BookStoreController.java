@@ -42,7 +42,7 @@ public class BookStoreController {
         return "index";
     }
 
-    @GetMapping("/viewbook")
+    @GetMapping("/public/viewbook")
     public String display(Model model, @RequestParam(value = "bookID") long bookID) {
         Book b = null;
 
@@ -68,7 +68,7 @@ public class BookStoreController {
         return index(model);
     }
 
-    @GetMapping("/cart")
+    @GetMapping("/private/cart")
     public String showCart(Model model, @RequestParam(value = "books") List<String> books, @RequestParam(value = "quantities") List<String> quantities) {
 
         double totalCost = 0;
@@ -93,7 +93,7 @@ public class BookStoreController {
         return "viewCart";
     }
 
-    @PostMapping("/addbook")
+    @PostMapping("/private/addbook")
     public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook) {
         kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
         bookRepository.save(newBook);
@@ -102,13 +102,13 @@ public class BookStoreController {
         return "index";
     }
 
-    @GetMapping("/addbook")
+    @GetMapping("/private/addbook")
     public String directToAddBook(Model model) {
         model.addAttribute("newBook", new Book());
         return "addbook";
     }
 
-    @PostMapping("/searchByTitle")
+    @PostMapping("/public/searchByTitle")
     public String titleSearch(Model model, @RequestParam(value = "title") String title) {
         List<Book> books = bookRepository.findByTitle(title);
 
@@ -121,7 +121,7 @@ public class BookStoreController {
         }
     }
 
-    @PostMapping("/searchByAuthor")
+    @PostMapping("/public/searchByAuthor")
     public String authorSearch(Model model, @RequestParam(value = "author") String author) {
         List<Book> books = bookRepository.findByAuthor(author);
 
@@ -134,7 +134,7 @@ public class BookStoreController {
         }
     }
 
-    @PostMapping(value = "/checkLogin", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/public/checkLogin", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String loginCheck(@RequestBody String json) {
         System.out.println(json);
@@ -156,7 +156,7 @@ public class BookStoreController {
         return resp.toString();
     }
 
-    @PostMapping(value = "/purchaseCart", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/private/purchaseCart", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String purchaseCart(Model model, @RequestBody String json) {
         JSONObject jo = new JSONObject(json);
@@ -191,14 +191,14 @@ public class BookStoreController {
         return resp.toString();
     }
 
-    @GetMapping("/viewTransaction")
+    @GetMapping("/private/viewTransaction")
     public String viewTransaction(Model model, @RequestParam(value = "receipt") String receiptId) {
         Receipt receipt = receiptRepository.findById(Long.parseLong(receiptId));
         model.addAttribute("receipt", receipt);
         return "viewPurchase";
     }
 
-    @GetMapping("/viewReceiptHistory")
+    @GetMapping("/private/viewReceiptHistory")
     public String viewReceiptHistory(Model model, @RequestParam(value = "user") String userID) {
         User user = userRepository.findById(Long.parseLong(userID));
         List<Receipt> receipts = receiptRepository.findByUser(user);
