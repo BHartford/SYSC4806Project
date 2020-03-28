@@ -86,7 +86,7 @@ $(document).ready(function () {
     }
 
     if ($('#addBookButton').length > 0) {
-        if (localStorage.getItem("userType") && localStorage.getItem("userType") === "Seller") {
+        if (localStorage.getItem("type") && localStorage.getItem("type") === "Seller") {
             $('#addBookButton')[0].style.display = "block";
         } else {
             $('#addBookButton')[0].style.display = "none";
@@ -153,6 +153,7 @@ $(document).ready(function () {
             }
         });
     }
+    
     if ($('#viewPurchaseHistory').length > 0) {
         $('#viewPurchaseHistory').click(function () {
             if (localStorage.getItem("user") === null) {
@@ -161,5 +162,9 @@ $(document).ready(function () {
                 window.location.href = '/viewReceiptHistory?user=' + localStorage.getItem("userID");
             }
         });
+    }
+    
+    if ($('#addBookForm').length > 0) {
+        $('#user')[0].value = localStorage.getItem("user");
     }
 });

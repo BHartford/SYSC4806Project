@@ -27,7 +27,8 @@ public class BookStoreController {
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
-    private static final String TOPIC = "add_book";
+    private static final String ADD_BOOK_TOPIC = "add_book";
+    private static final String PURCHASE_TOPIC = "purchase";
 
     @GetMapping("/")
     public String landingPage(Model model) {
@@ -94,8 +95,8 @@ public class BookStoreController {
     }
 
     @PostMapping("/addbook")
-    public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook) {
-        kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
+    public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook, @ModelAttribute("user") String user) {
+        kafkaTemplate.send(ADD_BOOK_TOPIC, LoggingLibrary.newBookLog(newBook, user));
         bookRepository.save(newBook);
         model.addAttribute("books", bookRepository.findAll());
         model.addAttribute("newBook", null);
@@ -137,10 +138,10 @@ public class BookStoreController {
     @PostMapping(value = "/checkLogin", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String loginCheck(@RequestBody String json) {
-        System.out.println(json);
         JSONObject jo = new JSONObject(json);
         List<User> users = userRepository.findByUsername(jo.getString("username"));
         JSONObject resp = new JSONObject();
+        
         try {
             Boolean correctPass = users.get(0).validPassword(jo.getString("password"));
             System.out.println("." + users.get(0).getPassword() + ".");
@@ -152,7 +153,7 @@ public class BookStoreController {
         } catch (IndexOutOfBoundsException e) {
             resp.put("result", false);
         }
-        System.out.println("Response for login: " + resp.toString());
+        
         return resp.toString();
     }
 
@@ -183,8 +184,10 @@ public class BookStoreController {
             bookRepository.save(b);
             receipt.addItems(b);
         }
-
+        
         receiptRepository.save(receipt);
+        kafkaTemplate.send(PURCHASE_TOPIC, LoggingLibrary.purchaseLog(receipt, user.getUsername()));
+
         JSONObject resp = new JSONObject();
         resp.put("result", bookIDList.size());
         resp.put("user", user.getId());

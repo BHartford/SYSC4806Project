@@ -38,6 +38,7 @@
     <p> Description: <input th:field="*{description}" type="text"/></p>
     <p> Price: <input th:field="*{price}" type="text"/></p>
     <p> Quantity: <input th:field="*{quantity}" type="text"/></p>
+    <input type="hidden" th:value="${user}" name="user" id="user"/>
     <p><input class="button" type="submit" value="Submit"/></p>
 </form>
 </body>

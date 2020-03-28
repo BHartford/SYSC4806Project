@@ -93,6 +93,9 @@ public class Book {
 				", title='" + title + '\'' +
 				", author='" + author + '\'' +
 				", price=" + price +
+				", quantity=" + quantity +
+				", year=" + year +
+				", description='" + description + '\'' +
 				'}';
 	}
 
