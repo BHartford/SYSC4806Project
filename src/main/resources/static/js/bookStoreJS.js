@@ -8,8 +8,6 @@ $(document).ready(function () {
         $('#viewCart').text("View Cart (" + Object.keys(JSON.parse(localStorage.getItem("newCart"))).length + ")");
         $('#viewCart').click(function () {
             if (Object.keys(JSON.parse(localStorage.getItem("newCart"))).length > 0) {
-                console.log(localStorage.getItem("userID"));
-                console.log(JSON.parse(localStorage.getItem("userID")));
                 window.location.href = '/private/cart?books=' + Object.keys(JSON.parse(localStorage.getItem("newCart"))) +
                     '&quantities=' + Object.values(JSON.parse(localStorage.getItem("newCart"))) + '&userId=' + localStorage.getItem("userID");
             } else {
