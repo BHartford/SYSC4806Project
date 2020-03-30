@@ -14,11 +14,11 @@
 <body>
 <h1><a href="/">AMAZin BOOK STORE</a></h1>
 <div id="searchBar">
-    <form action="#" method="post" th:action="@{/searchByTitle}">
+    <form action="#" method="post" th:action="@{/public/searchByTitle}">
         <input id="title" name="title" type="text">
         <input type="submit" value="Search By Title">
     </form>
-    <form action="#" method="post" th:action="@{/searchByAuthor}">
+    <form action="#" method="post" th:action="@{/public/searchByAuthor}">
         <input id="author" name="author" type="text">
         <input type="submit" value="Search By Author">
     </form>

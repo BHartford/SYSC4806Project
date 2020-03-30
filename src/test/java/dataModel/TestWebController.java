@@ -40,7 +40,7 @@ public class TestWebController {
         Book b = books.iterator().next();
 
         mvc.perform(MockMvcRequestBuilders
-                .get("/viewbook?bookID=" + b.getId())
+                .get("/public/viewbook?bookID=" + b.getId())
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(view().name("viewbook"))
@@ -54,7 +54,7 @@ public class TestWebController {
         long requestId = 0;
 
         mvc.perform(MockMvcRequestBuilders
-                .get("/viewbook?bookID=" + requestId)
+                .get("/public/viewbook?bookID=" + requestId)
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(view().name("index"))
@@ -80,7 +80,7 @@ public class TestWebController {
         Book newBook = new Book("ABCs of Counting", "R. W. Swan", 2010, "The story takes place in an imagined soup can.", 4.99, 1);
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/addbook")
+                .post("/private/addbook")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .sessionAttr("newBook", newBook))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -96,7 +96,7 @@ public class TestWebController {
         Book b = books.iterator().next();
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/searchByTitle")
+                .post("/public/searchByTitle")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("title", b.getTitle()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -111,7 +111,7 @@ public class TestWebController {
         String nonexistentBookTitle = "";
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/searchByTitle")
+                .post("/public/searchByTitle")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("title", nonexistentBookTitle))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -125,7 +125,7 @@ public class TestWebController {
         String nonexistentBookTitle = "Pan De Mic";
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/searchByTitle")
+                .post("/public/searchByTitle")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("title", nonexistentBookTitle))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -140,7 +140,7 @@ public class TestWebController {
         Book b = books.iterator().next();
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/searchByAuthor")
+                .post("/public/searchByAuthor")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("author", b.getAuthor()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -155,7 +155,7 @@ public class TestWebController {
         String nonexistentAuthorName = "";
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/searchByAuthor")
+                .post("/public/searchByAuthor")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("author", nonexistentAuthorName))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -169,7 +169,7 @@ public class TestWebController {
         String nonexistentAuthorName = "C.O. Rona";
 
         mvc.perform(MockMvcRequestBuilders
-                .post("/searchByAuthor")
+                .post("/public/searchByAuthor")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("author", nonexistentAuthorName))
                 .andExpect(MockMvcResultMatchers.status().isOk())

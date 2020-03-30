@@ -24,7 +24,7 @@ public class TestErrorController {
         String badBookId = "abc";
 
         mvc.perform(MockMvcRequestBuilders
-                .get("/viewbook?bookID=" + badBookId)
+                .get("/public/viewbook?bookID=" + badBookId)
                 .contentType(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
 //                .andExpect(view().name("error"))

@@ -7,10 +7,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @SessionAttributes("newBook")
@@ -42,7 +44,7 @@ public class BookStoreController {
         return "index";
     }
 
-    @GetMapping("/viewbook")
+    @GetMapping("/public/viewbook")
     public String display(Model model, @RequestParam(value = "bookID") long bookID) {
         Book b = null;
 
@@ -68,9 +70,16 @@ public class BookStoreController {
         return index(model);
     }
 
-    @GetMapping("/cart")
-    public String showCart(Model model, @RequestParam(value = "books") List<String> books, @RequestParam(value = "quantities") List<String> quantities) {
-
+    @GetMapping("/private/cart")
+    public String showCart(Model model, @RequestParam(value = "books") List<String> books, @RequestParam(value = "quantities") List<String> quantities, @RequestParam(value = "userId") String userId) {
+        if (!StringUtils.isEmpty(userId)){
+            User user = userRepository.findById(Long.parseLong(userId));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
         double totalCost = 0;
         double totalBooks = 0;
         int quantity;
@@ -93,22 +102,30 @@ public class BookStoreController {
         return "viewCart";
     }
 
-    @PostMapping("/addbook")
+    @PostMapping("/private/addbook")
     public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook) {
-        kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
+        //kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
         bookRepository.save(newBook);
         model.addAttribute("books", bookRepository.findAll());
         model.addAttribute("newBook", null);
         return "index";
     }
 
-    @GetMapping("/addbook")
-    public String directToAddBook(Model model) {
+    @GetMapping("/private/addbook")
+    public String directToAddBook(Model model, @RequestParam(value = "userId") String userId) {
+        if (!StringUtils.isEmpty(userId)){
+            User user = userRepository.findById(Long.parseLong(userId));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
         model.addAttribute("newBook", new Book());
         return "addbook";
     }
 
-    @PostMapping("/searchByTitle")
+    @PostMapping("/public/searchByTitle")
     public String titleSearch(Model model, @RequestParam(value = "title") String title) {
         List<Book> books = bookRepository.findByTitle(title);
 
@@ -121,7 +138,7 @@ public class BookStoreController {
         }
     }
 
-    @PostMapping("/searchByAuthor")
+    @PostMapping("/public/searchByAuthor")
     public String authorSearch(Model model, @RequestParam(value = "author") String author) {
         List<Book> books = bookRepository.findByAuthor(author);
 
@@ -134,7 +151,7 @@ public class BookStoreController {
         }
     }
 
-    @PostMapping(value = "/checkLogin", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/public/checkLogin", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String loginCheck(@RequestBody String json) {
         System.out.println(json);
@@ -156,12 +173,15 @@ public class BookStoreController {
         return resp.toString();
     }
 
-    @PostMapping(value = "/purchaseCart", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/private/purchaseCart", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String purchaseCart(Model model, @RequestBody String json) {
         JSONObject jo = new JSONObject(json);
         System.out.println(json);
         User user = userRepository.findByUsername(jo.getString("username")).get(0);
+        if (Objects.isNull(user)){
+            return index(model);
+        }
         String[] cart = jo.getString("cart").split(",");
         String[] quantities = jo.getString("quantities").split(",");
         ArrayList<Long> bookIDList = new ArrayList<Long>();
@@ -191,15 +211,24 @@ public class BookStoreController {
         return resp.toString();
     }
 
-    @GetMapping("/viewTransaction")
+    @GetMapping("/private/viewTransaction")
     public String viewTransaction(Model model, @RequestParam(value = "receipt") String receiptId) {
         Receipt receipt = receiptRepository.findById(Long.parseLong(receiptId));
         model.addAttribute("receipt", receipt);
         return "viewPurchase";
     }
 
-    @GetMapping("/viewReceiptHistory")
+    @GetMapping("/private/viewReceiptHistory")
     public String viewReceiptHistory(Model model, @RequestParam(value = "user") String userID) {
+        if (!StringUtils.isEmpty(userID)){
+            User user = userRepository.findById(Long.parseLong(userID));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
+
         User user = userRepository.findById(Long.parseLong(userID));
         List<Receipt> receipts = receiptRepository.findByUser(user);
         model.addAttribute("receiptHistory", receipts);
