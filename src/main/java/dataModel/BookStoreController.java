@@ -113,6 +113,14 @@ public class BookStoreController {
 
     @GetMapping("/private/addbook")
     public String directToAddBook(Model model, @RequestParam(value = "userId") String userId) {
+        if (!StringUtils.isEmpty(userId)){
+            User user = userRepository.findById(Long.parseLong(userId));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
         model.addAttribute("newBook", new Book());
         return "addbook";
     }
