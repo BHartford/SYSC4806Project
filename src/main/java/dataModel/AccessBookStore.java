@@ -20,7 +20,7 @@ public class AccessBookStore {
 	}
 
 	@Bean
-	public CommandLineRunner demo(BookRepository bookRepository, UserRepository userRepository, ReceiptRepository receiptRepository) {
+	public CommandLineRunner demo(BookRepository bookRepository, UserRepository userRepository, ReceiptRepository receiptRepository, ReviewRepository reviewRepository) {
 		return (args) -> {
 
 			if (!userRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
@@ -101,6 +101,17 @@ public class AccessBookStore {
 
 				bookRepository.saveAll(inventory);
 			}
+			
+			if (!reviewRepository.findAll().iterator().hasNext()) { //Repo Empty - Init
+				ArrayList<Review> reviews = new ArrayList<Review>(Arrays.asList(
+						new Review(userRepository.findById(2), bookRepository.findById(3), 4.0, "A good start to a good series!"),
+						new Review(userRepository.findById(1), bookRepository.findById(3), 2.0, "What a bore..."),
+						new Review(userRepository.findById(2), bookRepository.findById(7), 4.0, "Quite dry, but very informational. A must read for all software engineering students"),
+						new Review(userRepository.findById(2), bookRepository.findById(18), 5.0, "An absolute classic"),
+						new Review(userRepository.findById(2), bookRepository.findById(12), 3.0, "Entertaining and witty, but missing some substance. Loved the movie though!")
+						));
+				reviewRepository.saveAll(reviews);
+			}
 
 			for (Book b : bookRepository.findAll()) {
 				log.info(b.toString());
@@ -109,6 +120,10 @@ public class AccessBookStore {
 
 			for (User u : userRepository.findAll()) {
 				log.info(u.toString());
+			}
+			
+			for (Review r : reviewRepository.findAll()) {
+				log.info(r.toString());
 			}
 		};
 

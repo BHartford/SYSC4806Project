@@ -24,6 +24,9 @@ public class BookStoreController {
 
     @Autowired
     private ReceiptRepository receiptRepository;
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -204,5 +207,29 @@ public class BookStoreController {
         List<Receipt> receipts = receiptRepository.findByUser(user);
         model.addAttribute("receiptHistory", receipts);
         return "viewReceiptHistory";
+    }
+    
+    @GetMapping("/viewreviews")
+    public String displayReviews(Model model, @RequestParam(value = "bookID") long bookID) {
+        List<Review> reviews = null;
+        String title = null;
+
+        try {
+            reviews = reviewRepository.findByBookId(bookID);
+            title = bookRepository.findById(bookID).getTitle();
+            
+        } catch (Exception e) {
+            //TODO Log this
+            //Requires a valid IDNumber
+        }
+
+        if (reviews != null && title != null) {
+        	model.addAttribute("bookTitle", title);
+            model.addAttribute("reviews", reviews);
+            return "viewReviews";
+        } else {
+            String errorMessage = String.format(ApplicationMsg.BAD_BOOK_ID.getMsg(), bookID);
+            return isNotFound(model, errorMessage);
+        }
     }
 }

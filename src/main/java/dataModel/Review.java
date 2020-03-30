@@ -4,6 +4,7 @@ import java.util.Optional;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Review {
@@ -11,10 +12,15 @@ public class Review {
 	
 	@Id @GeneratedValue
 	long id;
+	@ManyToOne
 	private User user;
+	@ManyToOne
 	private Book book;
 	private double rating;
 	private String review;
+	
+	public Review(){
+	}
 	
 	public Review(User user, Book book, double rating) {
 		this(user, book, rating, null);
@@ -61,6 +67,17 @@ public class Review {
 
 	public void setReview(String review) {
 		this.review = review;
+	}
+	
+	public String toString() {
+		return "Review{" +
+				"id=" + id +
+				", user = '" + user.getUsername() + '\'' +
+				", book = '" + book.getTitle() + '\'' +
+				", book ID = '" + book.getId() + '\'' +
+				", rating = '" + rating + '\'' +
+				", review = '" + review +
+				"'}";
 	}
 	
 	

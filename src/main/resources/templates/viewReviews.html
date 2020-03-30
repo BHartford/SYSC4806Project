@@ -1,0 +1,50 @@
+ <!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="/js/bookStoreJS.js"></script>
+
+<head>
+    <title>AMAZin BOOK STORE</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+	<h1><a href="/">AMAZin BOOK STORE</a></h1>
+	<div id="searchBar">
+	    <form action="#" method="post" th:action="@{/searchByTitle}">
+	        <input id="title" name="title" type="text">
+	        <input type="submit" value="Search By Title">
+	    </form>
+	    <form action="#" method="post" th:action="@{/searchByAuthor}">
+	        <input id="author" name="author" type="text">
+	        <input type="submit" value="Search By Author">
+	    </form>
+	</div>
+	<div id="utility">
+	    <button class="login" id=logInButton>Log In</button>
+	    <button id="viewCart">View Cart</button>
+	    <button id="viewPurchaseHistory">View Purchase History</button>
+	</div>
+	<div id="clear"></div>
+	<p>Reviews for <span th:text="${bookTitle}" /></p>
+	<div th:if="books == null">
+	    <p>DATABASE Refused To Connect</p>
+	</div> 
+	<table>
+		<thead>
+		    <tr>
+		        <th>User</th>
+		        <th>Rating</th>
+		        <th>Review</th>
+		    </tr>
+		</thead>
+    	<tbody th:each="review: ${reviews}">
+    		<td th:text="${review.user.username}"/>
+    		<td th:text="${review.rating}"/>
+    		<td th:text="${review.review}"/
+		</tbody>
+	</table>
+</body>
