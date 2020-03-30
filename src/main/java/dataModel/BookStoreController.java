@@ -209,7 +209,7 @@ public class BookStoreController {
         return "viewReceiptHistory";
     }
     
-    @GetMapping("/viewreviews")
+    @GetMapping("/public/viewreviews")
     public String displayReviews(Model model, @RequestParam(value = "bookID") long bookID) {
         List<Review> reviews = null;
         String title = null;

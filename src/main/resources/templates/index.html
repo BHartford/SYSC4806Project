@@ -57,7 +57,7 @@
         <td><b><a th:href="@{/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
         <td th:text="${book.author}"/>
         <td th:text="${book.price}"/>
-        <td><a th:href="@{/viewreviews(bookID=${book.id})}"><span class="ratingImg" th:text="${book.rating}"\></a></td>
+        <td><a th:href="@{/public/viewreviews(bookID=${book.id})}"><span class="ratingImg" th:text="${book.rating}"\></a></td>
         <td>
             <button class="addToCart" th:id="${book.id}">Add To Cart</button>
         </td>
