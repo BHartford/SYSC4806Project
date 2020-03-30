@@ -8,8 +8,10 @@ $(document).ready(function () {
         $('#viewCart').text("View Cart (" + Object.keys(JSON.parse(localStorage.getItem("newCart"))).length + ")");
         $('#viewCart').click(function () {
             if (Object.keys(JSON.parse(localStorage.getItem("newCart"))).length > 0) {
+                console.log(localStorage.getItem("userID"));
+                console.log(JSON.parse(localStorage.getItem("userID")));
                 window.location.href = '/private/cart?books=' + Object.keys(JSON.parse(localStorage.getItem("newCart"))) +
-                    '&quantities=' + Object.values(JSON.parse(localStorage.getItem("newCart")));
+                    '&quantities=' + Object.values(JSON.parse(localStorage.getItem("newCart"))) + '&userId=' + localStorage.getItem("userID");
             } else {
                 alert("Your cart is empty");
             }
@@ -60,7 +62,7 @@ $(document).ready(function () {
             cart[key] =  this.value;
             localStorage.setItem("newCart", JSON.stringify(cart));
             window.location.href = '/private/cart?books=' + Object.keys(JSON.parse(localStorage.getItem("newCart"))) + '&quantities='
-                + Object.values(JSON.parse(localStorage.getItem("newCart")));
+                + Object.values(JSON.parse(localStorage.getItem("newCart"))) + '&userId=' + Object.values(JSON.parse(localStorage.getItem("userID")));
         });
     }
 
@@ -79,14 +81,14 @@ $(document).ready(function () {
                 }
                 if (localStorage.getItem("user")) {
                     localStorage.removeItem("user");
-                    localStorage.removeItem("userType");
+                    localStorage.removeItem("type");
                 }
             }
         });
     }
 
     if ($('#addBookButton').length > 0) {
-        if (localStorage.getItem("userType") && localStorage.getItem("userType") === "Seller") {
+        if (localStorage.getItem("type") && localStorage.getItem("type") === "Seller") {
             $('#addBookButton')[0].style.display = "block";
         } else {
             $('#addBookButton')[0].style.display = "none";
@@ -163,3 +165,7 @@ $(document).ready(function () {
         });
     }
 });
+
+function addBook(){
+    window.location.href = '/private/addbook?userId=' + localStorage.getItem("userID");
+}

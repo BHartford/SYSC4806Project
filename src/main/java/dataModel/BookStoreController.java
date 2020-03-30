@@ -7,10 +7,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @SessionAttributes("newBook")
@@ -69,8 +71,15 @@ public class BookStoreController {
     }
 
     @GetMapping("/private/cart")
-    public String showCart(Model model, @RequestParam(value = "books") List<String> books, @RequestParam(value = "quantities") List<String> quantities) {
-
+    public String showCart(Model model, @RequestParam(value = "books") List<String> books, @RequestParam(value = "quantities") List<String> quantities, @RequestParam(value = "userId") String userId) {
+        if (!StringUtils.isEmpty(userId)){
+            User user = userRepository.findById(Long.parseLong(userId));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
         double totalCost = 0;
         double totalBooks = 0;
         int quantity;
@@ -95,7 +104,7 @@ public class BookStoreController {
 
     @PostMapping("/private/addbook")
     public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook) {
-        kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
+        //kafkaTemplate.send(TOPIC, LoggingLibrary.getTime() + newBook.toString());
         bookRepository.save(newBook);
         model.addAttribute("books", bookRepository.findAll());
         model.addAttribute("newBook", null);
@@ -103,7 +112,7 @@ public class BookStoreController {
     }
 
     @GetMapping("/private/addbook")
-    public String directToAddBook(Model model) {
+    public String directToAddBook(Model model, @RequestParam(value = "userId") String userId) {
         model.addAttribute("newBook", new Book());
         return "addbook";
     }
@@ -162,6 +171,9 @@ public class BookStoreController {
         JSONObject jo = new JSONObject(json);
         System.out.println(json);
         User user = userRepository.findByUsername(jo.getString("username")).get(0);
+        if (Objects.isNull(user)){
+            return index(model);
+        }
         String[] cart = jo.getString("cart").split(",");
         String[] quantities = jo.getString("quantities").split(",");
         ArrayList<Long> bookIDList = new ArrayList<Long>();
@@ -200,6 +212,15 @@ public class BookStoreController {
 
     @GetMapping("/private/viewReceiptHistory")
     public String viewReceiptHistory(Model model, @RequestParam(value = "user") String userID) {
+        if (!StringUtils.isEmpty(userID)){
+            User user = userRepository.findById(Long.parseLong(userID));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
+
         User user = userRepository.findById(Long.parseLong(userID));
         List<Receipt> receipts = receiptRepository.findByUser(user);
         model.addAttribute("receiptHistory", receipts);
