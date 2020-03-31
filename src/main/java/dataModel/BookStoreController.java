@@ -1,20 +1,30 @@
 package dataModel;
 
-import Logging.LoggingLibrary;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import Logging.LoggingLibrary;
+
 @Controller
 @SessionAttributes("newBook")
 public class BookStoreController {
+	@Value("${kafka.logging}")
+	private boolean kafkaLogging;
 
     @Autowired
     private BookRepository bookRepository;
@@ -96,7 +106,7 @@ public class BookStoreController {
 
     @PostMapping("/addbook")
     public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook, @ModelAttribute("user") String user) {
-        kafkaTemplate.send(ADD_BOOK_TOPIC, LoggingLibrary.newBookLog(newBook, user));
+        if (kafkaLogging) kafkaTemplate.send(ADD_BOOK_TOPIC, LoggingLibrary.newBookLog(newBook, user));
         bookRepository.save(newBook);
         model.addAttribute("books", bookRepository.findAll());
         model.addAttribute("newBook", null);
@@ -186,7 +196,7 @@ public class BookStoreController {
         }
         
         receiptRepository.save(receipt);
-        kafkaTemplate.send(PURCHASE_TOPIC, LoggingLibrary.purchaseLog(receipt, user.getUsername()));
+        if (kafkaLogging) kafkaTemplate.send(PURCHASE_TOPIC, LoggingLibrary.purchaseLog(receipt, user.getUsername()));
 
         JSONObject resp = new JSONObject();
         resp.put("result", bookIDList.size());

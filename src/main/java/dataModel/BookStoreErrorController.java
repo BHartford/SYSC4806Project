@@ -1,17 +1,10 @@
 package dataModel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -23,6 +16,8 @@ import Logging.LoggingLibrary;
 
 @Controller
 public class BookStoreErrorController implements ErrorController {
+	@Value("${kafka.logging}")
+	private boolean kafkaLogging;
 
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;
@@ -53,7 +48,7 @@ public class BookStoreErrorController implements ErrorController {
 				errorMsg = ApplicationMsg.GENERIC_ERROR.getMsg();
 			}
 			
-			kafkaTemplate.send(ERROR_TOPIC, LoggingLibrary.errorLog(statusCode, errorMsg));
+			if (kafkaLogging) kafkaTemplate.send(ERROR_TOPIC, LoggingLibrary.errorLog(statusCode, errorMsg));
 
 			model.addAttribute("errorStatus", statusCode);
 			model.addAttribute("errorMsg", errorMsg);
