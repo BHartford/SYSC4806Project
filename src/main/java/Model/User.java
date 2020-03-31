@@ -1,4 +1,4 @@
-package dataModel;
+package Model;
 
 import javax.persistence.*;
 import java.util.Objects;

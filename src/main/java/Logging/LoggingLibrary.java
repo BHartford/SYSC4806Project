@@ -3,8 +3,9 @@ package Logging;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import dataModel.Book;
-import dataModel.Receipt;
+import Model.Book;
+import Model.Receipt;
+import Model.User;
 
 public class LoggingLibrary {
     public static String getTime() {
@@ -24,5 +25,9 @@ public class LoggingLibrary {
     
     public static String errorLog(int statusCode, String message) {
     	return getTime() + "Error with code " + statusCode + " occured with the following message:\n\t\"" + message;
+    }
+    
+    public static String newUserLog(User user) {
+    	return getTime() + "New User: " + user.toString();
     }
 }

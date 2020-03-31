@@ -9,6 +9,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import Model.BookRepository;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TestErrorController {

@@ -1,4 +1,4 @@
-package dataModel;
+package Controller;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,6 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import Logging.LoggingLibrary;
+import Model.ApplicationMsg;
+import Model.Book;
+import Model.BookRepository;
+import Model.Receipt;
+import Model.ReceiptRepository;
+import Model.Review;
+import Model.ReviewRepository;
+import Model.User;
+import Model.UserRepository;
 
 @Controller
 @SessionAttributes("newBook")
@@ -48,6 +57,7 @@ public class BookStoreController {
     private KafkaTemplate<String, String> kafkaTemplate;
     private static final String ADD_BOOK_TOPIC = "add_book";
     private static final String PURCHASE_TOPIC = "purchase";
+    private static final String NEW_USER_TOPIC = "new_user";
 
     @GetMapping("/")
     public String landingPage(Model model) {
@@ -88,6 +98,7 @@ public class BookStoreController {
         }
         User user = new User(username, password, userType);
         userRepository.save(user);
+        if (kafkaLogging) kafkaTemplate.send(NEW_USER_TOPIC, LoggingLibrary.newUserLog(user));
         return index(model);
     }
 

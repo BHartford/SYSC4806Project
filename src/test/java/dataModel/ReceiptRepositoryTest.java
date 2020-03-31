@@ -8,6 +8,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import Model.Book;
+import Model.BookRepository;
+import Model.Receipt;
+import Model.ReceiptRepository;
+import Model.User;
+import Model.UserRepository;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

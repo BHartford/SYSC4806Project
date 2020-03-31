@@ -1,4 +1,4 @@
-package dataModel;
+package Controller;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import Logging.LoggingLibrary;
+import Model.ApplicationMsg;
 
 @Controller
 public class BookStoreErrorController implements ErrorController {

@@ -50,11 +50,14 @@ https://sysc4806project2020.herokuapp.com/
 ## Setting up Kafka
  1. Download and start Kafka as detailed [here](https://kafka.apache.org/quickstart).
  2. Create the necessary topics (Refer to Step 3 of the linked guide), named as follows:
-		a. addBook
+		a. add_book
 		b. purchase
 		c. error
+		d. new_user
  3. Start a consumer for each of the topics (as in Step 5 of the linked guide). Note that each one should be in a seperate terminal.
- 4. Use the application as normal, any logged messages will appear in the terminal for the corresponding topic.
+ 4. In the application.properties file, set the value of kafka.logging to "true".
+ 5. If you are running Kafka on a machine that's not running the application set the IP address in the spring.kafka.bootstrap-servers value to that of the machine with Kafka.
+ 6. Use the application as normal, any logged messages will appear in the terminal for the corresponding topic.
  
 ## To Do Next Sprint
 - Create a cart object to represent books in the cart

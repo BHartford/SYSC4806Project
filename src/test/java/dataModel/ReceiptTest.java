@@ -2,6 +2,10 @@ package dataModel;
 
 import org.junit.jupiter.api.Test;
 
+import Model.Book;
+import Model.Receipt;
+import Model.User;
+
 import java.util.Arrays;
 import java.util.List;
 
