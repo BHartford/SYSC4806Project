@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/js/signup.js"></script>
+
+<head>
+    <title>AMAZin BOOK STORE</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Sign Up</h1>
+<form id="signupForm" action="/public/signup" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username"><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+    <input type="radio" id="buyer" name="type" value="buyer">
+    <label for="buyer">Buyer</label><br>
+    <input type="radio" id="seller" name="type" value="seller">
+    <label for="seller">Seller</label><br><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

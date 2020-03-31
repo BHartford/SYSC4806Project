@@ -44,6 +44,35 @@ public class BookStoreController {
         return "index";
     }
 
+    @GetMapping("/public/signup")
+    public String signup(Model model) {
+        return "signup";
+    }
+
+    @PostMapping(value = "/public/checkSignup", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public String checkSignup(@RequestBody String json) {
+        JSONObject jo = new JSONObject(json);
+        String username = jo.getString("username");
+        Boolean doesUsernameExist = userRepository.findByUsername(username).isEmpty();
+        JSONObject resp = new JSONObject();
+        resp.put("result", doesUsernameExist);
+        return resp.toString();
+    }
+
+    @PostMapping("/public/signup")
+    public String signup(Model model, @ModelAttribute("username") String username, @ModelAttribute("password") String password, @ModelAttribute("type") String type) {
+        int userType;
+        if ("buyer".equals(type)){
+            userType = User.BUYER;
+        } else {
+            userType = User.SELLER;
+        }
+        User user = new User(username, password, userType);
+        userRepository.save(user);
+        return index(model);
+    }
+
     @GetMapping("/public/viewbook")
     public String display(Model model, @RequestParam(value = "bookID") long bookID) {
         Book b = null;
