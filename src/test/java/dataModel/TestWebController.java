@@ -77,7 +77,7 @@ public class TestWebController {
     public void addValidBookTest() throws Exception {
         long currCount = repository.count();
 
-        Book newBook = new Book("ABCs of Counting", "R. W. Swan", 2010, "The story takes place in an imagined soup can.", 4.99, 1);
+        Book newBook = new Book("ABCs of Counting", "R. W. Swan", 2010, "The story takes place in an imagined soup can.", 4.99, 1, 2.0);
 
         mvc.perform(MockMvcRequestBuilders
                 .post("/private/addbook")
