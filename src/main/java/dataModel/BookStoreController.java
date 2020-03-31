@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import Logging.LoggingLibrary;
 
 @Controller
@@ -34,6 +40,9 @@ public class BookStoreController {
 
     @Autowired
     private ReceiptRepository receiptRepository;
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -53,7 +62,36 @@ public class BookStoreController {
         return "index";
     }
 
-    @GetMapping("/viewbook")
+    @GetMapping("/public/signup")
+    public String signup(Model model) {
+        return "signup";
+    }
+
+    @PostMapping(value = "/public/checkSignup", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public String checkSignup(@RequestBody String json) {
+        JSONObject jo = new JSONObject(json);
+        String username = jo.getString("username");
+        Boolean doesUsernameExist = userRepository.findByUsername(username).isEmpty();
+        JSONObject resp = new JSONObject();
+        resp.put("result", doesUsernameExist);
+        return resp.toString();
+    }
+
+    @PostMapping("/public/signup")
+    public String signup(Model model, @ModelAttribute("username") String username, @ModelAttribute("password") String password, @ModelAttribute("type") String type) {
+        int userType;
+        if ("buyer".equals(type)){
+            userType = User.BUYER;
+        } else {
+            userType = User.SELLER;
+        }
+        User user = new User(username, password, userType);
+        userRepository.save(user);
+        return index(model);
+    }
+
+    @GetMapping("/public/viewbook")
     public String display(Model model, @RequestParam(value = "bookID") long bookID) {
         Book b = null;
 
@@ -79,9 +117,16 @@ public class BookStoreController {
         return index(model);
     }
 
-    @GetMapping("/cart")
-    public String showCart(Model model, @RequestParam(value = "books") List<String> books, @RequestParam(value = "quantities") List<String> quantities) {
-
+    @GetMapping("/private/cart")
+    public String showCart(Model model, @RequestParam(value = "books") List<String> books, @RequestParam(value = "quantities") List<String> quantities, @RequestParam(value = "userId") String userId) {
+        if (!StringUtils.isEmpty(userId)){
+            User user = userRepository.findById(Long.parseLong(userId));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
         double totalCost = 0;
         double totalBooks = 0;
         int quantity;
@@ -104,7 +149,7 @@ public class BookStoreController {
         return "viewCart";
     }
 
-    @PostMapping("/addbook")
+    @PostMapping("/private/addbook")
     public String addBookToRepo(Model model, @ModelAttribute("newBook") Book newBook, @ModelAttribute("user") String user) {
         if (kafkaLogging) kafkaTemplate.send(ADD_BOOK_TOPIC, LoggingLibrary.newBookLog(newBook, user));
         bookRepository.save(newBook);
@@ -113,13 +158,21 @@ public class BookStoreController {
         return "index";
     }
 
-    @GetMapping("/addbook")
-    public String directToAddBook(Model model) {
+    @GetMapping("/private/addbook")
+    public String directToAddBook(Model model, @RequestParam(value = "userId") String userId) {
+        if (!StringUtils.isEmpty(userId)){
+            User user = userRepository.findById(Long.parseLong(userId));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
         model.addAttribute("newBook", new Book());
         return "addbook";
     }
 
-    @PostMapping("/searchByTitle")
+    @PostMapping("/public/searchByTitle")
     public String titleSearch(Model model, @RequestParam(value = "title") String title) {
         List<Book> books = bookRepository.findByTitle(title);
 
@@ -132,7 +185,7 @@ public class BookStoreController {
         }
     }
 
-    @PostMapping("/searchByAuthor")
+    @PostMapping("/public/searchByAuthor")
     public String authorSearch(Model model, @RequestParam(value = "author") String author) {
         List<Book> books = bookRepository.findByAuthor(author);
 
@@ -145,7 +198,7 @@ public class BookStoreController {
         }
     }
 
-    @PostMapping(value = "/checkLogin", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/public/checkLogin", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String loginCheck(@RequestBody String json) {
         JSONObject jo = new JSONObject(json);
@@ -167,12 +220,15 @@ public class BookStoreController {
         return resp.toString();
     }
 
-    @PostMapping(value = "/purchaseCart", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/private/purchaseCart", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public String purchaseCart(Model model, @RequestBody String json) {
         JSONObject jo = new JSONObject(json);
         System.out.println(json);
         User user = userRepository.findByUsername(jo.getString("username")).get(0);
+        if (Objects.isNull(user)){
+            return index(model);
+        }
         String[] cart = jo.getString("cart").split(",");
         String[] quantities = jo.getString("quantities").split(",");
         ArrayList<Long> bookIDList = new ArrayList<Long>();
@@ -204,18 +260,51 @@ public class BookStoreController {
         return resp.toString();
     }
 
-    @GetMapping("/viewTransaction")
+    @GetMapping("/private/viewTransaction")
     public String viewTransaction(Model model, @RequestParam(value = "receipt") String receiptId) {
         Receipt receipt = receiptRepository.findById(Long.parseLong(receiptId));
         model.addAttribute("receipt", receipt);
         return "viewPurchase";
     }
 
-    @GetMapping("/viewReceiptHistory")
+    @GetMapping("/private/viewReceiptHistory")
     public String viewReceiptHistory(Model model, @RequestParam(value = "user") String userID) {
+        if (!StringUtils.isEmpty(userID)){
+            User user = userRepository.findById(Long.parseLong(userID));
+            if (Objects.isNull(user)){
+                return index(model);
+            }
+        } else {
+            return index(model);
+        }
+
         User user = userRepository.findById(Long.parseLong(userID));
         List<Receipt> receipts = receiptRepository.findByUser(user);
         model.addAttribute("receiptHistory", receipts);
         return "viewReceiptHistory";
+    }
+    
+    @GetMapping("/public/viewreviews")
+    public String displayReviews(Model model, @RequestParam(value = "bookID") long bookID) {
+        List<Review> reviews = null;
+        String title = null;
+
+        try {
+            reviews = reviewRepository.findByBookId(bookID);
+            title = bookRepository.findById(bookID).getTitle();
+            
+        } catch (Exception e) {
+            //TODO Log this
+            //Requires a valid IDNumber
+        }
+
+        if (reviews != null && title != null) {
+        	model.addAttribute("bookTitle", title);
+            model.addAttribute("reviews", reviews);
+            return "viewReviews";
+        } else {
+            String errorMessage = String.format(ApplicationMsg.BAD_BOOK_ID.getMsg(), bookID);
+            return isNotFound(model, errorMessage);
+        }
     }
 }

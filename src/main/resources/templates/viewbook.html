@@ -2,6 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="/js/bookStoreJS.js"></script>
 
 <head>
@@ -14,17 +15,18 @@
 <body>
 <h1><a href="/">AMAZin BOOK STORE</a></h1>
 <div id="searchBar">
-    <form action="#" method="post" th:action="@{/searchByTitle}">
+    <form action="#" method="post" th:action="@{/public/searchByTitle}">
         <input id="title" name="title" type="text">
         <input type="submit" value="Search By Title">
     </form>
-    <form action="#" method="post" th:action="@{/searchByAuthor}">
+    <form action="#" method="post" th:action="@{/public/searchByAuthor}">
         <input id="author" name="author" type="text">
         <input type="submit" value="Search By Author">
     </form>
 </div>
 <div id="utility">
     <button class="login" id=logInButton>Log In</button>
+    <button onclick="signup()">Sign Up</button>
     <button id="viewCart">View Cart</button>
     <button id="viewPurchaseHistory">View Purchase History</button>
 </div>
@@ -41,6 +43,7 @@
         <th>Author</th>
         <th>Year</th>
         <th>Price ($)</th>
+        <th>Rating </th>
         <th>In Stock</th>
         <th></th>
     </tr>
@@ -51,16 +54,18 @@
         <td th:text="${book.author}"/>
         <td th:text="${book.year}"/>
         <td th:text="${book.price}"/>
+        <td><a th:href="@{/public/viewreviews(bookID=${book.id})}"><span class="ratingImg" th:text="${book.rating}"\></a></td>
         <td th:text="${book.quantity}"/>
         <td>
             <button class="addToCart" th:id="${book.id}">Add To Cart</button>
         </td>
     </tr>
     <tr>
-        <td colspan="6" th:text="${book.description}"/>
+        <td colspan="7" th:text="${book.description}"/>
     </tr>
+
     <tr class="break">
-        <td colspan="6"/>
+        <td colspan="7"/>
     </tr>
     </tbody>
 </table>
