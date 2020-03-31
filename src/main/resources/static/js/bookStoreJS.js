@@ -182,3 +182,7 @@ $(document).ready(function () {
 function addBook(){
     window.location.href = '/private/addbook?userId=' + localStorage.getItem("userID");
 }
+
+function signup(){
+    window.location.href = '/public/signup';
+}
