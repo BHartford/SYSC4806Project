@@ -1,4 +1,4 @@
-package dataModel;
+package Model;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -72,7 +72,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", typeOfUser=" + this.getTypeOfUserString() +
                 '}';
     }

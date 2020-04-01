@@ -1,4 +1,4 @@
-package dataModel;
+package Model;
 import java.util.Optional;
 
 import javax.persistence.Entity;

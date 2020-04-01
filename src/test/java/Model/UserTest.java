@@ -1,9 +1,11 @@
-package dataModel;
+package Model;
 
 import org.junit.jupiter.api.Test;
 
-import static dataModel.User.BUYER;
-import static dataModel.User.SELLER;
+import Model.User;
+
+import static Model.User.BUYER;
+import static Model.User.SELLER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserTest {

@@ -1,8 +1,10 @@
-package dataModel;
+package Model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+
+import Model.Book;
 
 public class BookTest {
 

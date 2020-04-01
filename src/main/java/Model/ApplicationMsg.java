@@ -1,4 +1,4 @@
-package dataModel;
+package Model;
 
 public enum ApplicationMsg {
     //ERROR

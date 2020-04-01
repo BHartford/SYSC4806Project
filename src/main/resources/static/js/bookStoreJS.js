@@ -168,6 +168,7 @@ $(document).ready(function () {
             }
         });
     }
+    
     if ($('#viewPurchaseHistory').length > 0) {
         $('#viewPurchaseHistory').click(function () {
             if (localStorage.getItem("user") === null) {
@@ -176,6 +177,10 @@ $(document).ready(function () {
                 window.location.href = '/private/viewReceiptHistory?user=' + localStorage.getItem("userID");
             }
         });
+    }
+    
+    if ($('#addBookForm').length > 0) {
+        $('#user')[0].value = localStorage.getItem("user");
     }
 });
 
