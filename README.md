@@ -5,6 +5,43 @@
 ## Website URL
 https://sysc4806project2020.herokuapp.com/
 
+## Website Usage Guide
+### Signing In
+1. Navigate to the [homepage](https://sysc4806project2020.herokuapp.com/)
+2. Click the "Log In" button
+3. Use an existing account
+		a. Username "buyer" and password "buyer123" for a Buyer account
+		b. Username "seller" and password "seller123" for a Seller account
+4. Create a new account
+		a. Click "Sign Up"
+		b. Enter a username/password and select whether you are a Buyer or Seller
+		c. Click "Submit"
+		d. Click "Log In" and enter your new information
+5. Enter your username and password and click "Submit"
+
+### Viewing Book Details
+1. From the [homepage](https://sysc4806project2020.herokuapp.com/)
+2. Click a particular book title to see the detailed view of that book
+3. Alternatively, in the corresponding search box, search either by author or title, to view all the books which match the search
+
+### Purchasing Books
+1. Either from the [homepage](https://sysc4806project2020.herokuapp.com/) or the detailed biew of a book
+2. Click the "Add to Cart" button for any number of books
+3. Click the "View Cart" button
+4. Adjust the quantities for any of the books
+5. Click "Remove Book" to remove the corresponding book from the cart
+6. Click "Purchase" to submit an order
+7. This will take you to your purchase history (which can also be viewed by clicking the "View Purchase History" button)
+8. Click on a transaction number to see the specific order details
+
+### Adding a Book To Seller
+1. You must be logged in as a Seller account
+2. Click the "Add a new book" button
+3. Fill in the information for the book
+4. Click the submit button
+5. The new book will appear at the bottom of the list on the homepage, and will be searchable
+	
+
 ## Current State
 #### Project in General
 - Integrated with TravisCI and Heroku
