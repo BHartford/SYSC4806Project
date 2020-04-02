@@ -182,6 +182,18 @@ $(document).ready(function () {
     if ($('#addBookForm').length > 0) {
         $('#user')[0].value = localStorage.getItem("user");
     }
+    
+     if ($('#writeReview').length > 0) {
+     	console.log("about to enter here");
+     	$('#writeReview').click(function () {
+     	console.log("working");
+     		if (localStorage.getItem("user") === null) {
+                alert("Please Login!");
+            } else {
+                window.location.href = '/private/writereview?user=' + localStorage.getItem("userID") + '&book=' + $('#writeReview').attr("bookid");
+            }
+		});
+	}
 });
 
 function addBook(){

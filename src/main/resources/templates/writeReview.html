@@ -1,15 +1,16 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="/js/bookStoreJS.js"></script>
 
 <head>
     <title>AMAZin BOOK STORE</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 </head>
+
 <body>
 <h1><a href="/">AMAZin BOOK STORE</a></h1>
 <div id="searchBar">
@@ -30,35 +31,13 @@
 </div>
 <div id="clear"></div>
 <div id="clear"></div>
-
-<p>Purchase History</p>
-<p>Store Receipt #: <span th:text="${receipt.id}"></span></p>
-<p>Date of Purchase: <span th:text="${receipt.date}"></span></p>
-<p>Price: $<span th:text="${receipt.total}"></span></p>
-
-<div th:if="books == null">
-    <p>DATABASE Refused To Connect</p>
-</div>
-
-<table th:id="inventory">
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Price Paid($)</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="book: ${receipt.items}">
-        <td><b><a th:href="@{/public/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
-        <td th:text="${book.author}"/>
-        <td th:text="${book.price}"/>
-        <td>
-            <button id="writeReview" th:bookid="${book.id}">Write Review</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<p>Add A New Book</p>
+<form action="#" id="addReviewForm" method="post" th:action="@{/private/SubmitReview}" th:object="${newReview}">
+    <p> Rating: <input th:field="*{rating}" type="text"/></p>
+    <p> Review: <input th:field="*{review}" type="text"/></p>
+	<input type="hidden" th:value="${userID}" name="userID" id="userID"/>
+    <input type="hidden" th:value="${bookID}" name="bookID" id="bookID"/>
+    <p><input class="button" type="submit" value="Submit"/></p>
+</form>
 </body>
-<html>
+</html>

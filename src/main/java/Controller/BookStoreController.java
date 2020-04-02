@@ -315,4 +315,15 @@ public class BookStoreController {
         
         return "viewReviews";
     }
+    
+    @GetMapping("/private/writereview")
+    public String writeReviews(Model model, @RequestParam(value = "book") long bookID, @RequestParam(value = "user") long userID) {
+    	model.addAttribute("userID", userID);
+    	model.addAttribute("bookID", bookID);
+    	model.addAttribute("newReview", new Review());
+    	
+    	return "writeReview";
+    
+    }
+    
 }
