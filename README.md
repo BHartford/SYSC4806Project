@@ -50,14 +50,19 @@ https://sysc4806project2020.herokuapp.com/
 - Can add books to cart for purchase
 - Can purchase books books in the cart
 - Can show purchase history of user
+- Can view reviews and the overall rating for books
 - Uses PostgreSQL for a persistent database
 - Integrated with Kafka for logging
 
 #### Classes
 - Book: Create books with id (auto generated), **title**, **author**, **price**, description, year and quantity (**Bolded the mandatory ones**)
 - User: Creates user with id (auto generated), **username**, **password**, **typeOfUser** and purchaseHistory (**Bolded the mandatory ones**)
+- Review: Creates review with id (auto generated), **user**, **book**, **rating**, review (**Bolded the mandatory ones**)
+- Receipt: Creates receipt with id (auto generated), **user**, **list of books bought** (**Bolded the mandatory ones**)
 - UserRepository: A CrudRepoistory for storing users
 - BookRepository: A CrudRepoistory for storing books
+- ReviewRepository: A CrudRepoistory for storing reviews
+- ReceiptRepository: A CrudRepoistory for storing receipts
 - AccessBookStore: main class for our spring application (sets up database if empty)
 - BookStoreController: Uses Front Controller to intercept incoming requests, direct the request to the correct view with needed model data and finally processes the data and renders the view to user
 - BookStoreErrorController: Handles the determining the error from the error code and displaying it to the user
@@ -71,12 +76,18 @@ https://sysc4806project2020.herokuapp.com/
 - viewCart: Shows all the information of the books added to the cart, how much they will cost and has a purchase button
 - viewPurchaseHistory: Shows all the information of the books that were purchases 
 - error: Displays the error page with the specified error message
+- signup: Provides a form to create a new account
+- viewTransaction: Allows the user to view a particular transaction
+- viewReceiptHistory: Allows the user to view a summary of all of their orders
+- viewReviews: Shows all of the reviews for a particular book
 
 #### Tests
 - Book class: tests the construction of books
 - Book repository: tests saving and retrieving books from the database
 - User class: tests the creation of users and looking at users purchase history
 - User repository: tests saving and retrieving users by different criteria from the database
+- Receipt class: tests the construction of receipts
+- Receipt repository: tests the persisting of receipt objects in a database
 - Web controller: tests that the UI of all pages is without errors and contains the correct information
 - Error controller: tests that the UI of the error page is without errors and contains the correct information
 
@@ -98,14 +109,5 @@ https://sysc4806project2020.herokuapp.com/
  4. In the application.properties file, set the value of kafka.logging to "true".
  5. If you are running Kafka on a machine that's not running the application set the IP address in the spring.kafka.bootstrap-servers value to that of the machine with Kafka.
  6. Use the application as normal, any logged messages will appear in the terminal for the corresponding topic.
- 
-## To Do Next Sprint
-- Create a cart object to represent books in the cart
-- Allow the tables in the UI to be sorted
-- Work on the presentation
-- Display number of items in the cart
-- Add a review system for books
-- Restrict webpages to logged in users
-- Add more kafka logging
-- Add a receipt class for purchased books
+
 
