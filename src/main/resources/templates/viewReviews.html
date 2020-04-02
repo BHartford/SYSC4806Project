@@ -47,8 +47,8 @@
 			</thead>
 	    	<tbody th:each="review: ${reviews}">
 	    		<td th:text="${review.user.username}"/>
-	    		<td th:text="${review.rating}"/>
-	    		<td th:text="${review.review}"/
+	    		<td><span class="ratingImg" th:text="${review.rating}"/></td>
+	    		<td th:text="${review.review}"/>
 			</tbody>
 		</table>
 	</div>

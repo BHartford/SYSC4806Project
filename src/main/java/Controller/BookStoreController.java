@@ -321,9 +321,31 @@ public class BookStoreController {
     	model.addAttribute("userID", userID);
     	model.addAttribute("bookID", bookID);
     	model.addAttribute("newReview", new Review());
-    	
     	return "writeReview";
     
+    }
+    
+    @PostMapping("/private/writereview")
+    public String addReviewToRepo(Model model, @ModelAttribute("newReview") Review newReview, @ModelAttribute("userID") long userID, @ModelAttribute("bookID") long bookID) {
+        newReview.setUser(userRepository.findById(userID));
+        newReview.setBook(bookRepository.findById(bookID)); 
+    	reviewRepository.save(newReview);
+    	
+    	List<Review> reviews = null;
+        Book book = null;
+
+        try {   
+        	reviews = reviewRepository.findByBookId(bookID);
+            book = bookRepository.findById(bookID);
+            
+        } catch (Exception e) {
+            //TODO Log this
+            //Requires a valid IDNumber
+        }
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("rating", book.getRating());
+        model.addAttribute("id", bookID);
+        return "viewReviews";
     }
     
 }

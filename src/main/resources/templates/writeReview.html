@@ -32,7 +32,7 @@
 <div id="clear"></div>
 <div id="clear"></div>
 <p>Add A New Book</p>
-<form action="#" id="addReviewForm" method="post" th:action="@{/private/SubmitReview}" th:object="${newReview}">
+<form action="#" id="addReviewForm" method="post" th:action="@{/private/writereview}" th:object="${newReview}">
     <p> Rating: <input th:field="*{rating}" type="text"/></p>
     <p> Review: <input th:field="*{review}" type="text"/></p>
 	<input type="hidden" th:value="${userID}" name="userID" id="userID"/>
