@@ -81,10 +81,10 @@ https://sysc4806project2020.herokuapp.com/
 - Error controller: tests that the UI of the error page is without errors and contains the correct information
 
 ## UML
-![DataModel UML](uml/DataModel UML.PNG)
+![DataModel_UML](uml/DataModel_UML.PNG)
 
 ## Schema
-![Schema Diagram](uml/Schema Diagram.PNG)
+![Schema_Diagram](uml/Schema_Diagram.PNG)
 
 
 ## Setting up Kafka
