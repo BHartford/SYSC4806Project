@@ -56,7 +56,7 @@ $(document).ready(function () {
             localStorage.setItem("newCart", JSON.stringify(cart));
             if (Object.keys(JSON.parse(localStorage.getItem("newCart"))).length > 0) {
                 window.location.href = '/private/cart?books=' + Object.keys(JSON.parse(localStorage.getItem("newCart"))) + '&quantities='
-                    + Object.values(JSON.parse(localStorage.getItem("newCart")));
+                    + Object.values(JSON.parse(localStorage.getItem("newCart"))) + '&userId=' + localStorage.getItem("userID");
             } else {
                 window.location.href = '/';
             }
