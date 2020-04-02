@@ -31,10 +31,20 @@
 </div>
 <div id="clear"></div>
 <div id="clear"></div>
-<p>Add A New Book</p>
+<p>Write a Review for </p>
 <form action="#" id="addReviewForm" method="post" th:action="@{/private/writereview}" th:object="${newReview}">
-    <p> Rating: <input th:field="*{rating}" type="text"/></p>
-    <p> Review: <input th:field="*{review}" type="text"/></p>
+    <p> Rating: </p>
+    <input th:field="*{rating}" type="radio" id="rating1" name="rating" value="1.0"/>
+  	<label for="rating1">1</label><br>
+  	<input th:field="*{rating}" type="radio" id="rating2" name="rating" value="2.0"/>
+  	<label for="rating2">2</label><br>
+  	<input th:field="*{rating}" type="radio" id="rating3" name="rating" value="3.0"/>
+  	<label for="rating3">3</label><br>
+  	<input th:field="*{rating}" type="radio" id="rating4" name="rating" value="4.0"/>
+  	<label for="rating4">4</label><br>
+  	<input th:field="*{rating}" type="radio" id="rating5" name="rating" value="5.0"/>
+  	<label for="rating5">5</label><br>
+    <p> Review: <input th:field="*{review}" type="text" maxlength="500" size="100"/></p>
 	<input type="hidden" th:value="${userID}" name="userID" id="userID"/>
     <input type="hidden" th:value="${bookID}" name="bookID" id="bookID"/>
     <p><input class="button" type="submit" value="Submit"/></p>

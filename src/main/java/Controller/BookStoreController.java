@@ -320,6 +320,7 @@ public class BookStoreController {
     public String writeReviews(Model model, @RequestParam(value = "book") long bookID, @RequestParam(value = "user") long userID) {
     	model.addAttribute("userID", userID);
     	model.addAttribute("bookID", bookID);
+    	model.addAttribute("bookTitle", bookRepository.findById(bookID).getTitle());
     	model.addAttribute("newReview", new Review());
     	return "writeReview";
     
@@ -327,21 +328,27 @@ public class BookStoreController {
     
     @PostMapping("/private/writereview")
     public String addReviewToRepo(Model model, @ModelAttribute("newReview") Review newReview, @ModelAttribute("userID") long userID, @ModelAttribute("bookID") long bookID) {
-        newReview.setUser(userRepository.findById(userID));
-        newReview.setBook(bookRepository.findById(bookID)); 
+        //Save new review
+    	Book book = bookRepository.findById(bookID);
+    	newReview.setUser(userRepository.findById(userID));
+        newReview.setBook(book); 
     	reviewRepository.save(newReview);
     	
+    	//Update total rating for book
+    	book.setRating(((book.getRating()*book.getNumberOfRatings()) + newReview.getRating())/(book.getNumberOfRatings() + 1));
+    	book.setNumberOfRatings(book.getNumberOfRatings() + 1);
+    	bookRepository.save(book);
+    	
+    	//Get all reviews for book in order to redirect client to review page
     	List<Review> reviews = null;
-        Book book = null;
-
         try {   
         	reviews = reviewRepository.findByBookId(bookID);
-            book = bookRepository.findById(bookID);
             
         } catch (Exception e) {
             //TODO Log this
             //Requires a valid IDNumber
         }
+        model.addAttribute("bookTitle", book.getTitle());
         model.addAttribute("reviews", reviews);
         model.addAttribute("rating", book.getRating());
         model.addAttribute("id", bookID);

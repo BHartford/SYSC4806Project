@@ -12,6 +12,7 @@ public class Book {
 	public static final int DEFAULT_QUANTITY = 1;
 	public static final String DEFAULT_DESCRIPTION = "No Description Provided";
 	public static final double DEFAULT_RATING = 0;
+	public static final int DEFAULT_NUMBER_OF_RATINGS = 0;
 
 	@Id @GeneratedValue
 	long id;
@@ -22,14 +23,15 @@ public class Book {
 	private double price;
 	private int quantity;
 	private double rating;
+	private int numberOfRatings;
 
 	public Book() {}
 
 	public Book(String title, String author, double price) {
-		this(title, author, null, null, price, null, null);
+		this(title, author, null, null, price, null, null, 0);
 	}
 	
-	public Book(String title, String author, Integer year, String description, Double price, Integer quantity, Double rating) {
+	public Book(String title, String author, Integer year, String description, Double price, Integer quantity, Double rating, int numberOfRatings) {
 		this.title = title;
 		this.author = author;
 		this.year = Optional.ofNullable(year).orElse(DEFAULT_YEAR);
@@ -37,6 +39,7 @@ public class Book {
 		this.price = price;
 		this.quantity = Optional.ofNullable(quantity).orElse(DEFAULT_QUANTITY);
 		this.rating = Optional.ofNullable(rating).orElse(DEFAULT_RATING);
+		this.numberOfRatings = Optional.ofNullable(numberOfRatings).orElse(DEFAULT_NUMBER_OF_RATINGS);
 	}
 
 	public long getId() { return id; }
@@ -96,6 +99,14 @@ public class Book {
 	public void setRating(double rating) {
 		this.rating = rating;
 	}
+	
+	public int getNumberOfRatings() {
+		return numberOfRatings;
+	}
+	
+	public void setNumberOfRatings(int numberOfRatings) {
+		this.numberOfRatings = numberOfRatings;
+	}
 
 	@Override
 	public String toString() {
@@ -107,6 +118,8 @@ public class Book {
 				", quantity=" + quantity +
 				", year=" + year +
 				", description='" + description + '\'' +
+				", rating='" + rating + '\'' +
+				", description='" + numberOfRatings + '\'' +
 				'}';
 	}
 

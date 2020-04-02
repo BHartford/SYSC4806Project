@@ -22,7 +22,7 @@ public class BookTest {
 
 	@Test
 	public void testCustomValues() {
-		Book book = new Book("title", "author", 2020, "description", 10.99, 3, 4.5);
+		Book book = new Book("title", "author", 2020, "description", 10.99, 3, 4.5, 2);
 
 		assertEquals("title", book.getTitle());
 		assertEquals("author", book.getAuthor());
@@ -35,7 +35,7 @@ public class BookTest {
 
 	@Test
 	public void testCustomAndDefaultValues() {
-		Book book = new Book("title", "author", null, null, 10.99, 3, null);
+		Book book = new Book("title", "author", null, null, 10.99, 3, null, 0);
 
 		assertEquals("title", book.getTitle());
 		assertEquals("author", book.getAuthor());
