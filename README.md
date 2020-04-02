@@ -90,10 +90,10 @@ https://sysc4806project2020.herokuapp.com/
 ## Setting up Kafka
  1. Download and start Kafka as detailed [here](https://kafka.apache.org/quickstart).
  2. Create the necessary topics (Refer to Step 3 of the linked guide), named as follows:
-		1. add_book
-		2. purchase
-		3. error
-		4. new_user
+	1. add_book
+	2. purchase
+	3. error
+	4. new_user
  3. Start a consumer for each of the topics (as in Step 5 of the linked guide). Note that each one should be in a seperate terminal.
  4. In the application.properties file, set the value of kafka.logging to "true".
  5. If you are running Kafka on a machine that's not running the application set the IP address in the spring.kafka.bootstrap-servers value to that of the machine with Kafka.
