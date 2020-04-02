@@ -10,13 +10,13 @@ https://sysc4806project2020.herokuapp.com/
 1. Navigate to the [homepage](https://sysc4806project2020.herokuapp.com/)
 2. Click the "Log In" button
 3. Use an existing account
-		a. Username "buyer" and password "buyer123" for a Buyer account
-		b. Username "seller" and password "seller123" for a Seller account
+	1. Username "buyer" and password "buyer123" for a Buyer account
+	2. Username "seller" and password "seller123" for a Seller account
 4. Create a new account
-		a. Click "Sign Up"
-		b. Enter a username/password and select whether you are a Buyer or Seller
-		c. Click "Submit"
-		d. Click "Log In" and enter your new information
+	1. Click "Sign Up"
+	2. Enter a username/password and select whether you are a Buyer or Seller
+	3. Click "Submit"
+	4. Click "Log In" and enter your new information
 5. Enter your username and password and click "Submit"
 
 ### Viewing Book Details
@@ -90,10 +90,10 @@ https://sysc4806project2020.herokuapp.com/
 ## Setting up Kafka
  1. Download and start Kafka as detailed [here](https://kafka.apache.org/quickstart).
  2. Create the necessary topics (Refer to Step 3 of the linked guide), named as follows:
-		a. add_book
-		b. purchase
-		c. error
-		d. new_user
+		* add_book
+		* purchase
+		* error
+		* new_user
  3. Start a consumer for each of the topics (as in Step 5 of the linked guide). Note that each one should be in a seperate terminal.
  4. In the application.properties file, set the value of kafka.logging to "true".
  5. If you are running Kafka on a machine that's not running the application set the IP address in the spring.kafka.bootstrap-servers value to that of the machine with Kafka.
