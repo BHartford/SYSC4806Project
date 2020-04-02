@@ -80,8 +80,11 @@ https://sysc4806project2020.herokuapp.com/
 - Web controller: tests that the UI of all pages is without errors and contains the correct information
 - Error controller: tests that the UI of the error page is without errors and contains the correct information
 
+## UML
+![DataModel UML](uml/DataModel UML.PNG)
+
 ## Schema
-![users_purchase_history_schema](uml/users_purchase_history_schema.PNG)
+![Schema Diagram](uml/Schema Diagram.PNG)
 
 
 ## Setting up Kafka
