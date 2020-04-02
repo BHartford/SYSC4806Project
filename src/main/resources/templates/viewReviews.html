@@ -30,21 +30,46 @@
 	</div>
 	<div id="clear"></div>
 	<p>Reviews for <span th:text="${bookTitle}" /></p>
-	<div th:if="books == null">
-	    <p>DATABASE Refused To Connect</p>
+	<span class="ratingImg displayRating" th:text="${rating}"/>
+	<button class="addToCart" th:id="${id}">Add To Cart</button>
+	</br></br>
+	<div th:if="${#lists.isEmpty(reviews)}">
+	    <p>No written reviews found for this title...</p>
 	</div> 
-	<table>
-		<thead>
-		    <tr>
-		        <th>User</th>
-		        <th>Rating</th>
-		        <th>Review</th>
-		    </tr>
-		</thead>
-    	<tbody th:each="review: ${reviews}">
-    		<td th:text="${review.user.username}"/>
-    		<td th:text="${review.rating}"/>
-    		<td th:text="${review.review}"/
-		</tbody>
-	</table>
+	<div th:if="${not #lists.isEmpty(reviews)}">
+		<table>
+			<thead>
+			    <tr>
+			        <th>User</th>
+			        <th>Rating</th>
+			        <th>Review</th>
+			    </tr>
+			</thead>
+	    	<tbody th:each="review: ${reviews}">
+	    		<td th:text="${review.user.username}"/>
+	    		<td th:text="${review.rating}"/>
+	    		<td th:text="${review.review}"/
+			</tbody>
+		</table>
+	</div>
+	<div id="loginPopup">
+    <div class="form-popup" id="popupForm">
+        <form class="form-container">
+            <h2>Please Log in</h2>
+            <label id="placeholder"></label>
+            <label for="username">
+                <strong>Username</strong>
+            </label>
+            <input id="username" name="username" placeholder="Your Username" required type="text">
+            <label for="psw">
+                <strong>Password</strong>
+            </label>
+            <input id="psw" name="psw" placeholder="Your Password" required type="password">
+            <button class="loginSubmit" type="button">Log In</button>
+            <button class="loginCancel" type="button">Close</button>
+            <p>Don't have an account?</p>
+            <button onclick="signup()">Sign Up</button>
+        </form>
+    </div>
+</div>
 </body>

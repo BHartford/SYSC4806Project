@@ -298,24 +298,21 @@ public class BookStoreController {
     @GetMapping("/public/viewreviews")
     public String displayReviews(Model model, @RequestParam(value = "bookID") long bookID) {
         List<Review> reviews = null;
-        String title = null;
+        Book book = null;
 
-        try {
-            reviews = reviewRepository.findByBookId(bookID);
-            title = bookRepository.findById(bookID).getTitle();
+        try {   
+        	reviews = reviewRepository.findByBookId(bookID);
+            book = bookRepository.findById(bookID);
             
         } catch (Exception e) {
             //TODO Log this
             //Requires a valid IDNumber
         }
-
-        if (reviews != null && title != null) {
-        	model.addAttribute("bookTitle", title);
-            model.addAttribute("reviews", reviews);
-            return "viewReviews";
-        } else {
-            String errorMessage = String.format(ApplicationMsg.BAD_BOOK_ID.getMsg(), bookID);
-            return isNotFound(model, errorMessage);
-        }
+    	model.addAttribute("bookTitle", book.getTitle());
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("rating", book.getRating());
+        model.addAttribute("id", bookID);
+        
+        return "viewReviews";
     }
 }
