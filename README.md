@@ -41,7 +41,7 @@ https://sysc4806project2020.herokuapp.com/
 4. Choose a rating from 1 - 5 and optionally add a written reivew
 5. Click "Submit"
 
-### Adding a Book To Seller
+### Adding a Book To Sell
 1. You must be logged in as a Seller account
 2. Click the "Add a new book" button
 3. Fill in the information for the book
@@ -116,5 +116,4 @@ https://sysc4806project2020.herokuapp.com/
  4. In the application.properties file, set the value of kafka.logging to "true".
  5. If you are running Kafka on a machine that's not running the application set the IP address in the spring.kafka.bootstrap-servers value to that of the machine with Kafka.
  6. Use the application as normal, any logged messages will appear in the terminal for the corresponding topic.
-
 
