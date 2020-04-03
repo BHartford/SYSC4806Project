@@ -22,10 +22,11 @@ https://sysc4806project2020.herokuapp.com/
 ### Viewing Book Details
 1. From the [homepage](https://sysc4806project2020.herokuapp.com/)
 2. Click a particular book title to see the detailed view of that book
-3. Alternatively, in the corresponding search box, search either by author or title, to view all the books which match the search
+3. Click on the rating of a book, either on the homepage or on the detailed view, to see reviews of that book
+4. Alternatively, in the corresponding search box, search either by author or title, to view all the books which match the search
 
 ### Purchasing Books
-1. Either from the [homepage](https://sysc4806project2020.herokuapp.com/) or the detailed biew of a book
+1. Navigate to either the [homepage](https://sysc4806project2020.herokuapp.com/) or the detailed view of a book
 2. Click the "Add to Cart" button for any number of books
 3. Click the "View Cart" button
 4. Adjust the quantities for any of the books
@@ -34,7 +35,14 @@ https://sysc4806project2020.herokuapp.com/
 7. This will take you to your purchase history (which can also be viewed by clicking the "View Purchase History" button)
 8. Click on a transaction number to see the specific order details
 
-### Adding a Book To Seller
+### Writing a Review
+1. Note that you must be logged in and have purchased the book in order to leave a review. Navigate to the transactions page for your account by clicking on the "View Purchase History" button. 
+2. Click on the transaction number to browse for a book
+3. Click on the "Write Review" button
+4. Choose a rating from 1 - 5 and optionally add a written reivew
+5. Click "Submit"
+
+### Adding a Book To Sell
 1. You must be logged in as a Seller account
 2. Click the "Add a new book" button
 3. Fill in the information for the book
@@ -109,5 +117,4 @@ https://sysc4806project2020.herokuapp.com/
  4. In the application.properties file, set the value of kafka.logging to "true".
  5. If you are running Kafka on a machine that's not running the application set the IP address in the spring.kafka.bootstrap-servers value to that of the machine with Kafka.
  6. Use the application as normal, any logged messages will appear in the terminal for the corresponding topic.
-
 
