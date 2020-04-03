@@ -22,7 +22,8 @@ https://sysc4806project2020.herokuapp.com/
 ### Viewing Book Details
 1. From the [homepage](https://sysc4806project2020.herokuapp.com/)
 2. Click a particular book title to see the detailed view of that book
-3. Alternatively, in the corresponding search box, search either by author or title, to view all the books which match the search
+3. Click on the rating of a book, either on the homepage or on the detailed view, to see reviews of that book
+4. Alternatively, in the corresponding search box, search either by author or title, to view all the books which match the search
 
 ### Purchasing Books
 1. Navigate to either the [homepage](https://sysc4806project2020.herokuapp.com/) or the detailed view of a book
