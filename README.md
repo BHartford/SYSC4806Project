@@ -25,7 +25,7 @@ https://sysc4806project2020.herokuapp.com/
 3. Alternatively, in the corresponding search box, search either by author or title, to view all the books which match the search
 
 ### Purchasing Books
-1. Either from the [homepage](https://sysc4806project2020.herokuapp.com/) or the detailed biew of a book
+1. Navigate to either the [homepage](https://sysc4806project2020.herokuapp.com/) or the detailed view of a book
 2. Click the "Add to Cart" button for any number of books
 3. Click the "View Cart" button
 4. Adjust the quantities for any of the books
@@ -33,6 +33,13 @@ https://sysc4806project2020.herokuapp.com/
 6. Click "Purchase" to submit an order
 7. This will take you to your purchase history (which can also be viewed by clicking the "View Purchase History" button)
 8. Click on a transaction number to see the specific order details
+
+### Writing a Review
+1. Note that you must be logged in and have purchased the book in order to leave a review. Navigate to the transactions page for your account by clicking on the "View Purchase History" button. 
+2. Click on the transaction number to browse for a book
+3. Click on the "Write Review" button
+4. Choose a rating from 1 - 5 and optionally add a written reivew
+5. Click "Submit"
 
 ### Adding a Book To Seller
 1. You must be logged in as a Seller account
