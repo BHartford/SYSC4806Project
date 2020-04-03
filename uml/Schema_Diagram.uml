@@ -3,49 +3,49 @@
   <ID>DATABASE</ID>
   <OriginalElement>73ccc417-73e6-45f3-969b-affc0e82e861.SCHEMA:sysc4806project.public</OriginalElement>
   <nodes>
-    <node x="322.375" y="244.0">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt</node>
-    <node x="139.375" y="184.8041504539559">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.book</node>
-    <node x="10.004140034863497" y="501.438634497232">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.review</node>
-    <node x="322.0356679636834" y="534.1750972762646">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt_items</node>
-    <node x="156.25" y="0.0">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.users</node>
+    <node x="285.82416879795403" y="516.5166240409208">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.review</node>
+    <node x="193.0" y="189.0">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.book</node>
+    <node x="30.825704106135532" y="252.7428695200739">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt</node>
+    <node x="116.41208439897702" y="546.6841432225065">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt_items</node>
+    <node x="186.60361463721242" y="-24.269428137853893">73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.users</node>
   </nodes>
   <notes />
   <edges>
     <edge source="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.review" target="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.users">
-      <point x="-39.25" y="-80.5" />
-      <point x="49.94982819849446" y="441.75188843695526" />
-      <point x="32.59387181851733" y="442.1810758333068" />
-      <point x="38.24251739655932" y="164.23189605454368" />
-      <point x="195.25" y="164.0" />
-      <point x="-39.0" y="69.5" />
-    </edge>
-    <edge source="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt_items" target="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt">
-      <point x="30.75" y="-37.5" />
-      <point x="414.2856679636835" y="440.30069174232597" />
-      <point x="375.375" y="441.0" />
-      <point x="0.0" y="58.5" />
-    </edge>
-    <edge source="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.review" target="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.book">
-      <point x="39.25" y="-80.5" />
-      <point x="130.00980534572926" y="441.0" />
-      <point x="180.125" y="441.0" />
-      <point x="-40.75" y="113.5" />
+      <point x="39.249999999999986" y="-80.5" />
+      <point x="405.71291560102304" y="463.0" />
+      <point x="480.81361892583107" y="463.71291560102304" />
+      <point x="482.9523657289002" y="163.287084398977" />
+      <point x="301.875" y="164.0" />
+      <point x="39.0" y="69.5" />
     </edge>
     <edge source="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt_items" target="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.book">
-      <point x="-30.75" y="-37.5" />
-      <point x="353.48497622135767" y="447.29377431906613" />
-      <point x="261.625" y="447.9930825767402" />
-      <point x="40.75" y="113.5" />
+      <point x="30.75" y="-37.5" />
+      <point x="209.375" y="463.0" />
+      <point x="237.25" y="463.0" />
+      <point x="-44.25" y="124.5" />
     </edge>
     <edge source="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt" target="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.users">
       <point x="0.0" y="-58.5" />
-      <point x="375.375" y="164.0" />
-      <point x="273.25" y="164.0" />
-      <point x="39.0" y="69.5" />
+      <point x="86.0222391799189" y="163.6972165648337" />
+      <point x="223.875" y="164.0" />
+      <point x="-39.0" y="69.5" />
+    </edge>
+    <edge source="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt_items" target="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt">
+      <point x="-30.75" y="-37.5" />
+      <point x="147.875" y="463.0" />
+      <point x="83.91379007992116" y="463.10734873069026" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.review" target="73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.book">
+      <point x="-39.25" y="-80.5" />
+      <point x="44.25" y="124.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.7862371888726208" x="230.5" y="331.5" />
-  <SelectedNodes />
+  <settings layout="Hierarchic Group" zoom="1.6026905829596405" x="278.997247852652" y="178.5307778399553" />
+  <SelectedNodes>
+    <node>73ccc417-73e6-45f3-969b-affc0e82e861.TABLE:sysc4806project.public.receipt</node>
+  </SelectedNodes>
   <Categories>
     <Category>Key columns</Category>
     <Category>Columns</Category>

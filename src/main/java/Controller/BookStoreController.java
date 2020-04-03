@@ -298,24 +298,61 @@ public class BookStoreController {
     @GetMapping("/public/viewreviews")
     public String displayReviews(Model model, @RequestParam(value = "bookID") long bookID) {
         List<Review> reviews = null;
-        String title = null;
+        Book book = null;
 
-        try {
-            reviews = reviewRepository.findByBookId(bookID);
-            title = bookRepository.findById(bookID).getTitle();
+        try {   
+        	reviews = reviewRepository.findByBookId(bookID);
+            book = bookRepository.findById(bookID);
             
         } catch (Exception e) {
             //TODO Log this
             //Requires a valid IDNumber
         }
-
-        if (reviews != null && title != null) {
-        	model.addAttribute("bookTitle", title);
-            model.addAttribute("reviews", reviews);
-            return "viewReviews";
-        } else {
-            String errorMessage = String.format(ApplicationMsg.BAD_BOOK_ID.getMsg(), bookID);
-            return isNotFound(model, errorMessage);
-        }
+    	model.addAttribute("bookTitle", book.getTitle());
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("rating", book.getRating());
+        model.addAttribute("id", bookID);
+        
+        return "viewReviews";
     }
+    
+    @GetMapping("/private/writereview")
+    public String writeReviews(Model model, @RequestParam(value = "book") long bookID, @RequestParam(value = "user") long userID) {
+    	model.addAttribute("userID", userID);
+    	model.addAttribute("bookID", bookID);
+    	model.addAttribute("bookTitle", bookRepository.findById(bookID).getTitle());
+    	model.addAttribute("newReview", new Review());
+    	return "writeReview";
+    
+    }
+    
+    @PostMapping("/private/writereview")
+    public String addReviewToRepo(Model model, @ModelAttribute("newReview") Review newReview, @ModelAttribute("userID") long userID, @ModelAttribute("bookID") long bookID) {
+        //Save new review
+    	Book book = bookRepository.findById(bookID);
+    	newReview.setUser(userRepository.findById(userID));
+        newReview.setBook(book); 
+    	reviewRepository.save(newReview);
+    	
+    	//Update total rating for book
+    	book.setRating(((book.getRating()*book.getNumberOfRatings()) + newReview.getRating())/(book.getNumberOfRatings() + 1));
+    	book.setNumberOfRatings(book.getNumberOfRatings() + 1);
+    	bookRepository.save(book);
+    	
+    	//Get all reviews for book in order to redirect client to review page
+    	List<Review> reviews = null;
+        try {   
+        	reviews = reviewRepository.findByBookId(bookID);
+            
+        } catch (Exception e) {
+            //TODO Log this
+            //Requires a valid IDNumber
+        }
+        model.addAttribute("bookTitle", book.getTitle());
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("rating", book.getRating());
+        model.addAttribute("id", bookID);
+        return "viewReviews";
+    }
+    
 }

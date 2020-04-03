@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="/js/bookStoreJS.js"></script>
+
+<head>
+    <title>AMAZin BOOK STORE</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<h1><a href="/">AMAZin BOOK STORE</a></h1>
+<div id="searchBar">
+    <form action="#" method="post" th:action="@{/public/searchByTitle}">
+        <input id="title" name="title" type="text">
+        <input type="submit" value="Search By Title">
+    </form>
+    <form action="#" method="post" th:action="@{/public/searchByAuthor}">
+        <input id="author" name="author" type="text">
+        <input type="submit" value="Search By Author">
+    </form>
+</div>
+<div id="utility">
+    <button class="login" id=logInButton>Log In</button>
+    <button onclick="signup()">Sign Up</button>
+    <button id="viewCart">View Cart</button>
+    <button id="viewPurchaseHistory">View Purchase History</button>
+</div>
+<div id="clear"></div>
+<div id="clear"></div>
+<p>Write a Review for </p>
+<form action="#" id="addReviewForm" method="post" th:action="@{/private/writereview}" th:object="${newReview}">
+    <p> Rating: </p>
+    <input th:field="*{rating}" type="radio" id="rating1" name="rating" value="1.0"/>
+  	<label for="rating1">1</label><br>
+  	<input th:field="*{rating}" type="radio" id="rating2" name="rating" value="2.0"/>
+  	<label for="rating2">2</label><br>
+  	<input th:field="*{rating}" type="radio" id="rating3" name="rating" value="3.0"/>
+  	<label for="rating3">3</label><br>
+  	<input th:field="*{rating}" type="radio" id="rating4" name="rating" value="4.0"/>
+  	<label for="rating4">4</label><br>
+  	<input th:field="*{rating}" type="radio" id="rating5" name="rating" value="5.0"/>
+  	<label for="rating5">5</label><br>
+    <p> Review: <input th:field="*{review}" type="text" maxlength="500" size="100"/></p>
+	<input type="hidden" th:value="${userID}" name="userID" id="userID"/>
+    <input type="hidden" th:value="${bookID}" name="bookID" id="bookID"/>
+    <p><input class="button" type="submit" value="Submit"/></p>
+</form>
+</body>
+</html>

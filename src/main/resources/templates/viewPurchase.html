@@ -46,6 +46,7 @@
         <th>Title</th>
         <th>Author</th>
         <th>Price Paid($)</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -53,6 +54,9 @@
         <td><b><a th:href="@{/public/viewbook(bookID=${book.id})}" th:text="${book.title}"></a></b></td>
         <td th:text="${book.author}"/>
         <td th:text="${book.price}"/>
+        <td>
+            <button class="writeReview" th:bookid="${book.id}">Write Review</button>
+        </td>
     </tr>
     </tbody>
 </table>

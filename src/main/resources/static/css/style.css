@@ -6,13 +6,24 @@ td {
     text-align: left;
 }
 
-a:link {
+b a:link {
     color: #570303;
     text-decoration: none;
 }
 
-a:visited {
+b a:visited {
     color: #976c6c;
+}
+
+span.fa-star{
+    color: #976c6c;
+}
+span.checked{
+    color:  #A40808;
+} 
+
+.displayRating{
+	font-size: 20px;
 }
 
 a.button {
@@ -26,6 +37,7 @@ a.button {
 .checked {
   color: #A40808;
 }
+
 
 .errorMsg {
     color: red;
